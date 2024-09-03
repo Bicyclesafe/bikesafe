@@ -1,14 +1,19 @@
-import { useEffect } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react"
+import axios from "axios"
+import Map from "./components/Map"
+import { Coordinate } from "./types"
 
 const App = () => {
+  const [coordinates, setCoordinates] = useState<Coordinate[]>([])
   useEffect(() => {
-    axios.get('http://localhost:3000/ping').then(response => {
-      console.log(response.data);
+    axios.get('http://localhost:3000/coordinates').then(response => {
+      setCoordinates(response.data);
     })
   }, [])
+
+  
   return (
-    <div>Hello world</div>
+    <div> <Map coordinates = {coordinates}/> </div>
   )
 }
 

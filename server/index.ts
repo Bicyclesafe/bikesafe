@@ -1,6 +1,7 @@
-import express from 'express';
-const app = express();
-app.use(express.json());
+import express from 'express'
+import data from './data.json'
+const app = express()
+app.use(express.json())
 var cors = require('cors')
 
 app.use(cors())
@@ -15,3 +16,8 @@ app.get('/ping', (_req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+app.get('/coordinates', (_req, res) => {
+  res.send(data)
+})
