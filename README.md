@@ -1,2 +1,2 @@
 # pyoravarkauksien_ehkaisemis_yhteiso
-Helsingin yliopiston Ohjelmistotuotantoprojektin harjoitustyö. Harjoitustyön aiheena on toteuttaa ohjelmistoratkaisu pyörävarakauksien ehkäsiemiseen.
+Helsingin yliopiston Ohjelmistotuotantoprojektin harjoitustyö. Harjoitustyön aiheena on toteuttaa ohjelmistoratkaisu pyörävarkauksien ehkäisemiseen.
