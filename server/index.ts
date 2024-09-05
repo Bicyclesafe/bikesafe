@@ -1,5 +1,7 @@
 import express from 'express'
-import data from './data.json'
+//import data from './data.json'
+import { connectToDatabase } from './db'
+const Coordinate = require("./coordinate")
 const app = express()
 app.use(express.json())
 var cors = require('cors')
@@ -13,11 +15,16 @@ app.get('/ping', (_req, res) => {
   res.send('pong');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const start = async () => {
+  await connectToDatabase()
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
+}
 
+start()
 
-app.get('/coordinates', (_req, res) => {
-  res.send(data)
+app.get('/coordinates', async (_req, res) => {
+  const coordinates = await Coordinate.findAll()
+  res.json(coordinates)
 })
