@@ -6,8 +6,13 @@ import { Coordinate } from "./types"
 const App = () => {
   const [coordinates, setCoordinates] = useState<Coordinate[]>([])
   useEffect(() => {
+<<<<<<< HEAD
     axios.get('http://localhost:3000/coordinates').then(response => {
       setCoordinates(response.data)
+=======
+    axios.get('http://localhost:3000/api/coordinates').then(response => {
+      setCoordinates(response.data);
+>>>>>>> 9afda02 (Refactor folder structure)
     })
   }, [])
 

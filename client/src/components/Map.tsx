@@ -16,7 +16,7 @@ const Map: FC<{ coordinates: Coordinate[] }> = ({ coordinates }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {coordinates.map((coordinate) => (
-        <Marker key={coordinate.id} position={[coordinate.latitude, coordinate.longitude]}>
+        <Marker key={coordinate.id} position={[coordinate.lat, coordinate.lon]}>
           <Popup>
             Täällä asuu TKT <br />
           </Popup>

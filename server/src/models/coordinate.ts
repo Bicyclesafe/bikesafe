@@ -1,6 +1,7 @@
-const { Model, DataTypes } = require('sequelize')
-
-const { sequelize } = require('./db')
+// const { Model, DataTypes } = require('sequelize')
+// const { sequelize } = require('../util/db')
+import { Model, DataTypes } from 'sequelize'
+import { sequelize } from '../util/db'
 
 class Coordinate extends Model {}
 
@@ -10,11 +11,11 @@ Coordinate.init({
     primaryKey: true,
     autoIncrement: true
   },
-  latitude: {
+  lat: {
     type: DataTypes.FLOAT,
     allowNull: false
   },
-  longitude: {
+  lon: {
     type: DataTypes.FLOAT,
     allowNull: false
   }
@@ -25,4 +26,7 @@ Coordinate.init({
   modelName: 'coordinate'
 })
 
-module.exports = Coordinate
+Coordinate.sync()
+
+// module.exports = Coordinate
+export { Coordinate }
