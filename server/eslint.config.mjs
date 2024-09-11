@@ -29,5 +29,13 @@ export default tseslint.config({
       'error',
       { 'argsIgnorePattern': '^_' }
     ],
+    // Meillä on käytössä express-async-errors -kirjasto, joka hoitaa async-errorit Expressissä
+    // ESLint ei kuitenkaan osaa huomioida kirjastoa, joten tämä sääntö on otettu pois käytöstä
+    '@typescript-eslint/no-misused-promises': [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ],
   },
 });

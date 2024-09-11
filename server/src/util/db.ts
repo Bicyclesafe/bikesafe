@@ -1,9 +1,13 @@
-const { DATABASE_URL } = require("./config")
-const { Sequelize } = require('sequelize')
+import { Sequelize } from 'sequelize'
+import { DATABASE_URL } from './config'
+
+if (!DATABASE_URL) {
+  throw new Error('DATABASE_URL is not defined in .env')
+}
 
 export const sequelize = new Sequelize(DATABASE_URL)
 
-export const connectToDatabase = async () => {
+export const connectToDatabase = async (): Promise<void | null> => {
   try {
     await sequelize.authenticate()
     console.log('Connected to database')

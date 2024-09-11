@@ -26,7 +26,9 @@ Coordinate.init({
   modelName: 'coordinate'
 })
 
-Coordinate.sync()
+Coordinate.sync().catch((error) => {
+  console.error(error)
+})
 
 // module.exports = Coordinate
 export { Coordinate }
