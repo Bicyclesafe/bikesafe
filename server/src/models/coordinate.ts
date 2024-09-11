@@ -1,34 +1,19 @@
-// const { Model, DataTypes } = require('sequelize')
-// const { sequelize } = require('../util/db')
-import { Model, DataTypes } from 'sequelize'
-import { sequelize } from '../util/db'
+import { Table, Column, Model, PrimaryKey, AutoIncrement } from 'sequelize-typescript'
 
-class Coordinate extends Model {}
-
-Coordinate.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  lat: {
-    type: DataTypes.FLOAT,
-    allowNull: false
-  },
-  lon: {
-    type: DataTypes.FLOAT,
-    allowNull: false
-  }
-}, {
-  sequelize,
+@Table({
+  tableName: 'coordinates',
   underscored: true,
   timestamps: false,
-  modelName: 'coordinate'
 })
+export class Coordinate extends Model {
+  @PrimaryKey
+  @AutoIncrement
+  @Column
+  id!: number
 
-Coordinate.sync().catch((error) => {
-  console.error(error)
-})
+  @Column
+  lat!: number
 
-// module.exports = Coordinate
-export { Coordinate }
+  @Column
+  lon!: number
+}
