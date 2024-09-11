@@ -7,7 +7,7 @@ const App = () => {
   const [coordinates, setCoordinates] = useState<Coordinate[]>([])
   useEffect(() => {
     axios.get('http://localhost:3000/coordinates').then(response => {
-      setCoordinates(response.data);
+      setCoordinates(response.data)
     })
   }, [])
 

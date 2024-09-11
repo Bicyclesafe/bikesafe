@@ -1,7 +1,7 @@
-import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Coordinate } from '../types';
-import { FC } from 'react';
+import 'leaflet/dist/leaflet.css'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Coordinate } from '../types'
+import { FC } from 'react'
 
 const Map: FC<{ coordinates: Coordinate[] }> = ({ coordinates }) => {
     return (
@@ -23,7 +23,7 @@ const Map: FC<{ coordinates: Coordinate[] }> = ({ coordinates }) => {
         </Marker>
       ))}
     </MapContainer>
-  );
-};
+  )
+}
 
-export default Map;
+export default Map
