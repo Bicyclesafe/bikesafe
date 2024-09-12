@@ -33,8 +33,8 @@ export const TheftMarker: FC<{
 
   const handleReportConfirm = async (position: LatLng) => {
     const newMarker = await sendTheftReport(position)
-    console.log(newMarker)
     setCoordinates(coordinates.concat(newMarker))
+    setPosition(null)
   }
 
   return position === null ? null : (
