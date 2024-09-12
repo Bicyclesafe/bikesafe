@@ -1,0 +1,13 @@
+name: test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+    testi_jobi:
+        runs-on: ubuntu-latest
+        steps:
+            - name: printout
+              run: echo "Hello, world!"
