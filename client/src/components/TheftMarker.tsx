@@ -3,7 +3,7 @@ import { LatLng } from "leaflet"
 import { FC, useState } from "react"
 import { Marker, Popup, useMapEvents } from "react-leaflet"
 
-export const LocationMarker: FC<{ reportMode: boolean }> = ({ reportMode }) => {
+export const TheftMarker: FC<{ reportMode: boolean }> = ({ reportMode }) => {
   const [position, setPosition] = useState<LatLng | null>(null)
 
   useMapEvents({

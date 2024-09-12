@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Coordinate } from '../types'
 import { FC } from 'react'
-import { LocationMarker } from './LocationMarker'
+import { TheftMarker } from './TheftMarker'
 
 const Map: FC<{ coordinates: Coordinate[], reportMode: boolean }> = ({ coordinates, reportMode }) => {
     return (
@@ -23,7 +23,7 @@ const Map: FC<{ coordinates: Coordinate[], reportMode: boolean }> = ({ coordinat
           </Popup>
         </Marker>
       ))}
-      <LocationMarker
+      <TheftMarker
         reportMode={reportMode}
       />
     </MapContainer>
