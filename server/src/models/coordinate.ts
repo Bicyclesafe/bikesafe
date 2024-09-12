@@ -1,4 +1,5 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement } from 'sequelize-typescript'
+//import { DataType } from 'sequelize'
+import { Table, Column, Model, PrimaryKey, AutoIncrement, DataType } from 'sequelize-typescript'
 
 @Table({
   tableName: 'coordinates',
@@ -11,9 +12,9 @@ export class Coordinate extends Model {
   @Column
   id!: number
 
-  @Column
+  @Column(DataType.FLOAT)
   lat!: number
 
-  @Column
-  lon!: number
+  @Column(DataType.FLOAT)
+  lng!: number
 }

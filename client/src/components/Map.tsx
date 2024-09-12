@@ -2,8 +2,9 @@ import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Coordinate } from '../types'
 import { FC } from 'react'
+import { LocationMarker } from './LocationMarker'
 
-const Map: FC<{ coordinates: Coordinate[] }> = ({ coordinates }) => {
+const Map: FC<{ coordinates: Coordinate[], reportMode: boolean }> = ({ coordinates, reportMode }) => {
     return (
     <MapContainer 
       center={[60.204149, 24.961733]} 
@@ -16,12 +17,15 @@ const Map: FC<{ coordinates: Coordinate[] }> = ({ coordinates }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {coordinates.map((coordinate) => (
-        <Marker key={coordinate.id} position={[coordinate.lat, coordinate.lon]}>
+        <Marker key={coordinate.id} position={[coordinate.lat, coordinate.lng]}>
           <Popup>
             Täällä asuu TKT <br />
           </Popup>
         </Marker>
       ))}
+      <LocationMarker
+        reportMode={reportMode}
+      />
     </MapContainer>
   )
 }
