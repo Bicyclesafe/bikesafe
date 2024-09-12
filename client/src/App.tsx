@@ -1,17 +1,8 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useState } from "react"
 import Map from "./components/Map"
-import { Coordinate } from "./types"
 
 const App = () => {
-  const [coordinates, setCoordinates] = useState<Coordinate[]>([])
   const [reportMode, setReportMode] = useState<boolean>(false)
-
-  useEffect(() => {
-    axios.get('http://localhost:3000/api/coordinates').then(response => {
-      setCoordinates(response.data)
-    })
-  }, [])
 
   const reportHandler = () => {
     setReportMode(!reportMode)
@@ -22,7 +13,6 @@ const App = () => {
     <div>
       <button onClick={reportHandler}>Report theft</button>
       <Map
-        coordinates={coordinates}
         reportMode={reportMode}
       />
     </div>

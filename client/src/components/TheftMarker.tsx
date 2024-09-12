@@ -1,10 +1,22 @@
-import axios from "axios"
 import { LatLng } from "leaflet"
-import { FC, useState } from "react"
+import { FC, useRef, useState } from "react"
 import { Marker, Popup, useMapEvents } from "react-leaflet"
+import { Marker as LeafletMarker} from "leaflet"
+import { sendTheftReport } from "../services/theftService"
+import { Coordinate } from "../types"
 
-export const TheftMarker: FC<{ reportMode: boolean }> = ({ reportMode }) => {
+export const TheftMarker: FC<{
+  reportMode: boolean,
+  setCoordinates: React.Dispatch<React.SetStateAction<Coordinate[]>>,
+  coordinates: Coordinate[]
+}> = ({
+  reportMode,
+  setCoordinates,
+  coordinates
+}) => {
   const [position, setPosition] = useState<LatLng | null>(null)
+
+  const markerRef = useRef<LeafletMarker | null>(null)
 
   useMapEvents({
     click(e) {
@@ -12,13 +24,24 @@ export const TheftMarker: FC<{ reportMode: boolean }> = ({ reportMode }) => {
         return null
       }
       setPosition(e.latlng)
-      axios.post('http://localhost:3000/api/coordinates', e.latlng)
+      const marker = markerRef.current
+      if (marker) {
+        marker.openPopup()
+      }
     },
   })
 
+  const handleReportConfirm = async (position: LatLng) => {
+    const newMarker = await sendTheftReport(position)
+    console.log(newMarker)
+    setCoordinates(coordinates.concat(newMarker))
+  }
+
   return position === null ? null : (
-    <Marker position={position}>
-      <Popup>You are here</Popup>
+    <Marker ref={markerRef} position={position}>
+      <Popup>
+        <button onClick={() => handleReportConfirm(position)}>Confirm</button>
+      </Popup>
     </Marker>
   )
 }

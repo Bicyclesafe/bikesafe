@@ -1,11 +1,21 @@
 import 'leaflet/dist/leaflet.css'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet'
 import { Coordinate } from '../types'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { TheftMarker } from './TheftMarker'
+import { Pins } from './Pins'
+import pinService from '../services/pinService'
 
-const Map: FC<{ coordinates: Coordinate[], reportMode: boolean }> = ({ coordinates, reportMode }) => {
-    return (
+const Map: FC<{ reportMode: boolean }> = ({ reportMode }) => {
+  const [coordinates, setCoordinates] = useState<Coordinate[]>([])
+
+  useEffect(() => {
+    pinService.getAll().then(response => {
+      setCoordinates(response.data)
+    })
+  }, [])
+
+  return (
     <MapContainer 
       center={[60.204149, 24.961733]} 
       zoom={20} 
@@ -16,15 +26,13 @@ const Map: FC<{ coordinates: Coordinate[], reportMode: boolean }> = ({ coordinat
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {coordinates.map((coordinate) => (
-        <Marker key={coordinate.id} position={[coordinate.lat, coordinate.lng]}>
-          <Popup>
-            Täällä asuu TKT <br />
-          </Popup>
-        </Marker>
-      ))}
       <TheftMarker
+        coordinates={coordinates}
+        setCoordinates={setCoordinates}
         reportMode={reportMode}
+      />
+      <Pins
+        coordinates={coordinates}
       />
     </MapContainer>
   )
