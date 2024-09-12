@@ -5,9 +5,33 @@ on:
     branches:
       - main
 
+
 jobs:
-    testi_jobi:
+    linttaus_jobi_serveri:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./server
         steps:
-            - name: printout
-              run: echo "Hello, world!"
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                node-version: '20'
+            - name: install
+              run: npm install
+            - name: linttaus
+              run: npm run lint
+    linttaus_jobi_client:
+      runs-on: ubuntu-latest
+      defaults:
+          run:
+              working-directory: ./client
+      steps:
+          - uses: actions/checkout@v4
+          - uses: actions/setup-node@v4
+            with:
+              node-version: '20'
+          - name: install
+            run: npm install
+          - name: linttaus
+            run: npm run lint
