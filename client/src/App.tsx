@@ -6,7 +6,6 @@ const App = () => {
 
   const reportHandler = () => {
     setReportMode(!reportMode)
-    console.log(reportMode)
   }
 
   return (

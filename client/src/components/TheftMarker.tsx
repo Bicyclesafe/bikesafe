@@ -1,7 +1,7 @@
 import { LatLng } from "leaflet"
 import { FC, useRef, useState } from "react"
 import { Marker, Popup, useMapEvents } from "react-leaflet"
-import { Marker as LeafletMarker} from "leaflet"
+import { Marker as LeafletMarker } from "leaflet"
 import { sendTheftReport } from "../services/theftService"
 import { Coordinate } from "../types"
 
@@ -15,19 +15,17 @@ export const TheftMarker: FC<{
   coordinates
 }) => {
   const [position, setPosition] = useState<LatLng | null>(null)
-
   const markerRef = useRef<LeafletMarker | null>(null)
 
   useMapEvents({
     click(e) {
       if (!reportMode) {
-        return null
+        return
       }
       setPosition(e.latlng)
-      const marker = markerRef.current
-      if (marker) {
-        marker.openPopup()
-      }
+      setTimeout(() => {
+        markerRef.current?.openPopup()
+      }, 0) 
     },
   })
 
