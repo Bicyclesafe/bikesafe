@@ -1,22 +1,20 @@
-import React from 'react'
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { TheftMarker } from './TheftMarker'
-import { LatLng } from "leaflet"
-import { sendTheftReport } from "../services/theftService"
+import { ReactNode } from 'react'
 
 jest.mock("../services/theftService", () => ({
     sendTheftReport: jest.fn(),
   }))
   
 jest.mock("react-leaflet", () => ({
-    Marker: ({ children }) => <div>{children}</div>,
-    Popup: ({ children }) => <div>{children}</div>,
+    Marker: ({ children }: { children: ReactNode}) => <div>{children}</div>,
+    Popup: ({ children }: { children: ReactNode}) => <div>{children}</div>,
     useMapEvents: jest.fn(),
 }))
   
 describe("TheftMarker component", () => {
-    let setCoordinates
+    let setCoordinates: jest.Mock
   
     beforeEach(() => {
       setCoordinates = jest.fn()

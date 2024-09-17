@@ -1,4 +1,4 @@
-export { };
+export { }
 module.exports = {
   collectCoverage: false,
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts',
@@ -21,4 +21,4 @@ module.exports = {
   ],
 
 setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-};
+}
