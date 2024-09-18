@@ -1,4 +1,3 @@
-const { Marker } = require("react-leaflet")
 
 describe('Frontpage-tests:', () => {
   beforeEach(() => {
