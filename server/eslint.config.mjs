@@ -4,6 +4,7 @@ import stylistic from "@stylistic/eslint-plugin";
 
 export default tseslint.config({
   files: ['**/*.ts'],
+  ignores: ['**/__tests__/*'],
   extends: [
     eslint.configs.recommended,
     ...tseslint.configs.recommendedTypeChecked,

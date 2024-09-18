@@ -4,7 +4,7 @@ import { connectToDatabase } from './util/db'
 import { PORT } from './util/config'
 import { errorHandler } from './util/middleware'
 import cors from 'cors'
-const app = express()
+export const app = express()
 
 import coordinatesRouter from './routes/coordinatesRoute'
 
@@ -21,10 +21,10 @@ app.get('/ping', (_req, res) => {
 const start = async (): Promise<void> => {
   try {
     await connectToDatabase()
-
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`)
     })
+
   } catch (error) {
     console.error('Failed to start server:', error)
   }
