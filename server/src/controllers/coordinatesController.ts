@@ -14,7 +14,8 @@ export const getCoordinate = async (req: Request, res: Response) => {
 
 export const addCoordinate = async (req: Request<null, null, Coordinate>, res: Response) => {
   const newCoordinate = req.body
-  console.log(req.body)
+  console.log(typeof newCoordinate.lat)
+  console.log(typeof newCoordinate.lng)
   const coordinate = await Coordinate.create({lat: newCoordinate.lat, lng: newCoordinate.lng})
   res.json(coordinate)
 }

@@ -7,14 +7,12 @@ const api = supertest(app)
 
 const initialCoordinates = [
     {
-        "id": 1,
-        "lat": 50,
-        "lng": 60
+        lat: 50,
+        lng: 60
     },
     {
-        "id": 2,
-        "lat": 10,
-        "lng": 20
+        lat: 10,
+        lng: 20
     }
 ]
 
@@ -47,6 +45,26 @@ describe("GET /api/coordinates", () => {
         const response = await api.get("/api/coordinates").expect(200)
 
         expect(response.body).toHaveLength(initialCoordinates.length)
+    })
+})
+
+describe("POST /api/coordinates", () => {
+    test('Coordinate is added to database.', async () => {
+        const newCoordinate = {
+            lat: 30,
+            lng: 40
+        }
+
+        await api
+            .post("/api/coordinates")
+            .send(newCoordinate)
+            .expect(200)
+
+        const response = await api
+            .get("/api/coordinates")
+            .expect(200)
+
+        expect(response.body).toHaveLength(initialCoordinates.length + 1)
     })
 })
 
