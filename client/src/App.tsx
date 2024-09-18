@@ -11,7 +11,7 @@ const App = () => {
 
   return (
     <div>
-      <button onClick={reportHandler}>Report theft</button>
+      <button onClick={reportHandler}>{reportMode ? "Leave report theft mode" : "Report theft"}</button>
       <Notification message={"Place me where the theft happened"} visible={reportMode}/>
       <Map
         reportMode={reportMode}
