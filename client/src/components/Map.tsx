@@ -1,12 +1,12 @@
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer } from 'react-leaflet'
-import { Coordinate } from '../types'
+import { Coordinate, Filters } from '../types'
 import { FC, useEffect, useState } from 'react'
 import { TheftMarker } from './TheftMarker'
 import { Pins } from './Pins'
 import pinService from '../services/pinService'
 
-const Map: FC<{ reportMode: boolean }> = ({ reportMode }) => {
+const Map: FC<{ reportMode: boolean, filters: Filters }> = ({ reportMode, filters }) => {
   const [coordinates, setCoordinates] = useState<Coordinate[]>([])
 
   useEffect(() => {
@@ -14,6 +14,17 @@ const Map: FC<{ reportMode: boolean }> = ({ reportMode }) => {
       setCoordinates(response.data)
     })
   }, [])
+
+  // tietokannasta ei vielä saa tietoa eri pinnien tyypeistä, niin
+  // lisätään tyyppi tässä testausta varten
+  // --------------------------------------------------------------------------------------------
+  const mid = Math.floor(coordinates.length / 2)
+  const lockStationCoordinates = coordinates.slice(0, mid).map(v => ({ ...v, type: 'lockStation' }))
+  const bikeTheftCoordinates = coordinates.slice(mid).map(v => ({ ...v, type: 'bikeTheft' }))
+  const updatedCoordinates = [...bikeTheftCoordinates, ...lockStationCoordinates]
+  // --------------------------------------------------------------------------------------------
+
+  const filteredData = updatedCoordinates.filter(item => filters[item.type]?.isChecked)
 
   return (
     <MapContainer 
@@ -32,7 +43,7 @@ const Map: FC<{ reportMode: boolean }> = ({ reportMode }) => {
         reportMode={reportMode}
       />
       <Pins
-        coordinates={coordinates}
+        coordinates={filteredData}
       />
     </MapContainer>
   )
