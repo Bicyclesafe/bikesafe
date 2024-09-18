@@ -6,6 +6,12 @@ export const getCoordinates = async (_req: Request, res: Response) => {
   res.json(coordinates)
 }
 
+export const getCoordinate = async (req: Request, res: Response) => {
+  const id = req.params.id
+  const coordinate = await Coordinate.findOne({where: {id: id}})
+  res.json(coordinate)
+}
+
 export const addCoordinate = async (req: Request<null, null, Coordinate>, res: Response) => {
   const newCoordinate = req.body
   console.log(req.body)

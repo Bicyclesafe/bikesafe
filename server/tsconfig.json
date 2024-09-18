@@ -1,5 +1,5 @@
 {
-  "exclude": ["./coverage", "./dist", "__tests__", "jest.config.js"],
+  "exclude": ["./coverage", "./dist", "jest.config.js"],
   "compilerOptions": {
     "target": "ES6",
     "outDir": "./build/",
