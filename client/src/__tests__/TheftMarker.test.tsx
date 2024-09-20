@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { TheftMarker } from '../components/TheftMarker'
 import { LatLng } from 'leaflet'
 import { ReactNode } from 'react'
+import { useMapEvents } from 'react-leaflet'
 
 jest.mock("../services/theftService", () => ({
   sendTheftReport: jest.fn(),
@@ -36,6 +37,7 @@ describe("TheftMarker component", () => {
 
   test("renders marker correctly when map is clicked", async () => {
     const coordinates = [{ lat: 51.505, lng: -0.09, id:2, type:"biketheft" }]
+    const mockUseMapEvents = useMapEvents as jest.Mock
     
     // Render the component with reportMode enabled
     render(
@@ -44,8 +46,7 @@ describe("TheftMarker component", () => {
 
     // Simulate a map click event (the mock of useMapEvents should handle this)
     const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
-    const useMapEvents = require('react-leaflet').useMapEvents
-    useMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click event
+    mockUseMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click event
 
     // Wait for the marker to appear
     const marker = await screen.findByTestId('marker')
@@ -59,6 +60,7 @@ describe("TheftMarker component", () => {
 
   test("opens popup when marker is placed", async () => {
     const coordinates = [{ lat: 51.505, lng: -0.09, id:1, type:"bikeTheft" }]
+    const mockUseMapEvents = useMapEvents as jest.Mock
     
     // Render the component with reportMode enabled
     const { getByText } = render(
@@ -67,8 +69,7 @@ describe("TheftMarker component", () => {
 
     // Simulate a map click event
     const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
-    const useMapEvents = require('react-leaflet').useMapEvents
-    useMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click
+    mockUseMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click
 
     // Wait for the popup to appear (after timeout)
     await waitFor(() => {
@@ -77,8 +78,8 @@ describe("TheftMarker component", () => {
     })
 
     //test if the confirm button inside the popup is rendered
-    const confirmButton = getByText(/confirm/i);
-    expect(confirmButton).toBeInTheDocument();
+    const confirmButton = getByText(/confirm/i)
+    expect(confirmButton).toBeInTheDocument()
 
   })
 })
