@@ -1,13 +1,12 @@
-name: test
+name: Deployment pipeline
 
 on:
   push:
     branches:
       - main
 
-
 jobs:
-    linttaus_jobi_serveri:
+    pipeline_server:
         runs-on: ubuntu-latest
         defaults:
             run:
@@ -17,11 +16,12 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                 node-version: '20'
-            - name: install
+            - name: Install dependencies
               run: npm install
-            - name: linttaus
+            - name: Check style
               run: npm run lint
-    linttaus_jobi_client:
+              
+    pipeline_client:
       runs-on: ubuntu-latest
       defaults:
           run:
@@ -31,7 +31,9 @@ jobs:
           - uses: actions/setup-node@v4
             with:
               node-version: '20'
-          - name: install
+          - name: Install dependencies
             run: npm install
-          - name: linttaus
+          - name: Check style
             run: npm run lint
+          - name: Test
+            run: npm run test
