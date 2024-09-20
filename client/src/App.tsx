@@ -3,6 +3,7 @@ import Map from "./components/Map"
 import Notification from "./components/Notification"
 import { PinFilter } from "./components/PinFilter"
 import { Filters } from "./types"
+import styles from './App.module.css'
 
 const App = () => {
   const [reportMode, setReportMode] = useState<boolean>(false)
@@ -34,12 +35,14 @@ const App = () => {
 
   return (
     <div>
-      <PinFilter
-        filters={filters}
-        handleFilterChange={handleFilterChange}
-      />
-      <button onClick={reportHandler}>{reportMode ? "Leave report theft mode" : "Report theft"}</button>
-      <Notification message={"Place me where the theft happened"} visible={reportMode}/>
+      <div className={styles['content-container']}>
+        <PinFilter
+          filters={filters}
+          handleFilterChange={handleFilterChange}
+        />
+        <button className={styles['theft-button']} onClick={reportHandler}>{reportMode ? "Cancel" : "Report theft"}</button>
+        <Notification message={"Place me where the theft happened"} visible={reportMode}/>
+      </div>
       <Map
         reportMode={reportMode}
         filters={filters}
