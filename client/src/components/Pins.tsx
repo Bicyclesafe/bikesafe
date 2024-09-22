@@ -4,8 +4,19 @@ import { Coordinate } from "../types"
 import L from 'leaflet'
 
 export const Pins: FC<{ coordinates: Coordinate[]}> = ({ coordinates }) => {
-  const marker = (color: string) => new L.Icon({
-    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+  const getPinColor = (type: string) => {
+    switch(type) {
+      case 'bikeTheft':
+        return 'red'
+      case 'lockStation':
+        return 'green'
+      default:
+        return 'blue'
+    }
+  }
+
+  const pinType = (type: string) => new L.Icon({
+    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${getPinColor(type)}.png`,
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -19,7 +30,7 @@ export const Pins: FC<{ coordinates: Coordinate[]}> = ({ coordinates }) => {
         <Marker
           key={coordinate.id}
           position={[coordinate.lat, coordinate.lng]}
-          icon={coordinate.type === 'bikeTheft' ? marker('red') : marker('green') }>
+          icon={pinType(coordinate.type)}>
           <Popup>
             Täällä asuu TKT <br />
           </Popup>
