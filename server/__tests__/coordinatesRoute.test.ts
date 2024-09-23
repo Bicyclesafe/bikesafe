@@ -1,6 +1,6 @@
 import { app } from '../src/index'
 import supertest from 'supertest'
-import sequelize from '../src/util/db'
+import { sequelize } from '../src/util/db'
 import { Coordinate } from '../src/models/coordinate'
 
 const api = supertest(app)
@@ -17,11 +17,8 @@ const initialCoordinates = [
 ]
 
 beforeEach(async () => {
-    await Coordinate.drop()
-    await Coordinate.sync()
-
-    await Coordinate.create(initialCoordinates[0])
-    await Coordinate.create(initialCoordinates[1])
+    await sequelize.sync({ force: true })
+    await Coordinate.bulkCreate(initialCoordinates)
 })
 
 describe("GET /api/coordinates", () => {

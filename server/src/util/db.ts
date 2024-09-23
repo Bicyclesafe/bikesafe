@@ -10,14 +10,16 @@ if (!DATABASE_URL) {
 
 export const sequelize = new Sequelize(DATABASE_URL, {
   models: [Coordinate, BikeTheft, LockStation],
-  logging: true
+  logging: process.env.NODE_ENV !== 'test',
 })
 
-sequelize.sync().then(() => {
-  console.log('Database synchronized')
-}).catch(error => {
-  console.error('Error synchronizing database:', error)
-})
+if (process.env.NODE_ENV !== 'test') {
+  sequelize.sync().then(() => {
+    console.log('Database synchronized')
+  }).catch(error => {
+    console.error('Error synchronizing database:', error)
+  })
+}
 
 export const connectToDatabase = async (): Promise<void | null> => {
   try {

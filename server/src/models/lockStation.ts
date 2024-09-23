@@ -16,6 +16,6 @@ export class LockStation extends Model {
   @Column
   coordinateId!: number
 
-  @BelongsTo(() => Coordinate)
+  @BelongsTo(() => Coordinate, { onDelete: 'CASCADE' })
   coordinate!: Coordinate
 }
