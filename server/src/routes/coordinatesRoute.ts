@@ -1,11 +1,10 @@
-//const router = require('express').Router()
 import express from "express"
-import { getCoordinates, addCoordinate, getCoordinate } from "../controllers/coordinatesController"
+import coordinatesController from "../controllers/coordinatesController"
 
 const router = express.Router()
 
-router.get('/', getCoordinates)
-router.post("/", addCoordinate)
-router.get("/:id", getCoordinate)
+router.get('/', coordinatesController.getLockStation)
+router.post("/", coordinatesController.addLockStation)
+router.get("/:id", coordinatesController.getLockStation)
 
 export default router

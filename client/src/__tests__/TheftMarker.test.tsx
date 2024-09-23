@@ -21,27 +21,27 @@ jest.mock("react-leaflet", () => ({
 }))
 
 describe("TheftMarker component", () => {
-  let setCoordinates: jest.Mock
+  let setBikeThefts: jest.Mock
 
   beforeEach(() => {
-    setCoordinates = jest.fn()
+    setBikeThefts = jest.fn()
     jest.clearAllMocks()
   })
 
   test("renders null when position is not set", () => {
     const { container } = render(
-      <TheftMarker reportMode={false} setCoordinates={setCoordinates} coordinates={[]} />
+      <TheftMarker reportMode={false} setBikeThefts={setBikeThefts} bikeThefts={[]} />
     )
     expect(container.firstChild).toBeNull()
   })
 
   test("renders marker correctly when map is clicked", async () => {
-    const coordinates = [{ lat: 51.505, lng: -0.09, id:2, type:"biketheft" }]
+    const bikeThefts = [{ id: 1, coordinate: { lat: 51.505, lng: -0.09, id:2 }}]
     const mockUseMapEvents = useMapEvents as jest.Mock
     
     // Render the component with reportMode enabled
     render(
-      <TheftMarker reportMode={true} setCoordinates={setCoordinates} coordinates={coordinates} />
+      <TheftMarker reportMode={true} setBikeThefts={setBikeThefts} bikeThefts={bikeThefts} />
     )
 
     // Simulate a map click event (the mock of useMapEvents should handle this)
@@ -59,12 +59,12 @@ describe("TheftMarker component", () => {
   })
 
   test("opens popup when marker is placed", async () => {
-    const coordinates = [{ lat: 51.505, lng: -0.09, id:1, type:"bikeTheft" }]
+    const bikeThefts = [{ id: 1, coordinate: { lat: 51.505, lng: -0.09, id:1 }}]
     const mockUseMapEvents = useMapEvents as jest.Mock
     
     // Render the component with reportMode enabled
     const { getByText } = render(
-      <TheftMarker reportMode={true} setCoordinates={setCoordinates} coordinates={coordinates} />
+      <TheftMarker reportMode={true} setBikeThefts={setBikeThefts} bikeThefts={bikeThefts} />
     )
 
     // Simulate a map click event

@@ -3,13 +3,11 @@ import { Coordinate } from "../models/coordinate"
 import { LockStation } from "../models/lockStation"
 
 export const getLockStations = async (_req: Request, res: Response) => {
-  const coordinates = await LockStation.findAll()
-  res.json(coordinates)
-}
-
-export const getLockStation = async (req: Request, res: Response) => {
-  const id = req.params.id
-  const lockStation = await LockStation.findOne({where: {id: id}})
+  const lockStation = await LockStation.findAll({
+    include: {
+      model: Coordinate,
+    }
+  })
   res.json(lockStation)
 }
 
@@ -27,6 +25,5 @@ export const addLockStation = async (req: Request<null, null, Coordinate>, res: 
 
 export default {
   getLockStations,
-  getLockStation,
   addLockStation
 }

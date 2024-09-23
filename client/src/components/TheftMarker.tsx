@@ -3,16 +3,12 @@ import { FC, useRef, useState } from "react"
 import { Marker, Popup, useMapEvents } from "react-leaflet"
 import { Marker as LeafletMarker } from "leaflet"
 import { sendTheftReport } from "../services/theftService"
-import { Coordinate } from "../types"
+import { TheftMarkerProps } from "../types"
 
-export const TheftMarker: FC<{
-  reportMode: boolean,
-  setCoordinates: React.Dispatch<React.SetStateAction<Coordinate[]>>,
-  coordinates: Coordinate[]
-}> = ({
+export const TheftMarker: FC<TheftMarkerProps> = ({
   reportMode,
-  setCoordinates,
-  coordinates
+  setBikeThefts,
+  bikeThefts
 }) => {
   const [position, setPosition] = useState<LatLng | null>(null)
   const markerRef = useRef<LeafletMarker | null>(null)
@@ -31,7 +27,7 @@ export const TheftMarker: FC<{
 
   const handleReportConfirm = async (position: LatLng) => {
     const newMarker = await sendTheftReport(position)
-    setCoordinates(coordinates.concat(newMarker))
+    setBikeThefts(bikeThefts.concat(newMarker))
     setPosition(null)
   }
 
