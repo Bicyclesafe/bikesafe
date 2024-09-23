@@ -3,8 +3,8 @@ import coordinatesController from "../controllers/coordinatesController"
 
 const router = express.Router()
 
-router.get('/', coordinatesController.getLockStation)
-router.post("/", coordinatesController.addLockStation)
-router.get("/:id", coordinatesController.getLockStation)
+router.get('/', coordinatesController.getCoordinates)
+router.post("/", coordinatesController.addCoordinate)
+router.get("/:id", coordinatesController.getOneCoordinate)
 
 export default router
