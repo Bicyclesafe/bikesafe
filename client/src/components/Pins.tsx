@@ -1,9 +1,9 @@
 import { FC } from "react"
 import { Marker, Popup } from "react-leaflet"
-import { BikeTheft } from "../types"
+import { Pin } from "../types"
 import L from 'leaflet'
 
-export const Pins: FC<{ bikeThefts: BikeTheft[], isChecked: boolean}> = ({ bikeThefts, isChecked }) => {
+export const Pins: FC<{ pinData: Pin[], isChecked: boolean, typeOfPin: string}> = ({ pinData, isChecked, typeOfPin }) => {
   if (!isChecked) return null
 
   const getPinColor = (type: string) => {
@@ -28,11 +28,11 @@ export const Pins: FC<{ bikeThefts: BikeTheft[], isChecked: boolean}> = ({ bikeT
 
   return (
     <div>
-      {bikeThefts.map((theft) => (
+      {pinData.map((theft) => (
         <Marker
           key={theft.id}
           position={[theft.coordinate.lat, theft.coordinate.lng]}
-          icon={pinType('bikeTheft')}>
+          icon={pinType(typeOfPin)}>
           <Popup>
             Täällä asuu TKT <br />
           </Popup>

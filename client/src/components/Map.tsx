@@ -1,18 +1,23 @@
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer } from 'react-leaflet'
-import { BikeTheft, Filters } from '../types'
+import { BikeTheft, Filters, LockStation } from '../types'
 import { FC, useEffect, useState } from 'react'
 import { TheftMarker } from './TheftMarker'
 import { Pins } from './Pins'
 import theftService from '../services/theftService'
 import styles from './Map.module.css'
+import lockStationService from '../services/lockStationService'
 
 const Map: FC<{ reportMode: boolean, filters: Filters }> = ({ reportMode, filters }) => {
   const [bikeThefts, setBikeThefts] = useState<BikeTheft[]>([])
+  const [lockStations, setLockStations] = useState<LockStation[]>([])
 
   useEffect(() => {
     theftService.getAllThefts().then(response => {
       setBikeThefts(response.data)
+    })
+    lockStationService.getAllLockStations().then(response => {
+      setLockStations(response.data)
     })
   }, [])
 
@@ -33,8 +38,14 @@ const Map: FC<{ reportMode: boolean, filters: Filters }> = ({ reportMode, filter
         reportMode={reportMode}
       />
       <Pins
-        bikeThefts={bikeThefts}
+        pinData={bikeThefts}
         isChecked={filters.bikeTheft.isChecked}
+        typeOfPin={'bikeTheft'}
+      />
+      <Pins
+        pinData={lockStations}
+        isChecked={filters.lockStation.isChecked}
+        typeOfPin={'lockStation'}
       />
     </MapContainer>
   )

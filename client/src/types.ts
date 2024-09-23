@@ -2,10 +2,14 @@ export interface Coordinate {
   id: number
   lat: number
   lng: number
-  // type: string
 }
 
 export interface BikeTheft {
+  id: number
+  coordinate: Coordinate
+}
+
+export interface LockStation {
   id: number
   coordinate: Coordinate
 }
@@ -30,9 +34,6 @@ export interface PinFilterProps {
   handleFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-/**
- * haha
- */
 export interface PinFilterOptionProps {
   name: string
   isChecked: boolean

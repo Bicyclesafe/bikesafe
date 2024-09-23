@@ -1,6 +1,6 @@
 import { app } from '../src/index'
 import supertest from 'supertest'
-import { sequelize } from '../src/util/db'
+import sequelize from '../src/util/db'
 import { Coordinate } from '../src/models/coordinate'
 
 const api = supertest(app)
