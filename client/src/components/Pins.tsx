@@ -28,10 +28,10 @@ export const Pins: FC<{ pinData: Pin[], isChecked: boolean, typeOfPin: string}> 
 
   return (
     <div>
-      {pinData.map((theft) => (
+      {pinData.map((pin) => (
         <Marker
-          key={theft.id}
-          position={[theft.coordinate.lat, theft.coordinate.lng]}
+          key={pin.id}
+          position={[pin.coordinate.lat, pin.coordinate.lng]}
           icon={pinType(typeOfPin)}>
           <Popup>
             Täällä asuu TKT <br />
