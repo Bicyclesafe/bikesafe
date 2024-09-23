@@ -10,7 +10,7 @@ if (!DATABASE_URL) {
 
 export const sequelize = new Sequelize(DATABASE_URL, {
   models: [Coordinate, BikeTheft, LockStation],
-  logging: true
+  logging: false
 })
 
 sequelize.sync().then(() => {
