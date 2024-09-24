@@ -38,12 +38,12 @@ const Map: FC<{ reportMode: boolean, filters: Filters }> = ({ reportMode, filter
         reportMode={reportMode}
       />
       <Pins
-        pinData={bikeThefts}
+        pinData={bikeThefts.map(theft => theft.coordinate)}
         isChecked={filters.bikeTheft.isChecked}
         typeOfPin={'bikeTheft'}
       />
       <Pins
-        pinData={lockStations}
+        pinData={lockStations.map(station => station.coordinate)}
         isChecked={filters.lockStation.isChecked}
         typeOfPin={'lockStation'}
       />
