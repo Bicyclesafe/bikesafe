@@ -30,9 +30,10 @@ app.get('/ping', (_req, res) => {
 const start = async (): Promise<void> => {
   try {
     await connectToDatabase()
+    if (process.env.NODE_ENV !== 'test') {
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`)
-    })
+    })}
 
   } catch (error) {
     console.error('Failed to start server:', error)
