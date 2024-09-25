@@ -5,6 +5,7 @@ import { PinFilter } from "./components/PinFilter"
 import { Filters } from "./types"
 import styles from './App.module.css'
 
+
 const App = () => {
   const [reportMode, setReportMode] = useState<boolean>(false)
   const [filters, setFilters] = useState<Filters>({
