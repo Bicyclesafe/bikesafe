@@ -7,7 +7,8 @@ WORKDIR /app
 
 COPY package.json ./
 
-RUN npm install
+# Kuin "run npm install", mutta asentaa vain tuotantoon tarvittavat riippuvuudet.
+RUN npm ci
 
 COPY . .
 # ARG VITE_API_URL: Määrittelee build-argumentin nimeltä VITE_API_URL.
@@ -25,6 +26,7 @@ RUN npm run build
 # Vaihe 2: tuotanto vaihe
 FROM nginxinc/nginx-unprivileged:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
+# Kopioi nginx-konfiguraatio tiedosto oletusarvoisen tilalle
 COPY default.conf /etc/nginx/conf.d/default.conf
 
 
