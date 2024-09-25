@@ -24,13 +24,7 @@ RUN npm run build
 FROM nginxinc/nginx-unprivileged:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Kopioi oma nginx.conf-tiedosto Nginxin konfiguraatiohakemistoon
-COPY nginx.conf /etc/nginx/nginx.conf
 
-# Aseta oikeudet nginx.conf-tiedostolle
-USER root
-RUN chown -R nginx:nginx /etc/nginx/nginx.conf
-USER nginx
 
 EXPOSE 8080
 
