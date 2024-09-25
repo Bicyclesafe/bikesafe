@@ -1,5 +1,6 @@
 .content-container {
-    position: relative;
+    position: fixed;
+    right: 10px;
     width: 200px;
     z-index: 2; 
     padding: 20px;

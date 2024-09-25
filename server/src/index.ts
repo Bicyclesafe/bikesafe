@@ -7,12 +7,16 @@ import cors from 'cors'
 export const app = express()
 
 import coordinatesRouter from './routes/coordinatesRoute'
+import bikeTheftRouter from './routes/bikeTheftRoute'
+import lockStationRoute from './routes/lockStationRoute'
 import testingRouter from './routes/testingRoute'
 
 app.use(express.json())
 app.use(cors())
 
 app.use('/api/coordinates', coordinatesRouter)
+app.use('/api/bike_thefts', bikeTheftRouter)
+app.use('/api/lock_stations', lockStationRoute)
 
 if (process.env.NODE_ENV === 'test') {
   app.use('/testing', testingRouter)
@@ -26,9 +30,10 @@ app.get('/ping', (_req, res) => {
 const start = async (): Promise<void> => {
   try {
     await connectToDatabase()
+    if (process.env.NODE_ENV !== 'test') {
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`)
-    })
+    })}
 
   } catch (error) {
     console.error('Failed to start server:', error)

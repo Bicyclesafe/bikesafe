@@ -17,11 +17,8 @@ const initialCoordinates = [
 ]
 
 beforeEach(async () => {
-    await Coordinate.drop()
-    await Coordinate.sync()
-
-    await Coordinate.create(initialCoordinates[0])
-    await Coordinate.create(initialCoordinates[1])
+    await sequelize.sync({ force: true })
+    await Coordinate.bulkCreate(initialCoordinates)
 })
 
 describe("GET /api/coordinates", () => {

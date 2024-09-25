@@ -1,21 +1,25 @@
 import { Sequelize } from 'sequelize-typescript'
 import { DATABASE_URL } from './config'
 import { Coordinate } from '../models/coordinate'
+import { BikeTheft } from '../models/bikeTheft'
+import { LockStation } from '../models/lockStation'
 
 if (!DATABASE_URL) {
   throw new Error('DATABASE_URL is not defined in .env')
 }
 
 export const sequelize = new Sequelize(DATABASE_URL, {
-  models: [Coordinate],
-  logging: false
+  models: [Coordinate, BikeTheft, LockStation],
+  logging: process.env.NODE_ENV !== 'test',
 })
 
-sequelize.sync().then(() => {
-  console.log('Database synchronized')
-}).catch(error => {
-  console.error('Error synchronizing database:', error)
-})
+if (process.env.NODE_ENV !== 'test') {
+  sequelize.sync().then(() => {
+    console.log('Database synchronized')
+  }).catch(error => {
+    console.error('Error synchronizing database:', error)
+  })
+}
 
 export const connectToDatabase = async (): Promise<void | null> => {
   try {

@@ -1,9 +1,11 @@
 import { FC } from "react"
 import { Marker, Popup } from "react-leaflet"
-import { Coordinate } from "../types"
+import { Coordinate} from "../types"
 import L from 'leaflet'
 
-export const Pins: FC<{ coordinates: Coordinate[]}> = ({ coordinates }) => {
+export const Pins: FC<{ pinData: Coordinate[], isChecked: boolean, typeOfPin: string}> = ({ pinData, isChecked, typeOfPin }) => {
+  if (!isChecked) return null
+
   const getPinColor = (type: string) => {
     switch(type) {
       case 'bikeTheft':
@@ -26,11 +28,11 @@ export const Pins: FC<{ coordinates: Coordinate[]}> = ({ coordinates }) => {
 
   return (
     <div>
-      {coordinates.map((coordinate) => (
+      {pinData.map((pin) => (
         <Marker
-          key={coordinate.id}
-          position={[coordinate.lat, coordinate.lng]}
-          icon={pinType(coordinate.type)}>
+          key={pin.id}
+          position={[pin.lat, pin.lng]}
+          icon={pinType(typeOfPin)}>
           <Popup>
             Täällä asuu TKT <br />
           </Popup>
