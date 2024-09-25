@@ -64,7 +64,7 @@ describe("POST /api/bike_thefts", () => {
         const response = await api
             .post("/api/coordinates")
             .send(newCoordinate)
-            .expect(200)
+            .expect(201)
 
         const newBikeTheft = {
             coordinateId: response.body.id
@@ -73,7 +73,7 @@ describe("POST /api/bike_thefts", () => {
         await api
             .post("/api/bike_thefts")
             .send(newBikeTheft)
-            .expect(200)
+            .expect(201)
 
         const bikeTheftResponse = await api
             .get("/api/bike_thefts")
