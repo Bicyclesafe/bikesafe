@@ -13,12 +13,14 @@ const Map: FC<{ reportMode: boolean, filters: Filters }> = ({ reportMode, filter
   const [lockStations, setLockStations] = useState<LockStation[]>([])
 
   useEffect(() => {
-    theftService.getAllThefts().then(response => {
-      setBikeThefts(response.data)
-    })
-    lockStationService.getAllLockStations().then(response => {
-      setLockStations(response.data)
-    })
+    const fetchData = async () => {
+      const theftResponse = await theftService.getAllThefts()
+      setBikeThefts(theftResponse)
+
+      const lockStationResponse = await lockStationService.getAllLockStations()
+      setLockStations(lockStationResponse)
+    }
+    fetchData()
   }, [])
 
   return (
