@@ -20,10 +20,12 @@ RUN echo "VITE_API_URL on $VITE_API_URL"
 
 RUN npm run build
 
+
+
 # Vaihe 2: tuotanto vaihe
 FROM nginxinc/nginx-unprivileged:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
-
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 
 EXPOSE 8080
