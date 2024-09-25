@@ -6,9 +6,13 @@ module.exports = {
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
   transform: {
-    ".(ts|tsx)": "ts-jest"
-  },
-  moduleFileExtensions: ['ts','tsx','js','jsx','json'],
+      "^.+\\.(ts|tsx)$": "babel-jest",
+      "^.+\\.(js|jsx)$": "babel-jest"
+    },
+  transformIgnorePatterns: [
+      "/node_modules/(?!react-leaflet/.*)"
+    ],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
 
   coveragePathIgnorePatterns: [
     "/node_modules/",

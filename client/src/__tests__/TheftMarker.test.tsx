@@ -1,24 +1,14 @@
 import '@testing-library/jest-dom'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import { TheftMarker } from '../components/TheftMarker'
 import { LatLng } from 'leaflet'
-import { ReactNode } from 'react'
+import { ReactNode, forwardRef } from 'react'
 import { useMapEvents } from 'react-leaflet'
 
 jest.mock("../services/theftService", () => ({
   sendTheftReport: jest.fn(),
 }))
 
-jest.mock("react-leaflet", () => ({
-  Marker: ({ position, children }: { position: LatLng, children: ReactNode }) => (
-    <div data-testid="marker" data-position={JSON.stringify(position)}>{children}</div>
-  ),
-  Popup: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  useMapEvents: jest.fn((events) => {
-    // Simulate a click event, updating position
-    return { click: events.click }
-  }),
-}))
 
 describe("TheftMarker component", () => {
   let setCoordinates: jest.Mock
@@ -27,6 +17,19 @@ describe("TheftMarker component", () => {
     setCoordinates = jest.fn()
     jest.clearAllMocks()
   })
+
+  jest.mock("react-leaflet", () => ({
+    Marker: forwardRef<HTMLDivElement, { position: LatLng, children: ReactNode }>(({ position, children }, ref) => (
+      <div ref={ref} data-testid="marker" data-position={JSON.stringify(position)}>
+        {children}
+      </div>
+    )),
+    Popup: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    useMapEvents: jest.fn((events) => {
+      // Simulate a click event, updating position
+      return { click: events.click }
+    }),
+  }))
 
   test("renders null when position is not set", () => {
     const { container } = render(
@@ -45,9 +48,11 @@ describe("TheftMarker component", () => {
     )
 
     // Simulate a map click event (the mock of useMapEvents should handle this)
-    const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
-    mockUseMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click event
-
+    await act(async ()=> {
+      const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
+      mockUseMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click
+    })
+      
     // Wait for the marker to appear
     const marker = await screen.findByTestId('marker')
 
@@ -68,8 +73,10 @@ describe("TheftMarker component", () => {
     )
 
     // Simulate a map click event
+    await act(async ()=> {
     const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
     mockUseMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click
+    })
 
     // Wait for the popup to appear (after timeout)
     await waitFor(() => {
