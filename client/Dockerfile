@@ -5,7 +5,7 @@ RUN echo "buildi alkaa"
 
 WORKDIR /app
 
-COPY package.json ./
+COPY package*.json ./
 
 # Kuin "run npm install", mutta asentaa vain tuotantoon tarvittavat riippuvuudet.
 RUN npm ci
