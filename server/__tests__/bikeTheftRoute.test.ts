@@ -1,8 +1,8 @@
 import { app } from '../src/index'
 import supertest from 'supertest'
 import { sequelize } from '../src/util/db'
-import { Coordinate } from '../src/models/coordinate'
 import { BikeTheft } from '../src/models/bikeTheft'
+import { Coordinate } from '../src/models/coordinate'
 
 const api = supertest(app)
 
@@ -38,7 +38,7 @@ describe("GET /api/bike_thefts", () => {
     test('Bike_thefts are returned in correct format.', async () => {
         const response = await api.get('/api/bike_thefts').expect(200)
         const bike_theft = response.body[0]
-        
+        console.log(bike_theft)
         expect(bike_theft.id).toBe(1)
         expect(bike_theft.coordinateId).toBe(1)
         expect(bike_theft.coordinate).toEqual({id: 1, lat: 50, lng:60})
@@ -61,18 +61,9 @@ describe("POST /api/bike_thefts", () => {
             lng: 55
         }
         
-        const response = await api
-            .post("/api/coordinates")
-            .send(newCoordinate)
-            .expect(201)
-
-        const newBikeTheft = {
-            coordinateId: response.body.id
-        }
-
         await api
             .post("/api/bike_thefts")
-            .send(newBikeTheft)
+            .send(newCoordinate)
             .expect(201)
 
         const bikeTheftResponse = await api
@@ -80,6 +71,35 @@ describe("POST /api/bike_thefts", () => {
             .expect(200)
 
         expect(bikeTheftResponse.body).toHaveLength(initialCoordinates.length + 1)
+    })
+
+    test("Posting bike theft with invalid coordinate responds with error", async () => {
+        const newCoordinate = {
+            lat: 69
+        }
+
+        await api
+            .post("/api/bike_thefts")
+            .send(newCoordinate)
+            .expect(400)
+    })
+
+    test("Invalid bike theft is not added to database", async () => {
+        const newCoordinate = {
+            lat: "Latitude that is not a number",
+            lng: "Longitude that is not a number"
+        }
+
+        await api
+            .post("/api/bike_thefts")
+            .send(newCoordinate)
+            .expect(400)
+
+        const response = await api
+            .get("/api/bike_thefts")
+            .expect(200)
+
+        expect(response.body).toHaveLength(initialCoordinates.length)
     })
 })
 

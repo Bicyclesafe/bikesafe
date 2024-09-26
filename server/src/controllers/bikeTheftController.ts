@@ -18,6 +18,11 @@ export const getBikeThefts = async (_req: Request, res: Response, next: NextFunc
 export const addBikeTheft = async (req: Request<null, null, Coordinate>, res: Response, next: NextFunction) => {
   const { lat, lng } = req.body
 
+  if (typeof lat !== 'number' || typeof lng !== 'number') {
+    res.status(400).json({ message: "Latitude and longitude must be numbers" })
+    return
+  }
+
   try {
     const coordinate = await Coordinate.create({ lat, lng })
     const bikeTheft = await BikeTheft.create({ coordinateId: coordinate.id })
