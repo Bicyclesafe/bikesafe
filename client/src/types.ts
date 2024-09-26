@@ -4,9 +4,13 @@ export interface Coordinate {
   lng: number
 }
 
-export interface BikeTheft {
+export interface Pin {
   id: number
   coordinate: Coordinate
+}
+
+export interface BikeTheft extends Pin {
+  description?: string
 }
 
 export interface LockStation {

@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom'
 import { render, screen, waitFor, act, fireEvent } from '@testing-library/react'
 import { TheftMarker } from '../components/TheftMarker'
+import { sendTheftReport } from '../services/theftService'
 import { LatLng } from 'leaflet'
 import React from 'react'
 import { useMapEvents } from 'react-leaflet'
@@ -107,7 +108,7 @@ describe("TheftMarker component", () => {
 
   test('calls handleReportConfirm when confirm button is clicked', async () => {
     const bikeThefts = [{ id: 1, coordinate: { lat: 51.505, lng: -0.09, id: 1 } }]
-    const mockSendTheftReport = require('../services/theftService').sendTheftReport
+    const mockSendTheftReport = sendTheftReport
 
     // Render the component with reportMode enabled
     const { getByText } = render(
