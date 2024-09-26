@@ -71,6 +71,34 @@ describe("POST /api/lock_stations", () => {
 
         expect(lockStationResponse.body).toHaveLength(initialCoordinates.length + 1)
     })
+    test("Posting lockStation with invalid coordinate responds with error", async () => {
+        const newCoordinate = {
+            lat: 69
+        }
+
+        await api
+            .post("/api/lock_stations")
+            .send(newCoordinate)
+            .expect(400)
+    })
+
+    test("Invalid lockStation is not added to database", async () => {
+        const newCoordinate = {
+            lat: "Latitude that is not a number",
+            lng: "Longitude that is not a number"
+        }
+
+        await api
+            .post("/api/lock_stations")
+            .send(newCoordinate)
+            .expect(400)
+
+        const response = await api
+            .get("/api/lock_stations")
+            .expect(200)
+
+        expect(response.body).toHaveLength(initialCoordinates.length)
+    })
 })
 
 afterAll(async () => {
