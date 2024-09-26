@@ -88,7 +88,6 @@ describe("TheftMarker component", () => {
     )
 
     // Simulate a map click event
-    await act(async ()=> {
     const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
 
     // Simulate map click
@@ -113,27 +112,26 @@ describe("TheftMarker component", () => {
     // Render the component with reportMode enabled
     const { getByText } = render(
       <TheftMarker reportMode={true} setBikeThefts={setBikeThefts} bikeThefts={bikeThefts} />
-    );
-
+    )
+    const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
     // Simulate a map click event
     await act(async () => {
-      const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } };
-      (useMapEvents as jest.Mock).mock.calls[0][0].click(mapEvent); // Simulate map click
-    });
+      (useMapEvents as jest.Mock).mock.calls[0][0].click(mapEvent) // Simulate map click
+    })
 
+    const marker = screen.getByTestId('marker')
     // Wait for the popup to appear (after timeout)
     await waitFor(() => {
-      const marker = screen.getByTestId('marker');
-      expect(marker).toBeInTheDocument();
-    });
+      expect(marker).toBeInTheDocument()
+    })
 
     // Simulate a click on the confirm button
-    const confirmButton = getByText('Confirm');
+    const confirmButton = getByText('Confirm')
     await act(async () => {
-      fireEvent.click(confirmButton);
-    });
+      fireEvent.click(confirmButton)
+    })
 
-    expect(mockSendTheftReport).toHaveBeenCalledTimes(1);
-    expect(mockSendTheftReport).toHaveBeenCalledWith(new LatLng(51.505, -0.09));
+    expect(mockSendTheftReport).toHaveBeenCalledTimes(1)
+    expect(mockSendTheftReport).toHaveBeenCalledWith(new LatLng(51.505, -0.09))
   })
 })
