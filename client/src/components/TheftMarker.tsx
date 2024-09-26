@@ -1,9 +1,12 @@
 import { LatLng } from "leaflet"
-import { FC, useRef, useState } from "react"
+import { FC, useRef, useState, isValidElement } from "react"
 import { Marker, Popup, useMapEvents } from "react-leaflet"
 import { Marker as LeafletMarker } from "leaflet"
 import { sendTheftReport } from "../services/theftService"
 import { TheftMarkerProps } from "../types"
+import * as React from 'react'
+
+console.log(isValidElement(React))
 
 export const TheftMarker: FC<TheftMarkerProps> = ({
   reportMode,

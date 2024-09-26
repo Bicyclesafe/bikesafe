@@ -1,14 +1,36 @@
 import '@testing-library/jest-dom'
-import { render, screen, waitFor, act } from '@testing-library/react'
+import { render, screen, waitFor, act, fireEvent } from '@testing-library/react'
 import { TheftMarker } from '../components/TheftMarker'
 import { LatLng } from 'leaflet'
-import { ReactNode, forwardRef } from 'react'
+import React from 'react'
 import { useMapEvents } from 'react-leaflet'
 
 jest.mock("../services/theftService", () => ({
   sendTheftReport: jest.fn(),
 }))
 
+// Define the mock implementation in a separate function
+jest.mock("react-leaflet", () => {
+  // eslint-disable-next-line
+  const React = require("react")
+  function Marker({ position, children }: { position: LatLng, children: React.ReactNode }) {
+    const markerRef = React.createRef()
+    return <div ref={markerRef} data-testid="marker" data-position={JSON.stringify(position)}>{children}</div>
+  }
+
+  function Popup({ children }: { children: React.ReactNode }) {
+    return <div>{children}</div>
+  }
+
+  return {
+    Marker: jest.fn(Marker),
+    Popup: jest.fn(Popup),
+    useMapEvents: jest.fn((events) => {
+      // Simulate a click event, updating position
+      return { click: events.click }
+    }),
+  }
+})
 
 describe("TheftMarker component", () => {
   let setBikeThefts: jest.Mock
@@ -18,24 +40,15 @@ describe("TheftMarker component", () => {
     jest.clearAllMocks()
   })
 
-  jest.mock("react-leaflet", () => ({
-    Marker: forwardRef<HTMLDivElement, { position: LatLng, children: ReactNode }>(({ position, children }, ref) => (
-      <div ref={ref} data-testid="marker" data-position={JSON.stringify(position)}>
-        {children}
-      </div>
-    )),
-    Popup: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-    useMapEvents: jest.fn((events) => {
-      // Simulate a click event, updating position
-      return { click: events.click }
-    }),
-  }))
-
   test("renders null when position is not set", () => {
     const { container } = render(
       <TheftMarker reportMode={false} setBikeThefts={setBikeThefts} bikeThefts={[]} />
     )
     expect(container.firstChild).toBeNull()
+  })
+
+  test('renders without crashing', () => {
+    render(<TheftMarker reportMode={true} setBikeThefts={setBikeThefts} bikeThefts={[]} />)
   })
 
   test("renders marker correctly when map is clicked", async () => {
@@ -88,5 +101,36 @@ describe("TheftMarker component", () => {
     const confirmButton = getByText(/confirm/i)
     expect(confirmButton).toBeInTheDocument()
 
+  })
+
+  test('calls handleReportConfirm when confirm button is clicked', async () => {
+    const bikeThefts = [{ id: 1, coordinate: { lat: 51.505, lng: -0.09, id: 1 } }]
+    const mockSendTheftReport = require('../services/theftService').sendTheftReport
+
+    // Render the component with reportMode enabled
+    const { getByText } = render(
+      <TheftMarker reportMode={true} setBikeThefts={setBikeThefts} bikeThefts={bikeThefts} />
+    );
+
+    // Simulate a map click event
+    await act(async () => {
+      const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } };
+      (useMapEvents as jest.Mock).mock.calls[0][0].click(mapEvent); // Simulate map click
+    });
+
+    // Wait for the popup to appear (after timeout)
+    await waitFor(() => {
+      const marker = screen.getByTestId('marker');
+      expect(marker).toBeInTheDocument();
+    });
+
+    // Simulate a click on the confirm button
+    const confirmButton = getByText('Confirm');
+    await act(async () => {
+      fireEvent.click(confirmButton);
+    });
+
+    expect(mockSendTheftReport).toHaveBeenCalledTimes(1);
+    expect(mockSendTheftReport).toHaveBeenCalledWith(new LatLng(51.505, -0.09));
   })
 })

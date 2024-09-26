@@ -1,6 +1,6 @@
 export { }
 module.exports = {
-  collectCoverage: false,
+  collectCoverage: true,
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts',
     '!**/vendor/**'],
   coverageDirectory: 'coverage',
@@ -23,6 +23,9 @@ module.exports = {
     "setupTests.ts",
     "index.tsx"
   ],
+  testEnvironmentOptions: {
+    jsdom: '25.0.1', // or the version you want to use
+  },
 
 setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 }
