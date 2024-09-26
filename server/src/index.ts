@@ -18,9 +18,8 @@ app.use('/api/coordinates', coordinatesRouter)
 app.use('/api/bike_thefts', bikeTheftRouter)
 app.use('/api/lock_stations', lockStationRouter)
 
-if (process.env.NODE_ENV === 'test') {
-  app.use('/testing', testingRouter)
-}
+app.use('/testing', testingRouter)
+
 
 app.get('/ping', (_req, res) => {
   console.log('someone pinged here')
