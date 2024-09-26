@@ -21,6 +21,8 @@ jobs:
             - name: Check style
               run: npm run lint
             - name: Test
+              env:
+                DATABASE_URL: ${{ secrets.DATABASE_URL }}
               run: npm run test
               
     pipeline_client:
