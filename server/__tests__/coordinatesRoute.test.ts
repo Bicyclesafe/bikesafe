@@ -81,6 +81,46 @@ describe("POST /api/coordinates", () => {
 
         expect(response.body).toHaveLength(initialCoordinates.length + 1)
     })
+
+    test("Posting coordinate with missing information responds with error", async () => {
+        const newCoordinate = {
+            lat: 30
+        }
+
+        await api
+            .post("/api/coordinates")
+            .send(newCoordinate)
+            .expect(400)
+    })
+
+    test("Posting coordinate with NaN values responds with error", async () => {
+        const newCoordinate = {
+            lat: "Latitude that is not a number",
+            lng: "Longitude that is not a number"
+        }
+
+        await api
+            .post("/api/coordinates")
+            .send(newCoordinate)
+            .expect(400)
+    })
+
+    test("Invalid coordinate is not added to database", async () => {
+        const newCoordinate = {
+            lat: 30
+        }
+
+        await api
+            .post("/api/coordinates")
+            .send(newCoordinate)
+            .expect(400)
+
+        const response = await api
+            .get("/api/coordinates")
+            .expect(200)
+
+        expect(response.body).toHaveLength(initialCoordinates.length)
+    })
 })
 
 afterAll(async () => {
