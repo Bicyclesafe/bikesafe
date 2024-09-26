@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, act } from '@testing-library/react'
 import { TheftMarker } from '../components/TheftMarker'
 import { LatLng } from 'leaflet'
 import { ReactNode } from 'react'
@@ -46,7 +46,11 @@ describe("TheftMarker component", () => {
 
     // Simulate a map click event (the mock of useMapEvents should handle this)
     const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
-    mockUseMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click event
+
+    // Simulate map click
+    await act(async () => {
+      mockUseMapEvents.mock.calls[0][0].click(mapEvent)
+    })
 
     // Wait for the marker to appear
     const marker = await screen.findByTestId('marker')
@@ -69,13 +73,15 @@ describe("TheftMarker component", () => {
 
     // Simulate a map click event
     const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
-    mockUseMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click
+
+    // Simulate map click
+    await act(async () => {
+      mockUseMapEvents.mock.calls[0][0].click(mapEvent)
+    })
 
     // Wait for the popup to appear (after timeout)
-    await waitFor(() => {
-      const marker = screen.getByTestId('marker')
-      expect(marker).toBeInTheDocument()
-    })
+    const marker = screen.getByTestId('marker')
+    expect(marker).toBeInTheDocument()
 
     //test if the confirm button inside the popup is rendered
     const confirmButton = getByText(/confirm/i)
