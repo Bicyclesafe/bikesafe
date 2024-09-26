@@ -73,7 +73,7 @@ describe("POST /api/coordinates", () => {
         await api
             .post("/api/coordinates")
             .send(newCoordinate)
-            .expect(200)
+            .expect(201)
 
         const response = await api
             .get("/api/coordinates")

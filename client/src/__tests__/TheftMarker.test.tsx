@@ -61,11 +61,13 @@ describe("TheftMarker component", () => {
     )
 
     // Simulate a map click event (the mock of useMapEvents should handle this)
-    await act(async ()=> {
-      const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
-      mockUseMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click
+    const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
+
+    // Simulate map click
+    await act(async () => {
+      mockUseMapEvents.mock.calls[0][0].click(mapEvent)
     })
-      
+
     // Wait for the marker to appear
     const marker = await screen.findByTestId('marker')
 
@@ -88,14 +90,15 @@ describe("TheftMarker component", () => {
     // Simulate a map click event
     await act(async ()=> {
     const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
-    mockUseMapEvents.mock.calls[0][0].click(mapEvent) // Simulate map click
+
+    // Simulate map click
+    await act(async () => {
+      mockUseMapEvents.mock.calls[0][0].click(mapEvent)
     })
 
     // Wait for the popup to appear (after timeout)
-    await waitFor(() => {
-      const marker = screen.getByTestId('marker')
-      expect(marker).toBeInTheDocument()
-    })
+    const marker = screen.getByTestId('marker')
+    expect(marker).toBeInTheDocument()
 
     //test if the confirm button inside the popup is rendered
     const confirmButton = getByText(/confirm/i)
