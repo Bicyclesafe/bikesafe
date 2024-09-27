@@ -8,7 +8,7 @@ import theftService from '../services/theftService'
 import styles from './Map.module.css'
 import lockStationService from '../services/lockStationService'
 
-const Map: FC<{ reportMode: boolean, filters: Filters }> = ({ reportMode, filters }) => {
+const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters }) => {
   const [bikeThefts, setBikeThefts] = useState<BikeTheft[]>([])
   const [lockStations, setLockStations] = useState<LockStation[]>([])
 
@@ -23,12 +23,24 @@ const Map: FC<{ reportMode: boolean, filters: Filters }> = ({ reportMode, filter
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const mapElement = document.getElementById('map')
+    if (mapElement) {
+      if (reportMode) {
+        mapElement.style.cursor = 'pointer'
+      } else {
+        mapElement.style.cursor = '' 
+      }
+    }
+  }, [reportMode]) 
+
   return (
     <MapContainer 
       center={[60.204149, 24.961733]} 
       zoom={20} 
       scrollWheelZoom={true} 
       className={styles['map-container']}
+      id='map'
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
