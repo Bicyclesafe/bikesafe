@@ -5,20 +5,21 @@ import { PinFilter } from "./components/PinFilter"
 import { Filters } from "./types"
 import styles from './App.module.css'
 
+const initialFilters: Filters = {
+  bikeTheft: {
+    label: 'Theft Locations',
+    isChecked: true,
+  },
+  lockStation: {
+    label: 'Lock Stations',
+    isChecked: true,
+  }
+}
 
 const App = () => {
   const [reportMode, setReportMode] = useState<boolean>(false)
-  const [filters, setFilters] = useState<Filters>({
-    bikeTheft: {
-      label: 'Theft Locations',
-      isChecked: true,
-    },
-    lockStation: {
-      label: 'Lock Stations',
-      isChecked: true,
-    }
-  })
-
+  const [filters, setFilters] = useState<Filters>(initialFilters)
+  
   const reportHandler = () => {
     setReportMode(!reportMode)
   }

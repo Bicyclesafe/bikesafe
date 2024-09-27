@@ -34,7 +34,7 @@ export const TheftMarker: FC<TheftMarkerProps> = ({
     setPosition(null)
   }
 
-  return position === null ? null : (
+  return position && (
     <Marker ref={markerRef} position={position}>
       <Popup>
         <button onClick={() => handleReportConfirm(position)}>Confirm</button>

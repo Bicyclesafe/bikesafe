@@ -8,15 +8,15 @@ export const PinFilter: FC<PinFilterProps> = ({
 }) => {
   return (
     <>
-      {Object.keys(filters).map((filter) => (
-        <PinFilterOption
-          key={filter}
-          name={filter}
-          isChecked={filters[filter].isChecked}
-          onChange={handleFilterChange}
-          label={filters[filter].label}
-        />
-      ))}
+    {Object.entries(filters).map(([filterName, { isChecked, label }]) => (
+      <PinFilterOption
+        key={filterName}
+        name={filterName}
+        isChecked={isChecked}
+        onChange={handleFilterChange}
+        label={label}
+      />
+    ))}
     </>
   )
 }
