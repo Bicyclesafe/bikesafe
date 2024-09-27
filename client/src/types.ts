@@ -44,3 +44,7 @@ export interface PinFilterOptionProps {
   label: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
+
+export interface MousePositionControlProps {
+  setCursorPosition: (position: { lat: number; lng: number }) => void;
+}

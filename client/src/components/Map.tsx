@@ -7,10 +7,13 @@ import { Pins } from './Pins'
 import theftService from '../services/theftService'
 import styles from './Map.module.css'
 import lockStationService from '../services/lockStationService'
+import MousePositionControl from './MouseControl'
+import CursorMarker from './CursorMarker'
 
 const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters }) => {
   const [bikeThefts, setBikeThefts] = useState<BikeTheft[]>([])
   const [lockStations, setLockStations] = useState<LockStation[]>([])
+  const [cursorPosition, setCursorPosition] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +54,7 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
         setBikeThefts={setBikeThefts}
         reportMode={reportMode}
       />
+      {reportMode ? <MousePositionControl setCursorPosition={setCursorPosition} /> : null}
       <Pins
         pinData={bikeThefts.map(theft => theft.coordinate)}
         isChecked={filters.bikeTheft.isChecked}
@@ -61,6 +65,8 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
         isChecked={filters.lockStation.isChecked}
         typeOfPin={'lockStation'}
       />
+       {reportMode && <CursorMarker cursorPosition={cursorPosition} />}
+       {reportMode && <MousePositionControl setCursorPosition={setCursorPosition} />}
     </MapContainer>
   )
 }
