@@ -30,6 +30,7 @@ export const TheftMarker: FC<TheftMarkerProps> = ({
 
   const handleReportConfirm = async (position: LatLng) => {
     const newMarker = await sendTheftReport(position)
+    console.log(position)
     setBikeThefts(bikeThefts.concat(newMarker))
     setPosition(null)
   }

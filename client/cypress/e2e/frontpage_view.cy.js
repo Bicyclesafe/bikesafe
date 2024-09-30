@@ -16,11 +16,23 @@ describe('Frontpage-tests:', () => {
     cy.contains('Confirm').click()
     
   })
-  it('Market can be clicked and popup is displayed', () => {
+  it('Marker can be clicked and popup is displayed', () => {
     cy.contains('Report theft').click()
     cy.get('.leaflet-container').should('exist').click(500,200)
     cy.contains('Confirm').click()
-    cy.get('.leaflet-container').should('exist').click(485,250)
+    cy.get('.leaflet-container').should('exist').click(500,200)
     cy.contains('Täällä asuu TKT')
+  })
+  it('Cluster is formed when markers are close', () => {
+    cy.contains('Report theft').click()
+    cy.get('.leaflet-container').should('exist').click(60,24)
+    cy.contains('Confirm').click()
+    
+    cy.contains('Cancel').click()
+    cy.contains('Report theft').click()
+    cy.get('.leaflet-container').should('exist').click(61,25)
+    cy.contains('Confirm').click()
+
+    cy.get('.marker-cluster').should('exist')
   })
 })

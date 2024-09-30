@@ -9,6 +9,7 @@ import styles from './Map.module.css'
 import lockStationService from '../services/lockStationService'
 import MousePositionControl from './MouseControl'
 import CursorMarker from './CursorMarker'
+import MarkerClusterGroup from "react-leaflet-cluster"
 
 const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters }) => {
   const [bikeThefts, setBikeThefts] = useState<BikeTheft[]>([])
@@ -55,16 +56,18 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
         reportMode={reportMode}
       />
       {reportMode ? <MousePositionControl setCursorPosition={setCursorPosition} /> : null}
-      <Pins
-        pinData={bikeThefts.map(theft => theft.coordinate)}
-        isChecked={filters.bikeTheft.isChecked}
-        typeOfPin={'bikeTheft'}
-      />
-      <Pins
-        pinData={lockStations.map(station => station.coordinate)}
-        isChecked={filters.lockStation.isChecked}
-        typeOfPin={'lockStation'}
-      />
+      <MarkerClusterGroup chunkedLoading>
+        <Pins
+          pinData={bikeThefts.map(theft => theft.coordinate)}
+          isChecked={filters.bikeTheft.isChecked}
+          typeOfPin={'bikeTheft'}
+        />
+        <Pins
+          pinData={lockStations.map(station => station.coordinate)}
+          isChecked={filters.lockStation.isChecked}
+          typeOfPin={'lockStation'}
+        />
+      </MarkerClusterGroup>
        {reportMode && <CursorMarker cursorPosition={cursorPosition} />}
        {reportMode && <MousePositionControl setCursorPosition={setCursorPosition} />}
     </MapContainer>
