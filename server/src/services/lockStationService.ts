@@ -1,6 +1,6 @@
 import axios from "axios"
 import { LockStation } from "../types"
-//import fs from "fs"
+import fs from "fs"
 
 const wfsUrl = 'https://kartta.hel.fi/ws/geoserver/avoindata/wfs'
 const params = {
@@ -21,7 +21,19 @@ interface LockStationResponse {
   }[]
 }
 
+interface LockStationJson {
+  lockStations: LockStation[]
+}
+
 export const getAllLockStations = async () => {
+  if (fs.existsSync("lockStations.json")) {
+    return getAllLockStationsFromFile()
+  } else {
+    return await getAllLockStationsFromApi()
+  }
+}
+
+export const getAllLockStationsFromApi = async () => {
   const response = await axios.get<LockStationResponse>(wfsUrl, { params })
   const data = response.data
 
@@ -42,5 +54,22 @@ export const getAllLockStations = async () => {
     allLockStations.push(...lockStations)
   })
 
+  writeToLockStationFile(allLockStations)
+
   return allLockStations
+}
+
+export const getAllLockStationsFromFile = () => {
+  const lockStationsJson = fs.readFileSync("lockStations.json")
+  const lockStations = JSON.parse(lockStationsJson.toString()) as LockStationJson
+  return lockStations.lockStations
+}
+
+const writeToLockStationFile = (lockStations: LockStation[]) => {
+  const jsonBlock = {
+    lockStations: lockStations
+  }
+
+  const json = JSON.stringify(jsonBlock)
+  fs.writeFileSync("lockStations.json", json, "utf8")
 }
