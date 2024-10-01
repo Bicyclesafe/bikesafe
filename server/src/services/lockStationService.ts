@@ -1,4 +1,6 @@
 import axios from "axios"
+import { LockStation } from "../types"
+//import fs from "fs"
 
 const wfsUrl = 'https://kartta.hel.fi/ws/geoserver/avoindata/wfs'
 const params = {
@@ -7,7 +9,8 @@ const params = {
   typeName: 'avoindata:YLRE_Katu_ja_viherosat_eiliikenne_viiva',
   CQL_FILTER: "alatyyppi='Pyöräteline'",
   propertyname: 'geom',
-  outputformat: 'json'
+  outputformat: 'json',
+  srsName: 'EPSG:4326'
 }
 
 interface LockStationResponse {
@@ -22,7 +25,22 @@ export const getAllLockStations = async () => {
   const response = await axios.get<LockStationResponse>(wfsUrl, { params })
   const data = response.data
 
-  console.log(data.features.map((feature) =>
-    feature.geometry.coordinates
-  ))
+  const allLockStations: LockStation[] = []
+
+  data.features.map((feature) => {
+    const coordinates = feature.geometry.coordinates
+
+    const lockStations: LockStation[] = coordinates.map((coordinate) => {
+      return {
+        coordinate: {
+          lat: coordinate[1],
+          lng: coordinate[0]
+        }
+      }
+    })
+
+    allLockStations.push(...lockStations)
+  })
+
+  return allLockStations
 }

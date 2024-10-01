@@ -13,6 +13,10 @@ jest.mock('react-leaflet', () => {
   }
 })
 
+jest.mock('../services/theftService', () => ({
+  deleteTheft: jest.fn(),
+}))
+
 test('renders correct amount of markers', async () => {
   const coordinates = [
     { id: 1, lat: 51.505, lng: -0.09 },

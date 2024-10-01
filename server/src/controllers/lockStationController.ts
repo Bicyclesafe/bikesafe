@@ -1,8 +1,9 @@
 import { Response, Request, NextFunction } from "express"
 import { Coordinate } from "../models/coordinate"
 import { LockStation } from "../models/lockStation"
+import { getAllLockStations } from "../services/lockStationService"
 
-export const getLockStations = async (_req: Request, res: Response, next: NextFunction) => {
+/*export const getLockStations = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const lockStation = await LockStation.findAll({
       include: {
@@ -10,6 +11,15 @@ export const getLockStations = async (_req: Request, res: Response, next: NextFu
       }
     })
     res.status(200).json(lockStation)
+  } catch (err) {
+    next(err)
+  }
+}*/
+
+export const getLockStations = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const lockStations = await getAllLockStations()
+    res.status(200).json(lockStations)
   } catch (err) {
     next(err)
   }

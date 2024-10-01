@@ -39,6 +39,12 @@ export const addBikeTheft = async (req: Request<null, null, Coordinate>, res: Re
 
 export const deleteBikeTheft = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id
+
+  if (isNaN(Number(id))) {
+    res.status(400).json({ message: "ID must be a number" })
+    return
+  }
+  
   try {
     const bikeTheft = await BikeTheft.findOne({where: {id: id}})
     if (bikeTheft) {

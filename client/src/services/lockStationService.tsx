@@ -4,7 +4,7 @@ import { LatLng } from "leaflet"
 
 export const getAllLockStations = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/api/lock_stations`) 
+    const response = await axios.get(`${apiUrl}/api/lock_stations`)
     return response.data
   } catch(err) {
     console.error("Error in adding lock station", err) 
