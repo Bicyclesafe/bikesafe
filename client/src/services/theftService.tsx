@@ -22,4 +22,14 @@ export const sendTheftReport = async (coordinates: LatLng) => {
   }
 }
 
-export default { getAllThefts, sendTheftReport }
+export const deleteTheft = async (id: number) => {
+  try {
+    const res = await axios.delete(`${apiUrl}/api/bike_thefts/${id}`)
+    return res.data
+  } catch(err) {
+    console.error("Error deleting theftmarker:", err)
+    throw new Error("There was an error in deleting the theftmarker")
+  }
+}
+
+export default { getAllThefts, sendTheftReport, deleteTheft }

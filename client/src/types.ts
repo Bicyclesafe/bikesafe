@@ -48,3 +48,4 @@ export interface PinFilterOptionProps {
 export interface MousePositionControlProps {
   setCursorPosition: (position: { lat: number; lng: number }) => void;
 }
+

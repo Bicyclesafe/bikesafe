@@ -37,7 +37,27 @@ export const addBikeTheft = async (req: Request<null, null, Coordinate>, res: Re
   }
 }
 
+export const deleteBikeTheft = async (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id
+  try {
+    const bikeTheft = await BikeTheft.findOne({where: {id: id}})
+    console.log(bikeTheft)
+    if (bikeTheft) {
+      await Coordinate.destroy({where: {id: bikeTheft.coordinateId}})
+      await BikeTheft.destroy({where: {id: id}})
+      
+    }
+
+    res.status(204).end()
+    
+
+  } catch (err) {
+    next(err)
+  }
+}
+
 export default {
   getBikeThefts,
-  addBikeTheft
+  addBikeTheft,
+  deleteBikeTheft
 }
