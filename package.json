@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@types/leaflet.markercluster": "^1.5.4"
+  },
+  "dependencies": {
+    "leaflet.markercluster": "^1.5.3"
+  }
+}

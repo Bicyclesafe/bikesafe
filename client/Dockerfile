@@ -1,7 +1,7 @@
 # Vaihe 1: build vaihe
 FROM node:20-alpine AS build
 
-RUN echo "buildi alkaa"
+RUN echo "Buildataan Openshiftiin tarkoitetulla Dockerfilella"
 
 WORKDIR /app
 
@@ -23,7 +23,7 @@ RUN npm run build
 
 
 
-# Vaihe 2: tuotanto vaihe
+# Vaihe 2: tuotantovaihe
 FROM nginxinc/nginx-unprivileged:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 # Kopioi nginx-konfiguraatio tiedosto oletusarvoisen tilalle
@@ -32,4 +32,5 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
 
+# Käynnistä nginx palvelin, siten, että se pysyy etualalla
 CMD ["nginx", "-g", "daemon off;"]
