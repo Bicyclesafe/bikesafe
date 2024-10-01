@@ -111,6 +111,41 @@ describe("POST /api/bike_thefts", () => {
     })
 })
 
+describe("DELETE /api/bike_thefts/:id", () => {
+    test('Bike_theft is deleted from db', async () => {
+
+        const bikeTheftsBefore = await api
+            .get("/api/bike_thefts")
+            .expect(200)
+        expect(bikeTheftsBefore.body.length).toBe(2)
+        
+        await api
+            .delete("/api/bike_thefts/1")
+            .expect(204)
+
+        const bikeTheftsAfter = await api
+            .get("/api/bike_thefts")
+            .expect(200)
+        
+        expect(bikeTheftsAfter.body.length).toBe(1)
+        expect(bikeTheftsAfter.body[0].coordinateId).toBe(2)
+        expect(bikeTheftsAfter.body[0].coordinate).toEqual({id: 2, lat:10, lng:20})
+
+
+
+    })
+
+    test('Invalid delete api call does not work', async() => {
+        await api
+            .delete("/api/bike_thefts/invalid")
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+            
+
+    })
+})
+
 afterAll(async () => {
     await sequelize.close()
 })
