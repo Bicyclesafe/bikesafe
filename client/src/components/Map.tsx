@@ -38,6 +38,15 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
     }
   }, [reportMode])
 
+  const deleteTheftMarker = (id: number) => {
+    theftService.deleteTheft(id)
+    if (bikeThefts && setBikeThefts) {
+      setBikeThefts(
+        bikeThefts.filter(theft => theft.id !== id)
+      )
+    } 
+  }
+
   return (
     <MapContainer 
       center={[60.204149, 24.961733]} 
@@ -62,8 +71,7 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
           pinData={bikeThefts.map(theft => theft.coordinate)}
           isChecked={filters.bikeTheft.isChecked}
           typeOfPin={'bikeTheft'}
-          bikeTheft={bikeThefts}
-          setBikeTheft={setBikeThefts}
+          deletePin={deleteTheftMarker}
         />
       </MarkerClusterGroup>
       {filters.lockStation.isChecked && lockStations.map((station) => (

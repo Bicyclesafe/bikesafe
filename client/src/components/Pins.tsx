@@ -1,21 +1,10 @@
 import { FC } from "react"
 import { Marker, Popup } from "react-leaflet"
-import { BikeTheft, Coordinate} from "../types"
+import { PinsProps} from "../types"
 import { pinType } from "../util/pins"
-import { deleteTheft } from "../services/theftService"
 
-export const Pins: FC<{ pinData: Coordinate[], isChecked: boolean, typeOfPin: string, bikeTheft?:BikeTheft[], setBikeTheft?:React.Dispatch<React.SetStateAction<BikeTheft[]>>  }> = ({ pinData, isChecked, typeOfPin, bikeTheft, setBikeTheft }) => {
+export const Pins: FC<PinsProps> = ({ pinData, isChecked, typeOfPin, deletePin }) => {
   if (!isChecked) return null
-
-  const deleteTheftMarker = (id: number) => {
-    deleteTheft(id)
-     if (bikeTheft && setBikeTheft) {
-    setBikeTheft(
-      bikeTheft.filter(a => (
-        a.id !== id
-  ))
-    )} 
-  }
 
   return (
     <div>
@@ -26,7 +15,7 @@ export const Pins: FC<{ pinData: Coordinate[], isChecked: boolean, typeOfPin: st
           icon={pinType(typeOfPin)}>
           <Popup>
             Täällä asuu TKT <br />
-            <button onClick={() => deleteTheftMarker(pin.id)}>DELETE</button>
+            <button onClick={() => deletePin(pin.id)}>DELETE</button>
           </Popup>
         </Marker>
       ))}
