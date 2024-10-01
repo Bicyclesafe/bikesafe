@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer, TileLayer, CircleMarker } from 'react-leaflet'
 import { BikeTheft, Filters, LockStation } from '../types'
 import { FC, useEffect, useState } from 'react'
 import { TheftMarker } from './TheftMarker'
@@ -36,7 +36,7 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
         mapElement.style.cursor = '' 
       }
     }
-  }, [reportMode]) 
+  }, [reportMode])
 
   return (
     <MapContainer 
@@ -45,6 +45,7 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
       scrollWheelZoom={true} 
       className={styles['map-container']}
       id='map'
+      preferCanvas={true}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -64,12 +65,16 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
           bikeTheft={bikeThefts}
           setBikeTheft={setBikeThefts}
         />
-        <Pins
-          pinData={lockStations.map(station => station.coordinate)}
-          isChecked={filters.lockStation.isChecked}
-          typeOfPin={'lockStation'}
-        />
       </MarkerClusterGroup>
+      {filters.lockStation.isChecked && lockStations.map((station) => (
+              <CircleMarker
+                key={station.id}
+                center={[station.coordinate.lat, station.coordinate.lng]}
+                color="#ff3333"
+                radius={5} // Customize marker size
+              />
+            ))}
+
        {reportMode && <CursorMarker cursorPosition={cursorPosition} />}
        {reportMode && <MousePositionControl setCursorPosition={setCursorPosition} />}
     </MapContainer>
