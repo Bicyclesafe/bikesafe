@@ -41,7 +41,6 @@ export const deleteBikeTheft = async (req: Request, res: Response, next: NextFun
   const id = req.params.id
   try {
     const bikeTheft = await BikeTheft.findOne({where: {id: id}})
-    console.log(bikeTheft)
     if (bikeTheft) {
       await Coordinate.destroy({where: {id: bikeTheft.coordinateId}})
       await BikeTheft.destroy({where: {id: id}})

@@ -8,7 +8,6 @@ export const Pins: FC<{ pinData: Coordinate[], isChecked: boolean, typeOfPin: st
   if (!isChecked) return null
 
   const deleteTheftMarker = (id: number) => {
-    console.log('hello')
     deleteTheft(id)
      if (bikeTheft && setBikeTheft) {
     setBikeTheft(
