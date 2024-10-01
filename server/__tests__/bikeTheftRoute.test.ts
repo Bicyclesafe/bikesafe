@@ -1,8 +1,9 @@
-import { app } from '../src/index'
+import { app } from '../src/app'
 import supertest from 'supertest'
 import { sequelize } from '../src/util/db'
 import { BikeTheft } from '../src/models/bikeTheft'
 import { Coordinate } from '../src/models/coordinate'
+import { migrator } from '../src/util/db'
 
 const api = supertest(app)
 
@@ -17,14 +18,21 @@ const initialCoordinates = [
     }
 ]
 
+beforeAll(async () => {
+    await migrator.up()
+})
+
 beforeEach(async () => {
-    await sequelize.sync({ force: true })
     const coordinates = await Coordinate.bulkCreate(initialCoordinates)
     const bikeThefts = [
         {coordinateId: coordinates[0].id},
         {coordinateId: coordinates[1].id}
     ]
     await BikeTheft.bulkCreate(bikeThefts)
+})
+
+afterEach(async () => {
+    await sequelize.truncate({ cascade: true, restartIdentity: true })
 })
 
 describe("GET /api/bike_thefts", () => {
