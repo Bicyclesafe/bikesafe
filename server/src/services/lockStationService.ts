@@ -10,13 +10,19 @@ const params = {
   outputformat: 'json'
 }
 
+interface LockStationResponse {
+  features: {
+    geometry: {
+      coordinates: number[][]
+    }
+  }[]
+}
+
 export const getAllLockStations = async () => {
-  const response = await axios.get(wfsUrl, { params })
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const response = await axios.get<LockStationResponse>(wfsUrl, { params })
   const data = response.data
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any
-  console.log(data.features.map((feature: any) =>
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-    feature.geometry.coordinates[0]
+
+  console.log(data.features.map((feature) =>
+    feature.geometry.coordinates
   ))
 }

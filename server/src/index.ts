@@ -10,6 +10,7 @@ import coordinatesRouter from './routes/coordinatesRoute'
 import bikeTheftRouter from './routes/bikeTheftRoute'
 import lockStationRouter from './routes/lockStationRoute'
 import testingRouter from './routes/testingRoute'
+// import { getAllLockStations } from './services/lockStationService'
 
 app.use(express.json())
 app.use(cors())
@@ -38,6 +39,8 @@ const start = async (): Promise<void> => {
     console.error('Failed to start server:', error)
   }
 }
+
+// getAllLockStations().catch((error) => { console.error(error) })
 
 start().catch((error) => {
   console.error("Unhandled error on server startup:", error)
