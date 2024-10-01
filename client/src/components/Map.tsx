@@ -56,7 +56,10 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
         reportMode={reportMode}
       />
       {reportMode ? <MousePositionControl setCursorPosition={setCursorPosition} /> : null}
-      <MarkerClusterGroup chunkedLoading>
+      <MarkerClusterGroup 
+      chunkedLoading
+      disableClusteringAtZoom={18}
+      >
         <Pins
           pinData={bikeThefts.map(theft => theft.coordinate)}
           isChecked={filters.bikeTheft.isChecked}
