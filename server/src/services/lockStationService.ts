@@ -1,6 +1,7 @@
 import axios from "axios"
 import { LockStation } from "../types"
 import fs from "fs"
+import { saveLockStation } from "../controllers/lockStationController"
 
 const wfsUrl = 'https://kartta.hel.fi/ws/geoserver/avoindata/wfs'
 const params = {
@@ -55,6 +56,12 @@ export const getAllLockStationsFromApi = async () => {
   })
 
   writeToLockStationFile(allLockStations)
+
+  await Promise.all(
+    allLockStations.map((lockStation) =>
+      saveLockStation(lockStation.coordinate.lat, lockStation.coordinate.lng)
+    )
+  )
 
   return allLockStations
 }
