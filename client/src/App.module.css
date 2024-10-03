@@ -1,9 +1,29 @@
 .content-container {
     position: fixed;
     right: 10px;
-    width: 200px;
+    width: 210px;
     z-index: 2; 
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    font-family:'Courier New', Courier, monospace;
 }
 
+.theft-button {
+    margin-top: 15px;
+    color: white;
+    background-color: red;
+    border-radius: 7px;
+    padding: 10px;
+    font-size: 20px;
+    width: 100%;
+    border: 2px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    border: 2px solid black
+}
+
+.theft-button:hover {
+    background-color: darkred;
+}
