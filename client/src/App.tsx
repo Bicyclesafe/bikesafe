@@ -47,7 +47,7 @@ const App = () => {
           filters={filters}
           handleFilterChange={handleFilterChange}
         />
-        <button className={styles['theft-button']} onClick={reportHandler}>{reportMode ? "Cancel" : "Report theft"}</button>
+        <button className={`${styles['base-button']}`} id={styles['theft-button']} onClick={reportHandler}>{reportMode ? "Cancel" : "Report theft"}</button>
         <Notification message={"Place me where the theft happened"} visible={reportMode}/>
         <ReportModal theftPosition={theftPosition} setTheftPosition={setTheftPosition} bikeThefts={bikeThefts} setBikeThefts={setBikeThefts} />
       </div>

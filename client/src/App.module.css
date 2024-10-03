@@ -9,10 +9,10 @@
     font-family:'Courier New', Courier, monospace;
 }
 
-.theft-button {
+.base-button {
     margin-top: 15px;
     color: white;
-    background-color: red;
+    background-color: rgb(98, 171, 235);
     border-radius: 7px;
     padding: 10px;
     font-size: 20px;
@@ -24,6 +24,10 @@
     border: 2px solid black
 }
 
-.theft-button:hover {
+#theft-button {
+    background-color: red;
+}
+
+#theft-button:hover {
     background-color: darkred;
 }

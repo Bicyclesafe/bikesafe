@@ -2,6 +2,8 @@ import { FC } from "react"
 import { ReportModalProps } from "../types"
 import { LatLng } from "leaflet"
 import { sendTheftReport } from "../services/theftService"
+import styles from './ReportModal.module.css'
+import appStyles from '../App.module.css'
 
 const ReportModal: FC<ReportModalProps> = ({ theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
     const handleReportConfirm = async (position: LatLng) => {
@@ -13,7 +15,7 @@ const ReportModal: FC<ReportModalProps> = ({ theftPosition, setTheftPosition, bi
 
     return theftPosition && (
         <div>
-            <button onClick={() => handleReportConfirm(theftPosition)}>Confirm</button>
+            <button className={appStyles['base-button']} id={styles['confirm-button']} onClick={() => handleReportConfirm(theftPosition)}>Confirm</button>
         </div>
     )
 }

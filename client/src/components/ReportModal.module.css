@@ -1,0 +1,7 @@
+#confirm-button {
+  background-color: green;
+}
+
+#confirm-button:hover {
+  background-color: darkgreen;
+}
