@@ -23,7 +23,9 @@ test('renders correct amount of markers', async () => {
     { id: 2, lat: 52.505, lng: -0.09 }
   ]
 
-  render(<Pins pinData={coordinates} isChecked={true} typeOfPin=''/>)
+  const mockDeletePin = jest.fn()
+
+  render(<Pins pinData={coordinates} isChecked={true} typeOfPin='' deletePin={mockDeletePin}/>)
   expect(await screen.getAllByTestId('marker')).toHaveLength(2)
 })
 
@@ -33,7 +35,9 @@ test('renders markers at correct coordinates', async () => {
     { id: 2, lat: 52.505, lng: -0.09 }
   ]
   
-  render(<Pins pinData={coordinates} isChecked={true} typeOfPin=''/>)
+  const mockDeletePin = jest.fn()
+
+  render(<Pins pinData={coordinates} isChecked={true} typeOfPin='' deletePin={mockDeletePin}/>)
   expect(await screen.getByText("51.505 -0.09")).toBeInTheDocument()
   expect(await screen.getByText("52.505 -0.09")).toBeInTheDocument()
 })
