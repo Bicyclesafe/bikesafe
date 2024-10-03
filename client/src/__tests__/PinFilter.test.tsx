@@ -16,11 +16,9 @@ const filter =
 
 describe("PinFilter component", () => {
   
-  
     test("renders component", async () => {
-         render(
+      render(
         <PinFilter filters={filter} handleFilterChange={() => {}} />
-       
       )
       const theftLocations = await screen.findByText('Theft Locations')
       expect(theftLocations).toBeInTheDocument()
