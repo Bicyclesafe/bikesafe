@@ -37,6 +37,7 @@ export const getAllLockStations = async () => {
 export const getAllLockStationsFromApi = async () => {
   const response = await axios.get<LockStationResponse>(wfsUrl, { params })
   const data = response.data
+  console.log(data)
 
   const allLockStations: LockStation[] = []
 

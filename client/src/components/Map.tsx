@@ -38,13 +38,14 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
     }
   }, [reportMode])
 
-  const deleteTheftMarker = (id: number) => {
-    theftService.deleteTheft(id)
-    if (bikeThefts && setBikeThefts) {
-      setBikeThefts(
-        bikeThefts.filter(theft => theft.id !== id)
-      )
-    } 
+  const deleteTheftMarker = (coordinateId: number) => {
+    const bikeTheftToDelete = bikeThefts.find(
+      theft => theft.coordinate.id === coordinateId
+    )
+    if (bikeTheftToDelete) {
+      theftService.deleteTheft(bikeTheftToDelete.id)
+      setBikeThefts(bikeThefts.filter(theft => theft.id !== bikeTheftToDelete.id))
+    }
   }
 
   return (
