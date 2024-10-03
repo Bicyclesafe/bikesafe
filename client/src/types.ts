@@ -18,6 +18,13 @@ export interface LockStation {
   coordinate: Coordinate
 }
 
+export interface PinsProps {
+  pinData: Coordinate[]
+  isChecked: boolean
+  typeOfPin: string
+  deletePin: (id: number) => void
+}
+
 export interface TheftMarkerProps {
   reportMode: boolean
   setBikeThefts: React.Dispatch<React.SetStateAction<BikeTheft[]>>

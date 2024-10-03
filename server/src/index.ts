@@ -14,9 +14,7 @@ const startServer = async (): Promise<void> => {
   }
 }
 
-getAllLockStations().catch((error) => {
-  console.error(error)
-})
+getAllLockStations().catch((error) => { console.log(error) })
 
 startServer().catch((error) => {
   console.error("Unhandled error on server startup:", error)

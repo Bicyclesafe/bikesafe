@@ -15,7 +15,8 @@ if (!databaseUrl) {
 
 export const sequelize = new Sequelize(databaseUrl, {
   models: [Coordinate, BikeTheft, LockStation],
-  logging: process.env.NODE_ENV !== 'test',
+  logging: false
+  // logging: process.env.NODE_ENV !== 'test',
 })
 
 export const migrator = new Umzug({
@@ -28,11 +29,11 @@ export const migrator = new Umzug({
 export type Migration = typeof migrator._types.migration
 
 const runMigrations = async () => {
-    const migrations = await migrator.up()
+  const migrations = await migrator.up()
 
-    console.log('Migrations up to date', {
-      migrations,
-    })
+  console.log('Migrations up to date', {
+    migrations,
+  })
 }
 
 export const connectToDatabase = async (): Promise<void | null> => {
