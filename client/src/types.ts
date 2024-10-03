@@ -1,3 +1,5 @@
+import { LatLng } from "leaflet"
+
 export interface Coordinate {
   id: number
   lat: number
@@ -27,8 +29,8 @@ export interface PinsProps {
 
 export interface TheftMarkerProps {
   reportMode: boolean
-  setBikeThefts: React.Dispatch<React.SetStateAction<BikeTheft[]>>
-  bikeThefts: BikeTheft[]
+  theftPosition: LatLng | null
+  setTheftPosition: React.Dispatch<React.SetStateAction<LatLng | null>>
 }
 
 export interface Filter {
@@ -56,3 +58,18 @@ export interface MousePositionControlProps {
   setCursorPosition: (position: { lat: number; lng: number }) => void;
 }
 
+export interface MapProps {
+  reportMode: boolean
+  filters: Filters
+  theftPosition: LatLng | null
+  setTheftPosition: React.Dispatch<React.SetStateAction<LatLng | null>>
+  bikeThefts: BikeTheft[]
+  setBikeThefts: React.Dispatch<React.SetStateAction<BikeTheft[]>>
+}
+
+export interface ReportModalProps {
+  theftPosition: LatLng | null
+  setTheftPosition: React.Dispatch<React.SetStateAction<LatLng | null>>
+  setBikeThefts: React.Dispatch<React.SetStateAction<BikeTheft[]>>
+  bikeThefts: BikeTheft[]
+}

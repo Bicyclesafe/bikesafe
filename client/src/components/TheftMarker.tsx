@@ -1,16 +1,13 @@
-import { LatLng } from "leaflet"
-import { FC, useRef, useState } from "react"
-import { Marker, Popup, useMapEvents } from "react-leaflet"
+import { FC, useRef } from "react"
+import { Marker, useMapEvents } from "react-leaflet"
 import { Marker as LeafletMarker } from "leaflet"
-import { sendTheftReport } from "../services/theftService"
 import { TheftMarkerProps } from "../types"
 
 export const TheftMarker: FC<TheftMarkerProps> = ({
   reportMode,
-  setBikeThefts,
-  bikeThefts
+  theftPosition,
+  setTheftPosition
 }) => {
-  const [position, setPosition] = useState<LatLng | null>(null)
   const markerRef = useRef<LeafletMarker | null>(null)
 
   useMapEvents({
@@ -18,25 +15,14 @@ export const TheftMarker: FC<TheftMarkerProps> = ({
       if (!reportMode) {
         return
       }
-      setPosition(e.latlng)
-      setTimeout(() => {
+      setTheftPosition(e.latlng)
+      /*setTimeout(() => {
         markerRef.current?.openPopup()
-      }, 0) 
+      }, 0)*/
     },
   })
 
-  const handleReportConfirm = async (position: LatLng) => {
-    const newMarker = await sendTheftReport(position)
-    console.log(position)
-    setBikeThefts(bikeThefts.concat(newMarker))
-    setPosition(null)
-  }
-
-  return position && (
-    <Marker ref={markerRef} position={position}>
-      <Popup>
-        <button onClick={() => handleReportConfirm(position)}>Confirm</button>
-      </Popup>
-    </Marker>
+  return theftPosition && (
+    <Marker ref={markerRef} position={theftPosition} />
   )
 }

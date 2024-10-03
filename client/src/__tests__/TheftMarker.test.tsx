@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom'
-import { render, screen, waitFor, act, fireEvent } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import { TheftMarker } from '../components/TheftMarker'
-import { sendTheftReport } from '../services/theftService'
 import { LatLng } from 'leaflet'
 import React from 'react'
 import { useMapEvents } from 'react-leaflet'
@@ -34,25 +33,54 @@ jest.mock("react-leaflet", () => {
 })
 
 describe("TheftMarker component", () => {
-  let setBikeThefts: jest.Mock
+  let setTheftPosition: jest.Mock
 
   beforeEach(() => {
-    setBikeThefts = jest.fn()
+    setTheftPosition = jest.fn()
     jest.clearAllMocks()
   })
 
   test("renders null when position is not set", () => {
     const { container } = render(
-      <TheftMarker reportMode={false} setBikeThefts={setBikeThefts} bikeThefts={[]} />
+      <TheftMarker reportMode={false} theftPosition={null} setTheftPosition={setTheftPosition} />
     )
     expect(container.firstChild).toBeNull()
   })
 
   test('renders without crashing', () => {
-    render(<TheftMarker reportMode={true} setBikeThefts={setBikeThefts} bikeThefts={[]} />)
+    render(<TheftMarker reportMode={true} theftPosition={null} setTheftPosition={setTheftPosition} />)
   })
 
   test("renders marker correctly when map is clicked", async () => {
+    const position = new LatLng(51.505, -0.09)
+
+    render(
+      <TheftMarker reportMode={true} theftPosition={position} setTheftPosition={setTheftPosition} />
+    )
+
+    const marker = await screen.findByTestId('marker')
+    expect(marker).toBeInTheDocument()
+    expect(marker).toHaveAttribute('data-position', JSON.stringify({ lat: 51.505, lng: -0.09 }))
+  })
+
+  test("Calls setTheftPosition with correct position on map click", async () => {
+    const mockUseMapEvents = useMapEvents as jest.Mock
+
+    render(
+      <TheftMarker reportMode={true} theftPosition={null} setTheftPosition={setTheftPosition} />
+    )
+
+    const mapEvent = { latlng: { lat: 51.505, lng: -0.09 } }
+
+    await act(async () => {
+      mockUseMapEvents.mock.calls[0][0].click(mapEvent)
+    })
+
+    expect(setTheftPosition.mock.calls).toHaveLength(1)
+    expect(setTheftPosition.mock.calls[0][0]).toEqual({ lat: 51.505, lng: -0.09 })
+  })
+
+  /*test("renders marker correctly when map is clicked", async () => {
     const bikeThefts = [{ id: 1, coordinate: { lat: 51.505, lng: -0.09, id:2 }}]
     const mockUseMapEvents = useMapEvents as jest.Mock
     
@@ -77,9 +105,9 @@ describe("TheftMarker component", () => {
 
     // Assert that the marker has the correct position
     expect(marker).toHaveAttribute('data-position', JSON.stringify({ lat: 51.505, lng: -0.09 }))
-  })
+  })*/
 
-  test("opens popup when marker is placed", async () => {
+  /*test("opens popup when marker is placed", async () => {
     const bikeThefts = [{ id: 1, coordinate: { lat: 51.505, lng: -0.09, id:1 }}]
     const mockUseMapEvents = useMapEvents as jest.Mock
     
@@ -104,9 +132,9 @@ describe("TheftMarker component", () => {
     const confirmButton = getByText(/confirm/i)
     expect(confirmButton).toBeInTheDocument()
 
-  })
+  })*/
 
-  test('calls handleReportConfirm when confirm button is clicked', async () => {
+  /*test('calls handleReportConfirm when confirm button is clicked', async () => {
     const bikeThefts = [{ id: 1, coordinate: { lat: 51.505, lng: -0.09, id: 1 } }]
     const mockSendTheftReport = sendTheftReport
 
@@ -134,5 +162,5 @@ describe("TheftMarker component", () => {
 
     expect(mockSendTheftReport).toHaveBeenCalledTimes(1)
     expect(mockSendTheftReport).toHaveBeenCalledWith(new LatLng(51.505, -0.09))
-  })
+  })*/
 })

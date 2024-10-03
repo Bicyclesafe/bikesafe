@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Circle } from 'react-leaflet'
-import { BikeTheft, Filters, LockStation } from '../types'
+import { LockStation, MapProps } from '../types'
 import { FC, useEffect, useState } from 'react'
 import { TheftMarker } from './TheftMarker'
 import { Pins } from './Pins'
@@ -12,8 +12,7 @@ import CursorMarker from './CursorMarker'
 import MarkerClusterGroup from "react-leaflet-cluster"
 import ZoomLevelUpdater from './ZoomLevel'
 
-const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters }) => {
-  const [bikeThefts, setBikeThefts] = useState<BikeTheft[]>([])
+const Map: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
   const [lockStations, setLockStations] = useState<LockStation[]>([])
   const [cursorPosition, setCursorPosition] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 })
   const [zoomLevel, setZoomLevel] = useState<number>(13) 
@@ -27,7 +26,7 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
       setLockStations(lockStationResponse)
     }
     fetchData()
-  }, [])
+  }, [setBikeThefts])
 
   useEffect(() => {
     const mapElement = document.getElementById('map')
@@ -64,9 +63,9 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <TheftMarker
-        bikeThefts={bikeThefts}
-        setBikeThefts={setBikeThefts}
         reportMode={reportMode}
+        theftPosition={theftPosition}
+        setTheftPosition={setTheftPosition}
       />
       {reportMode ? <MousePositionControl setCursorPosition={setCursorPosition} /> : null}
       <MarkerClusterGroup 
