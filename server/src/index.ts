@@ -1,7 +1,7 @@
 import { app } from "./app"
 import { connectToDatabase } from "./util/db"
 import { PORT } from "./util/config"
-import { getAllLockStations } from "./services/lockStationService"
+import { initializeLockStations } from "./services/lockStationService"
 
 const startServer = async (): Promise<void> => {
   try {
@@ -14,8 +14,11 @@ const startServer = async (): Promise<void> => {
   }
 }
 
-getAllLockStations().catch((error) => { console.log(error) })
+const startAndInitialize = async () => {
+  await startServer()
+  await initializeLockStations()
+}
 
-startServer().catch((error) => {
+startAndInitialize().catch((error) => {
   console.error("Unhandled error on server startup:", error)
 })

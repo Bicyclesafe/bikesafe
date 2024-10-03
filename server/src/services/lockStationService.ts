@@ -1,7 +1,7 @@
 import axios from "axios"
-import { LockStation } from "../types"
-import fs from "fs"
+import { LockStation as LockStationType } from "../types"
 import { saveLockStation } from "../controllers/lockStationController"
+import { LockStation as LockStationModel } from "../models/lockStation"
 
 const wfsUrl = 'https://kartta.hel.fi/ws/geoserver/avoindata/wfs'
 const params = {
@@ -22,62 +22,45 @@ interface LockStationResponse {
   }[]
 }
 
-interface LockStationJson {
-  lockStations: LockStation[]
-}
+export const initializeLockStations = async () => {
+  const count = await LockStationModel.count()
 
-export const getAllLockStations = async () => {
-  if (fs.existsSync("lockStations.json")) {
-    return getAllLockStationsFromFile()
+  if (count === 0) {
+    await fetchLockStations()
+    console.log('Lock station data fetched.')
   } else {
-    return await getAllLockStationsFromApi()
+    console.log('Lock station data already exists, skipping fetch.')
   }
 }
 
-export const getAllLockStationsFromApi = async () => {
-  const response = await axios.get<LockStationResponse>(wfsUrl, { params })
-  const data = response.data
-  console.log(data)
-
-  const allLockStations: LockStation[] = []
-
-  data.features.map((feature) => {
-    const coordinates = feature.geometry.coordinates
-
-    const lockStations: LockStation[] = coordinates.map((coordinate) => {
-      return {
+export const fetchLockStations = async () => {
+  try {
+    const response = await axios.get<LockStationResponse>(wfsUrl, { params })
+    const data = response.data
+  
+    const allLockStations: LockStationType[] = data.features.flatMap((feature) => {
+      const coordinates = feature.geometry.coordinates
+      return coordinates.map((coordinate) => ({
         coordinate: {
           lat: coordinate[1],
           lng: coordinate[0]
         }
-      }
+      }))
     })
-
-    allLockStations.push(...lockStations)
-  })
-
-  writeToLockStationFile(allLockStations)
-
-  await Promise.all(
-    allLockStations.map((lockStation) =>
-      saveLockStation(lockStation.coordinate.lat, lockStation.coordinate.lng)
-    )
-  )
-
-  return allLockStations
-}
-
-export const getAllLockStationsFromFile = () => {
-  const lockStationsJson = fs.readFileSync("lockStations.json")
-  const lockStations = JSON.parse(lockStationsJson.toString()) as LockStationJson
-  return lockStations.lockStations
-}
-
-const writeToLockStationFile = (lockStations: LockStation[]) => {
-  const jsonBlock = {
-    lockStations: lockStations
+    await storeLockStations(allLockStations)
+  } catch(error) {
+    console.error('Error fetching lock station data from api:', error)
   }
+}
 
-  const json = JSON.stringify(jsonBlock)
-  fs.writeFileSync("lockStations.json", json, "utf8")
+const storeLockStations = async (lockStations: LockStationType[]) => {
+  try {
+    await Promise.all(
+      lockStations.map((lockStation) =>
+        saveLockStation(lockStation.coordinate.lat, lockStation.coordinate.lng)
+      )
+    )
+  } catch(error) {
+    console.error("Error saving lock stations to database:", error)
+  }
 }
