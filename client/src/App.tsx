@@ -26,6 +26,7 @@ const App = () => {
   
   const reportHandler = () => {
     setReportMode(!reportMode)
+    setTheftPosition(null)
   }
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
