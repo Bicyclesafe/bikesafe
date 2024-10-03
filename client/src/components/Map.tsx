@@ -79,16 +79,16 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
         />
       </MarkerClusterGroup>
       {filters.lockStation.isChecked && lockStations.map((station) => (
-              <CircleMarker
-                key={station.id}
-                center={[station.coordinate.lat, station.coordinate.lng]}
-                color="#ff3333"
-                radius={5} // Customize marker size
-              />
-            ))}
+        <CircleMarker
+          key={station.id}
+          center={[station.coordinate.lat, station.coordinate.lng]}
+          color="#ff3333"
+          radius={5}
+        />
+      ))}
 
-       {reportMode && <CursorMarker cursorPosition={cursorPosition} />}
-       {reportMode && <MousePositionControl setCursorPosition={setCursorPosition} />}
+      {reportMode && <CursorMarker cursorPosition={cursorPosition} />}
+      {reportMode && <MousePositionControl setCursorPosition={setCursorPosition} />}
     </MapContainer>
   )
 }
