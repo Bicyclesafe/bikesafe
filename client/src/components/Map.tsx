@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import { MapContainer, TileLayer, CircleMarker } from 'react-leaflet'
+import { MapContainer, TileLayer, Circle } from 'react-leaflet'
 import { BikeTheft, Filters, LockStation } from '../types'
 import { FC, useEffect, useState } from 'react'
 import { TheftMarker } from './TheftMarker'
@@ -10,11 +10,13 @@ import lockStationService from '../services/lockStationService'
 import MousePositionControl from './MouseControl'
 import CursorMarker from './CursorMarker'
 import MarkerClusterGroup from "react-leaflet-cluster"
+import ZoomLevelUpdater from './ZoomLevel'
 
 const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters }) => {
   const [bikeThefts, setBikeThefts] = useState<BikeTheft[]>([])
   const [lockStations, setLockStations] = useState<LockStation[]>([])
   const [cursorPosition, setCursorPosition] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 })
+  const [zoomLevel, setZoomLevel] = useState<number>(13) 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,17 +80,17 @@ const Map: FC<{ reportMode: boolean, filters: Filters}> = ({ reportMode, filters
           deletePin={deleteTheftMarker}
         />
       </MarkerClusterGroup>
-      {filters.lockStation.isChecked && lockStations.map((station) => (
-        <CircleMarker
+      {filters.lockStation.isChecked && zoomLevel > 9 &&lockStations.map((station) => (
+        <Circle
           key={station.id}
           center={[station.coordinate.lat, station.coordinate.lng]}
           color="#ff3333"
           radius={5}
         />
       ))}
-
       {reportMode && <CursorMarker cursorPosition={cursorPosition} />}
       {reportMode && <MousePositionControl setCursorPosition={setCursorPosition} />}
+      <ZoomLevelUpdater setZoomLevel={setZoomLevel} />
     </MapContainer>
   )
 }
