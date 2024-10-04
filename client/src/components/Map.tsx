@@ -31,11 +31,7 @@ const Map: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPositio
   useEffect(() => {
     const mapElement = document.getElementById('map')
     if (mapElement) {
-      if (reportMode) {
-        mapElement.style.cursor = 'pointer'
-      } else {
-        mapElement.style.cursor = '' 
-      }
+      mapElement.style.cursor = reportMode ? 'pointer' : ''
     }
   }, [reportMode])
 
@@ -51,12 +47,13 @@ const Map: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPositio
 
   return (
     <MapContainer 
-      center={[60.204149, 24.961733]} 
-      zoom={20} 
-      scrollWheelZoom={true} 
-      className={styles['map-container']}
-      id='map'
-      preferCanvas={true}
+    center={[60.1695, 24.9354]} // Centered on Helsinki
+    zoom={13} // Set an appropriate initial zoom level
+    scrollWheelZoom={true}
+    className={styles['map-container']}
+    id='map'
+    preferCanvas={true}
+    minZoom={8}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -67,7 +64,6 @@ const Map: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPositio
         theftPosition={theftPosition}
         setTheftPosition={setTheftPosition}
       />
-      {reportMode ? <MousePositionControl setCursorPosition={setCursorPosition} /> : null}
       <MarkerClusterGroup 
       chunkedLoading
       disableClusteringAtZoom={18}
