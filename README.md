@@ -8,6 +8,7 @@ Helsingin yliopiston Ohjelmistotuotantoprojektin harjoitustyö 2024. Harjoitusty
 - [DoD](https://github.com/Bicyclesafe/bikesafe/blob/main/documentation/dod.md)
 - [Practices](https://github.com/Bicyclesafe/bikesafe/blob/main/documentation/practices.md)
 - [Testing](https://github.com/Bicyclesafe/bikesafe/blob/main/documentation/testing.md)
+- [Database](https://github.com/Bicyclesafe/bikesafe/blob/main/documentation/database.md)
 
 ## Installation
 
