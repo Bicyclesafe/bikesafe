@@ -4,5 +4,9 @@
   },
   "dependencies": {
     "leaflet.markercluster": "^1.5.3"
+  },
+  "scripts": {
+    "compose": "docker compose up",
+    "compose:build": "docker compose up --build"
   }
 }
