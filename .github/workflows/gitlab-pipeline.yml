@@ -1,0 +1,25 @@
+name: Deploy to GitLab
+
+on:
+  push:
+    branches:
+      - Staging
+
+jobs:
+  deploy_to_gitlab:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Git configuration
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Push to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git remote add gitlab https://oauth2:${GITLAB_TOKEN}@version.helsinki.fi/joosef/bikesafe.git
+          git push -u gitlab staging
