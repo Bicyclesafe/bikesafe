@@ -22,4 +22,4 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
           git remote add gitlab https://oauth2:${GITLAB_TOKEN}@version.helsinki.fi/joosef/bikesafe.git
-          git push -u gitlab staging
+          git push -u gitlab Staging
