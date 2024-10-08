@@ -3,7 +3,7 @@ name: Deploy to GitLab
 on:
   push:
     branches:
-      - Staging
+      - staging
 
 jobs:
   deploy_to_gitlab:
@@ -24,4 +24,4 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
           git remote add gitlab https://oauth2:${GITLAB_TOKEN}@version.helsinki.fi/joosef/bikesafe.git
-          git push -u gitlab Staging
+          git push -u gitlab staging
