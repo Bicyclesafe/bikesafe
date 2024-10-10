@@ -42,7 +42,6 @@ const HomePage = () => {
   }
 
   const user = auth.currentUser
-  console.log(user)
 
   return (
     <div>

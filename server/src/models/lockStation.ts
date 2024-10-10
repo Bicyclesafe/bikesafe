@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, ForeignKey, BelongsTo } from 'sequelize-typescript'
+import { Table, Column, Model, PrimaryKey, AutoIncrement, BelongsTo, ForeignKey } from 'sequelize-typescript'
 import { Coordinate } from './coordinate'
 
 @Table({
@@ -12,10 +12,13 @@ export class LockStation extends Model {
   @Column
   id!: number
 
+  @Column
+  groupId!: number
+
   @ForeignKey(() => Coordinate)
   @Column
   coordinateId!: number
 
   @BelongsTo(() => Coordinate, { onDelete: 'CASCADE' })
-  coordinate!: Coordinate
+  coordinates!: Coordinate[]
 }

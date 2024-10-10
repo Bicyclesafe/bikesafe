@@ -1,0 +1,86 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: bikesafe-frontt
+  namespace: ohtuprojekti-staging
+  uid: 15de8b3e-8994-435b-a82c-cb085d6a0c6e
+  resourceVersion: '1448329581'
+  creationTimestamp: '2024-09-25T14:48:58Z'
+  labels:
+    app: bikesafe-frontt
+    app.kubernetes.io/component: bikesafe-frontt
+    app.kubernetes.io/instance: bikesafe-frontt
+    app.kubernetes.io/name: bikesafe-frontt
+    app.kubernetes.io/part-of: Bikesafe
+  annotations:
+    app.openshift.io/connects-to: '[{"apiVersion":"apps/v1","kind":"Deployment","name":"bikesafe-backend"}]'
+    openshift.io/host.generated: 'true'
+  managedFields:
+    - manager: Mozilla
+      operation: Update
+      apiVersion: route.openshift.io/v1
+      time: '2024-10-04T10:52:52Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            'f:app.openshift.io/connects-to': {}
+          'f:labels':
+            .: {}
+            'f:app': {}
+            'f:app.kubernetes.io/component': {}
+            'f:app.kubernetes.io/instance': {}
+            'f:app.kubernetes.io/name': {}
+            'f:app.kubernetes.io/part-of': {}
+        'f:spec':
+          'f:port':
+            .: {}
+            'f:targetPort': {}
+          'f:tls':
+            .: {}
+            'f:insecureEdgeTerminationPolicy': {}
+            'f:termination': {}
+          'f:to':
+            'f:kind': {}
+            'f:name': {}
+            'f:weight': {}
+          'f:wildcardPolicy': {}
+    - manager: openshift-router
+      operation: Update
+      apiVersion: route.openshift.io/v1
+      time: '2024-10-04T10:52:52Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          'f:ingress': {}
+      subresource: status
+spec:
+  host: bikesafe-frontt-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi
+  to:
+    kind: Service
+    name: bikesafe-frontt
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
+status:
+  ingress:
+    - host: bikesafe-frontt-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi
+      routerName: default
+      conditions:
+        - type: Admitted
+          status: 'True'
+          lastTransitionTime: '2024-09-25T14:48:58Z'
+      wildcardPolicy: None
+      routerCanonicalHostname: router-default.apps.ocp-test-0.k8s.it.helsinki.fi
+    - host: bikesafe-frontt-ohtuprojekti-staging.apps.ocp-test-0.k8s.it.helsinki.fi
+      routerName: external
+      conditions:
+        - type: Admitted
+          status: 'True'
+          lastTransitionTime: '2024-10-04T10:52:52Z'
+      wildcardPolicy: None
+      routerCanonicalHostname: router-external.ext.ocp-test-0.k8s.it.helsinki.fi
