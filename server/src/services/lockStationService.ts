@@ -56,16 +56,6 @@ export const fetchLockStations = async () => {
     }
 }
 
-// const storeLockStations = async (lockStations: LockStationLines[]) => {
-//   //console.log(lockStations)
-//   try {
-//       lockStations.map(async(lockStation) => {
-//         await saveLockStation(lockStation.coordinates)
-//     })
-//   } catch(error) {
-//     console.error("Error saving lock stations to database:", error)
-//   }
-// }
 
 export const storeLockStations = async (lockStations: LockStationLines[]) => {
   try {

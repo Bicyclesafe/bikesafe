@@ -30,7 +30,6 @@ export const saveLockStation = async (coordinates: CoordinateType[]) => {
   
       if (!existingCoordinate) {
         const maxGroupId = (await LockStation.max<number, LockStation>('groupId', {transaction})) ?? 0
-        //console.log("Max group id", maxGroupId, "Koordinaatti", coordinates, await LockStation.findAll({limit: 20, transaction}))
         const nextGroupId = maxGroupId + 1
         await Promise.all(
         coordinates.map(async (coordinate) => {
