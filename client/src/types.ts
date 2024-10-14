@@ -18,6 +18,7 @@ export interface BikeTheft extends Pin {
 export interface LockStation {
   id: number
   coordinate: Coordinate
+  groupId: number
 }
 
 export interface PinsProps {

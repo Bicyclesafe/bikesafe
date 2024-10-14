@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import { MapContainer, TileLayer, Circle } from 'react-leaflet'
+import { MapContainer, TileLayer, Polyline } from 'react-leaflet'
 import { LockStation, MapProps } from '../types'
 import { FC, useEffect, useState } from 'react'
 import { TheftMarker } from './TheftMarker'
@@ -12,8 +12,8 @@ import CursorMarker from './CursorMarker'
 import MarkerClusterGroup from "react-leaflet-cluster"
 import ZoomLevelUpdater from './ZoomLevel'
 
-const Map: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
-  const [lockStations, setLockStations] = useState<LockStation[]>([])
+const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
+  const [lockStations, setLockStations] = useState<LockStation[][]>([])
   const [cursorPosition, setCursorPosition] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 })
   const [zoomLevel, setZoomLevel] = useState<number>(13) 
 
@@ -23,7 +23,8 @@ const Map: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPositio
       setBikeThefts(theftResponse)
 
       const lockStationResponse = await lockStationService.getAllLockStations()
-      setLockStations(lockStationResponse)
+      const lockStationsGrouped = groupLockstations(lockStationResponse)
+      setLockStations(lockStationsGrouped)
     }
     fetchData()
   }, [setBikeThefts])
@@ -43,6 +44,21 @@ const Map: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPositio
       theftService.deleteTheft(bikeTheftToDelete.id)
       setBikeThefts(bikeThefts.filter(theft => theft.id !== bikeTheftToDelete.id))
     }
+  }
+
+  const groupLockstations = (lockStationData: LockStation[])  => {
+    const groups = new Map<number, LockStation[]>()
+
+    for (let i = 0; i < lockStationData.length; i++) {
+      if (!groups.has(lockStationData[i].groupId)) {
+        groups.set(lockStationData[i].groupId, [])
+      }
+
+      groups.get(lockStationData[i].groupId)?.push(lockStationData[i])
+    }
+
+    const lockStationsGrouped = Array.from(groups).map((group) => group[1])
+    return lockStationsGrouped
   }
 
   return (
@@ -75,12 +91,12 @@ const Map: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPositio
           deletePin={deleteTheftMarker}
         />
       </MarkerClusterGroup>
-      {filters.lockStation.isChecked && zoomLevel > 9 &&lockStations.map((station) => (
-        <Circle
-          key={station.id}
-          center={[station.coordinate.lat, station.coordinate.lng]}
-          color="#ff3333"
-          radius={5}
+      {filters.lockStation.isChecked && zoomLevel > 9 && lockStations.map((stations) => (
+        <Polyline 
+          key={stations[0].groupId}
+          positions={stations.map((station) => station.coordinate)}
+          color="blue"
+          weight={3}
         />
       ))}
       {reportMode && <CursorMarker cursorPosition={cursorPosition} />}
@@ -90,4 +106,4 @@ const Map: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPositio
   )
 }
 
-export default Map
+export default MapComponent
