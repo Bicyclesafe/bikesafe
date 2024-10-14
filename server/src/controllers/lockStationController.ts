@@ -1,7 +1,9 @@
 import { Response, Request, NextFunction } from "express"
 import { Coordinate } from "../models/coordinate"
+import { Coordinate as CoordinateType } from "../types"
 import { LockStation } from "../models/lockStation"
-// import { getAllLockStations } from "../services/lockStationService"
+import { sequelize } from "../util/db"
+
 
 export const getLockStations = async (_req: Request, res: Response, next: NextFunction) => {
   try {
@@ -16,54 +18,34 @@ export const getLockStations = async (_req: Request, res: Response, next: NextFu
   }
 }
 
-// export const getLockStations = async (_req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const lockStations = await getAllLockStations()
-//     res.status(200).json(lockStations)
-//   } catch (err) {
-//     next(err)
-//   }
-// }
-
-export const addLockStation = async (req: Request<null, null, Coordinate>, res: Response, next: NextFunction) => {
-  const { lat, lng } = req.body
-
-  if (typeof lat !== 'number' || typeof lng !== 'number') {
-    res.status(400).json({ message: "Latitude and longitude must be numbers" })
-    return
-  }
-
-  try {
-    const result = await saveLockStation(lat, lng)
-    res.status(201).json(result)
-  } catch (err) {
-    next(err)
-  }
-}
-
-export const saveLockStation = async (lat: number, lng: number) => {
-  try {
-    const existingCoordinate = await Coordinate.findOne({ where: { lat, lng } })
-
-    if (!existingCoordinate) {
-      const newCoordinate = await Coordinate.create({ lat, lng })
-      const lockStation = await LockStation.create({ coordinateId: newCoordinate.id })
-      const result = await LockStation.findByPk(lockStation.id, {
-        include: {
-          model: Coordinate,
-        }
-      })
-      return result
+export const saveLockStation = async (coordinates: CoordinateType[]) => {
+    if (coordinates.length === 0) {
+      throw new Error('Coordinates array is empty')
     }
-    return existingCoordinate
-  } catch(err) {
-    console.error('Error saving lock stations:', err)
-    throw new Error('Failed to save lock stations')
+
+    const transaction = await sequelize.transaction()
+
+    try {
+      const existingCoordinate = await Coordinate.findOne({ where: { lat: coordinates[0].lat, lng: coordinates[0].lng }, transaction })
+  
+      if (!existingCoordinate) {
+        const maxGroupId = (await LockStation.max<number, LockStation>('groupId', {transaction})) ?? 0
+        const nextGroupId = maxGroupId + 1
+        await Promise.all(
+        coordinates.map(async (coordinate) => {
+          const newCoordinate = await Coordinate.create({ lat: coordinate.lat, lng: coordinate.lng }, { transaction })
+          await LockStation.create({ coordinateId: newCoordinate.id, groupId: nextGroupId }, { transaction })
+        }))
+      }
+      await transaction.commit()
+    } catch(err) {
+      await transaction.rollback()
+      console.error('Error saving lock stations:', err)
+      throw new Error('Failed to save lock stations')
+    }
   }
-}
 
 export default {
   getLockStations,
-  addLockStation,
   saveLockStation
 }

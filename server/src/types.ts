@@ -6,3 +6,7 @@ export interface Coordinate {
 export interface LockStation {
   coordinate: Coordinate
 }
+
+export interface LockStationLines {
+  coordinates: Coordinate[]
+}

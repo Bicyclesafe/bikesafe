@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Map from "./Map"
+import MapComponent from "./Map"
 import Notification from "./Notification"
 import { PinFilter } from "./PinFilter"
 import { BikeTheft, Filters } from "../types"
@@ -42,7 +42,6 @@ const HomePage = () => {
   }
 
   const user = auth.currentUser
-  console.log(user)
 
   return (
     <div>
@@ -56,7 +55,7 @@ const HomePage = () => {
           <ReportModal theftPosition={theftPosition} setTheftPosition={setTheftPosition} bikeThefts={bikeThefts} setBikeThefts={setBikeThefts} />
           {user && <p>You are logged in as {user.email}</p>}
       </div>
-      <Map
+      <MapComponent
           reportMode={reportMode}
           filters={filters}
           theftPosition={theftPosition}
