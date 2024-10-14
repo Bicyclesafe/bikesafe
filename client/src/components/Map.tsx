@@ -11,6 +11,7 @@ import MousePositionControl from './MouseControl'
 import CursorMarker from './CursorMarker'
 import MarkerClusterGroup from "react-leaflet-cluster"
 import ZoomLevelUpdater from './ZoomLevel'
+//import LockStationMarker from './LockStationMarker'
 
 const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
   const [lockStations, setLockStations] = useState<LockStation[][]>([])
@@ -21,7 +22,6 @@ const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setThe
     const fetchData = async () => {
       const theftResponse = await theftService.getAllThefts()
       setBikeThefts(theftResponse)
-
       const lockStationResponse = await lockStationService.getAllLockStations()
       const lockStationsGrouped = groupLockstations(lockStationResponse)
       setLockStations(lockStationsGrouped)
