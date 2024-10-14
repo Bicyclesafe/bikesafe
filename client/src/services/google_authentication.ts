@@ -24,10 +24,10 @@ const requiredEnvVariables = [
 ]
 
 export const checkEnvVariables = () => {
-  const missingVariables = requiredEnvVariables.filter((variable) => !import.meta.env[variable]);
+  const missingVariables = requiredEnvVariables.filter((variable) => !import.meta.env[variable])
 
   if (missingVariables.length > 0) {
-    throw new Error(`Missing the following environment variables: ${missingVariables.join(', ')}`);
+    throw new Error(`Missing the following environment variables: ${missingVariables.join(', ')}`)
   }
 }
 
