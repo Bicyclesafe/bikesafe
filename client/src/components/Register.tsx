@@ -72,22 +72,25 @@ const Register = () => {
         <form onSubmit={registerUser}>
           email
           <input
+            id="email"
             value={email}
             onChange={handleEmailChange}
           />
           password
           <input
+            id="password"
             type="password"
             value={password}
             onChange={handlePasswordChange}
           />
           password confirmation
           <input
+          id="passwordConfirm"
           type="password"
           value={passwordConfirm}
           onChange={handlePasswordConfirmChange}
           />
-          <button type="submit">Register</button>
+          <button id="register-button" type="submit">Register</button>
         </form>
       </div>
   )
