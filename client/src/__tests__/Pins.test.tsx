@@ -41,4 +41,9 @@ test('renders markers at correct coordinates', async () => {
   expect(await screen.getByText("51.505 -0.09")).toBeInTheDocument()
   expect(await screen.getByText("52.505 -0.09")).toBeInTheDocument()
 })
+
+test('Renders null when isChecked is false', async () => {
+  const { container } = render(<Pins pinData={[]} isChecked={false} typeOfPin='' deletePin={() => {}}/>)
+  expect(container.firstChild).toBeNull()
+})
  

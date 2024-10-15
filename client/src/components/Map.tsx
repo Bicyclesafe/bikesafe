@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import { MapContainer, TileLayer, Polyline } from 'react-leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet'
 import { LockStation, MapProps } from '../types'
 import { FC, useEffect, useState } from 'react'
 import { TheftMarker } from './TheftMarker'
@@ -9,8 +9,8 @@ import styles from './Map.module.css'
 import lockStationService from '../services/lockStationService'
 import MarkerClusterGroup from "react-leaflet-cluster"
 import ZoomLevelUpdater from './ZoomLevel'
+import LockStationMarker from './LockStationMarker'
 import CursorPosition from './cursor/CursorPosition'
-//import LockStationMarker from './LockStationMarker'
 
 const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
   const [lockStations, setLockStations] = useState<LockStation[][]>([])
@@ -89,13 +89,8 @@ const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setThe
           deletePin={deleteTheftMarker}
         />
       </MarkerClusterGroup>
-      {filters.lockStation.isChecked && zoomLevel > 9 && lockStations.map((stations) => (
-        <Polyline 
-          key={stations[0].groupId}
-          positions={stations.map((station) => station.coordinate)}
-          color="blue"
-          weight={3}
-        />
+      {filters.lockStation.isChecked && zoomLevel > 9 && lockStations.map((stationsGroup) => (
+        <LockStationMarker stationsGroup={stationsGroup} />
       ))}
       {reportMode && <CursorPosition />}
       <ZoomLevelUpdater setZoomLevel={setZoomLevel} />
