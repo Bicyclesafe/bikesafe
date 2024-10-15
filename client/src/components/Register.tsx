@@ -2,6 +2,7 @@ import { useState } from "react"
 import { auth } from "../services/google_authentication"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import Notification from "./Notification"
+import { Navigate } from "react-router-dom"
 
 const Register = () => {
   const [email, setEmail] = useState<string>("")
@@ -9,42 +10,39 @@ const Register = () => {
   const [passwordConfirm, setPasswordConfirm] = useState<string>("")
   const [notification, setNotification] = useState<boolean>(false)
   const [notificationMessage, setNotificationMessage] = useState<string>("")
+  const [completedRegistration, setCompletedRegistration] = useState<boolean>(false)
+
+  const createNotification = (message: string) => {
+      setNotificationMessage(message)
+      setNotification(true)
+      setTimeout(() => {
+        setNotification(false)  
+        }, 3000)
+  }
 
   const registerUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
       if (password !== passwordConfirm) {
-        setNotificationMessage('Password and password confirmation do not match')
-        setNotification(true)
-        setTimeout(() => {
-          setNotification(false)  
-        }, 3000);
+        createNotification('Password and password confirmation do not match')
         return 
       }
       
       else if (password.length < 6) {
-        setNotificationMessage('Minimum length for password is 6 characters')
-        setNotification(true)
-        setTimeout(() => {
-          setNotification(false)  
-        }, 3000);
+        createNotification('Minimum length for password is 6 characters')
         return
       }
 
       await createUserWithEmailAndPassword(auth, email, password)
-      setNotificationMessage('User has been created!')
-      setNotification(true)
+      createNotification('User has been created!')
       setTimeout(() => {
-        setNotification(false)  
-      }, 3000);
+        setCompletedRegistration(true)
+        
+      }, 2000);
 
     } catch(error) {
       console.error(error)
-      setNotificationMessage('Make sure you are using a correctly formatted email and password')
-      setNotification(true)
-      setTimeout(() => {
-        setNotification(false)  
-      }, 3000);
+      createNotification('Make sure you are using a correctly formatted email and password')
     }
   }
 
@@ -64,30 +62,34 @@ const Register = () => {
 
 
   return (
-    <div>
-      <Notification visible={notification} message={notificationMessage}/>
-      <h1>Register</h1>
-      <form onSubmit={registerUser}>
-        email
-        <input
-          value={email}
-          onChange={handleEmailChange}
-        />
-        password
-        <input
+    completedRegistration
+      ? 
+      <Navigate replace to="/login" />
+      :  
+      <div>
+        <Notification visible={notification} message={notificationMessage}/>
+        <h1>Register</h1>
+        <form onSubmit={registerUser}>
+          email
+          <input
+            value={email}
+            onChange={handleEmailChange}
+          />
+          password
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          password confirmation
+          <input
           type="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        password confirmation
-        <input
-        type="password"
-        value={passwordConfirm}
-        onChange={handlePasswordConfirmChange}
-        />
-        <button type="submit">Register</button>
-      </form>
-    </div>
+          value={passwordConfirm}
+          onChange={handlePasswordConfirmChange}
+          />
+          <button type="submit">Register</button>
+        </form>
+      </div>
   )
 }
 
