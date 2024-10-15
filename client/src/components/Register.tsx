@@ -38,7 +38,7 @@ const Register = () => {
       setTimeout(() => {
         setCompletedRegistration(true)
         
-      }, 2000);
+      }, 2000)
 
     } catch(error) {
       console.error(error)
