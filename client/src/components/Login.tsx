@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom"
 
 const Login = () => {
   const [user, setUser] = useState<User | null>(null)
-  
+
   const googlePopupLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider)
@@ -15,7 +15,7 @@ const Login = () => {
     }
   }
 
-  const emailLogin = async () => {
+  const emailLogin = () => {
     return
   }
 
@@ -27,7 +27,6 @@ const Login = () => {
             Login
           </div>
           <button onClick={googlePopupLogin}>Google</button>
-          <br />
           <button onClick={emailLogin}>Email</button>
         </div>
   )
