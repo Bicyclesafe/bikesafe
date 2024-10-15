@@ -1,14 +1,15 @@
-import { useEffect, FC, useCallback } from "react"
+import { useEffect, useCallback, useState } from "react"
 import { useMap } from 'react-leaflet'
-import { MousePositionControlProps } from "../types"
+import CursorPin from "./CursorPin"
 
-const MousePositionControl: FC<MousePositionControlProps> = ({ setCursorPosition }) => {
+const CursorPosition = () => {
+  const [position, setPosition] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 })
   const map = useMap()
 
   const onMouseMove = useCallback((e: L.LeafletMouseEvent) => {
     const { lat, lng } = e.latlng
-    setCursorPosition({ lat, lng })
-  }, [setCursorPosition])
+    setPosition({ lat, lng })
+  }, [setPosition])
 
   useEffect(() => {
     map.on('mousemove', onMouseMove)
@@ -19,7 +20,8 @@ const MousePositionControl: FC<MousePositionControlProps> = ({ setCursorPosition
     }
   }, [map, onMouseMove])
 
-  return null
+  return <CursorPin position={position} />
+
 }
 
-export default MousePositionControl
+export default CursorPosition

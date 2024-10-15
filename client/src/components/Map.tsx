@@ -7,15 +7,13 @@ import { Pins } from './Pins'
 import theftService from '../services/theftService'
 import styles from './Map.module.css'
 import lockStationService from '../services/lockStationService'
-import MousePositionControl from './MouseControl'
-import CursorMarker from './CursorMarker'
 import MarkerClusterGroup from "react-leaflet-cluster"
 import ZoomLevelUpdater from './ZoomLevel'
 import LockStationMarker from './LockStationMarker'
+import CursorPosition from './cursor/CursorPosition'
 
 const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
   const [lockStations, setLockStations] = useState<LockStation[][]>([])
-  const [cursorPosition, setCursorPosition] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 })
   const [zoomLevel, setZoomLevel] = useState<number>(13) 
 
   useEffect(() => {
@@ -94,8 +92,7 @@ const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setThe
       {filters.lockStation.isChecked && zoomLevel > 9 && lockStations.map((stationsGroup) => (
         <LockStationMarker stationsGroup={stationsGroup} />
       ))}
-      {reportMode && <CursorMarker cursorPosition={cursorPosition} />}
-      {reportMode && <MousePositionControl setCursorPosition={setCursorPosition} />}
+      {reportMode && <CursorPosition />}
       <ZoomLevelUpdater setZoomLevel={setZoomLevel} />
     </MapContainer>
   )
