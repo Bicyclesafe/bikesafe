@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import { MapContainer, TileLayer, Polyline } from 'react-leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet'
 import { LockStation, MapProps } from '../types'
 import { FC, useEffect, useState } from 'react'
 import { TheftMarker } from './TheftMarker'
@@ -11,7 +11,7 @@ import MousePositionControl from './MouseControl'
 import CursorMarker from './CursorMarker'
 import MarkerClusterGroup from "react-leaflet-cluster"
 import ZoomLevelUpdater from './ZoomLevel'
-//import LockStationMarker from './LockStationMarker'
+import LockStationMarker from './LockStationMarker'
 
 const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
   const [lockStations, setLockStations] = useState<LockStation[][]>([])
@@ -91,13 +91,8 @@ const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setThe
           deletePin={deleteTheftMarker}
         />
       </MarkerClusterGroup>
-      {filters.lockStation.isChecked && zoomLevel > 9 && lockStations.map((stations) => (
-        <Polyline 
-          key={stations[0].groupId}
-          positions={stations.map((station) => station.coordinate)}
-          color="blue"
-          weight={3}
-        />
+      {filters.lockStation.isChecked && zoomLevel > 9 && lockStations.map((stationsGroup) => (
+        <LockStationMarker stationsGroup={stationsGroup} />
       ))}
       {reportMode && <CursorMarker cursorPosition={cursorPosition} />}
       {reportMode && <MousePositionControl setCursorPosition={setCursorPosition} />}
