@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import ReportModal from '../components/ReportModal'
 import { LatLng } from 'leaflet'
 
-jest.mock("../services/theftservice", () => ({
+jest.mock("../services/theftService", () => ({
   sendTheftReport: jest.fn()
 }))
 
