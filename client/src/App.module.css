@@ -1,33 +1,45 @@
+* {
+    box-sizing: border-box;
+    --color-white: #FDFDFD;
+    --color-red: rgb(224, 36, 36);
+    --color-blue: #3A86FF;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1rem;
+}
+
 .content-container {
     position: fixed;
     right: 10px;
     width: 210px;
     z-index: 2; 
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.7);
-    font-size: 20px;
-    font-family:'Courier New', Courier, monospace;
+    background-color: var(--color-white);
+    font-family: "Open Sans", sans-serif;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .base-button {
-    margin-top: 15px;
-    color: white;
-    background-color: rgb(98, 171, 235);
-    border-radius: 7px;
-    padding: 10px;
-    font-size: 20px;
-    width: 100%;
-    border: 2px;
-    text-align: center;
-    cursor: pointer;
-    font-weight: bold;
-    border: 2px solid black
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 3px;
+    border: none;
+    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+    color: var(--color-white);
+    background-color: var(--color-blue);
 }
 
+.base-button:hover {
+    background-color: #2a6fde;
+}
+
+
 #theft-button {
-    background-color: red;
+    background-color: var(--color-red);
 }
 
 #theft-button:hover {
-    background-color: darkred;
+    background-color: rgb(197, 27, 27);
 }
