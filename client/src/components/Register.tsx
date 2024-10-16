@@ -3,6 +3,7 @@ import { auth } from "../services/google_authentication"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import Notification from "./Notification"
 import { Navigate } from "react-router-dom"
+import { useAuth } from "../hooks/useAuth"
 
 const Register = () => {
   const [email, setEmail] = useState<string>("")
@@ -10,7 +11,7 @@ const Register = () => {
   const [passwordConfirm, setPasswordConfirm] = useState<string>("")
   const [notification, setNotification] = useState<boolean>(false)
   const [notificationMessage, setNotificationMessage] = useState<string>("")
-  const [completedRegistration, setCompletedRegistration] = useState<boolean>(false)
+  const { user } = useAuth()
 
   const createNotification = (message: string) => {
       setNotificationMessage(message)
@@ -35,10 +36,6 @@ const Register = () => {
 
       await createUserWithEmailAndPassword(auth, email, password)
       createNotification('User has been created!')
-      setTimeout(() => {
-        setCompletedRegistration(true)
-        
-      }, 2000)
 
     } catch(error) {
       console.error(error)
@@ -58,11 +55,8 @@ const Register = () => {
     setPasswordConfirm(event.currentTarget.value)
   }
 
-
-
-
   return (
-    completedRegistration
+    user
       ? 
       <Navigate replace to="/login" />
       :  
