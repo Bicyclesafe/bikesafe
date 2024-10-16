@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen, act } from '@testing-library/react'
-import { TheftMarker } from '../components/TheftMarker'
+import { TheftMarker } from '../components/pins/TheftMarker'
 import { LatLng } from 'leaflet'
 import React from 'react'
 import { useMapEvents } from 'react-leaflet'

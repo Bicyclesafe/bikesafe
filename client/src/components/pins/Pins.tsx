@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { Marker, Popup } from "react-leaflet"
-import { PinsProps} from "../types"
-import { pinType } from "../util/pins"
+import { PinsProps} from "../../types"
+import { pinType } from "../../util/pins"
 
 export const Pins: FC<PinsProps> = ({ pinData, isChecked, typeOfPin, deletePin }) => {
   if (!isChecked) return null

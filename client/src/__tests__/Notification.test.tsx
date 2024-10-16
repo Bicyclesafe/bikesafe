@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import {render, screen} from '@testing-library/react'
-import Notification from '../components/Notification'
+import Notification from '../components/notification/Notification'
 
 describe("Notification component", () => {
     test("renders component", async () => {

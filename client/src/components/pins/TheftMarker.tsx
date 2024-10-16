@@ -1,7 +1,7 @@
 import { FC, useRef } from "react"
 import { Marker, useMapEvents } from "react-leaflet"
 import { Marker as LeafletMarker } from "leaflet"
-import { TheftMarkerProps } from "../types"
+import { TheftMarkerProps } from "../../types"
 
 export const TheftMarker: FC<TheftMarkerProps> = ({
   reportMode,

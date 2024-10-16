@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import ReportModal from '../components/ReportModal'
+import ReportModal from '../components/report/ReportModal'
 import { LatLng } from 'leaflet'
 
 jest.mock("../services/theftService", () => ({
   sendTheftReport: jest.fn()
 }))
 
-jest.mock("../components/ReportModal.module.css", () => ({}))
+jest.mock("../components/report/ReportModal.module.css", () => ({}))
 jest.mock("../App.module.css", () => ({}))
 
 describe("ReportModal component", () => {

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import LockStationMarker from '../components/LockStationMarker'
+import LockStationMarker from '../components/pins/LockStationMarker'
 
 jest.mock('react-leaflet', () => {
   const actual = jest.requireActual('leaflet')

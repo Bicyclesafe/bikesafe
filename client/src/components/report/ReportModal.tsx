@@ -1,9 +1,9 @@
 import { FC, useState } from "react"
-import { ReportModalProps } from "../types"
+import { ReportModalProps } from "../../types"
 import { LatLng } from "leaflet"
-import { sendTheftReport } from "../services/theftService"
+import { sendTheftReport } from "../../services/theftService"
 import styles from './ReportModal.module.css'
-import appStyles from '../App.module.css'
+import appStyles from '../../App.module.css'
 
 const ReportModal: FC<ReportModalProps> = ({
   theftPosition,

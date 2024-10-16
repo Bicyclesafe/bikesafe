@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import { Pins } from '../components/Pins'
+import { Pins } from '../components/pins/Pins'
 
 // Mock Leaflet's marker creation
 jest.mock('react-leaflet', () => {

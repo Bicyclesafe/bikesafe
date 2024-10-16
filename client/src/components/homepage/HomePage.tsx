@@ -1,12 +1,12 @@
 import { useState } from "react"
-import MapComponent from "./Map"
-import Notification from "./Notification"
-import { PinFilter } from "./PinFilter"
-import { BikeTheft, Filters } from "../types"
-import styles from '../App.module.css'
+import MapComponent from "../map/Map"
+import Notification from "../notification/Notification"
+import { PinFilter } from "../filter/PinFilter"
+import { BikeTheft, Filters } from "../../types"
+import styles from '../../App.module.css'
 import { LatLng } from "leaflet"
-import ReportModal from "./ReportModal"
-import { useAuth } from "../hooks/useAuth"
+import ReportModal from "../report/ReportModal"
+import { useAuth } from "../../hooks/useAuth"
 
 const initialFilters: Filters = {
   bikeTheft: {
