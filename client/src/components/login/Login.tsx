@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { auth, provider } from "../services/google_authentication"
+import { auth, provider } from "../../services/google_authentication"
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import { Navigate } from "react-router-dom"
-import Notification from "./Notification"
-import { useAuth } from "../hooks/useAuth"
+import Notification from "../notification/Notification"
+import { useAuth } from "../../hooks/useAuth"
 
 const Login = () => {
   const [email, setEmail] = useState<string>("")

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import {render, screen} from '@testing-library/react'
-import { PinFilter } from '../components/PinFilter'
+import { PinFilter } from '../components/filter/PinFilter'
 
 const filter =
 {
