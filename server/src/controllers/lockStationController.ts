@@ -45,6 +45,7 @@ export const saveLockStation = async (coordinates: CoordinateType[]) => {
     }
   }
 
+
 export default {
   getLockStations,
   saveLockStation
