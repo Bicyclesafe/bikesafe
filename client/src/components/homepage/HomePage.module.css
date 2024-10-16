@@ -1,0 +1,26 @@
+.home-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    width: 15rem;
+    margin-top: 0.625rem;
+    margin-right: 0.625rem;
+    position: absolute;
+    right: 0;
+    z-index: 2; 
+    padding: 1rem 1rem;
+    background-color: var(--color-white);
+    font-family: "Open Sans", sans-serif;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.filter-container h2 {
+    font-weight: 600;
+    font-size: 1.125rem;
+    padding-bottom: 0.5rem;
+}
