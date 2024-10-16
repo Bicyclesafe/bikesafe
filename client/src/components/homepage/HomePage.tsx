@@ -1,12 +1,12 @@
 import { useState } from "react"
-import MapComponent from "./Map"
-import Notification from "./Notification"
-import { PinFilter } from "./PinFilter"
-import { BikeTheft, Filters } from "../types"
-import styles from '../App.module.css'
+import MapComponent from "../map/Map"
+import Notification from "../notification/Notification"
+import { PinFilter } from "../filter/PinFilter"
+import { BikeTheft, Filters } from "../../types"
+import styles from '../../App.module.css'
 import { LatLng } from "leaflet"
-import ReportModal from "./ReportModal"
-import { auth } from "../services/google_authentication"
+import ReportModal from "../report/ReportModal"
+import { useAuth } from "../../hooks/useAuth"
 
 const initialFilters: Filters = {
   bikeTheft: {
@@ -24,6 +24,7 @@ const HomePage = () => {
   const [filters, setFilters] = useState<Filters>(initialFilters)
   const [theftPosition, setTheftPosition] = useState<LatLng | null>(null)
   const [bikeThefts, setBikeThefts] = useState<BikeTheft[]>([])
+  const { user } = useAuth()
   
   const reportHandler = () => {
     setReportMode(!reportMode)
@@ -40,8 +41,6 @@ const HomePage = () => {
       }
     }))
   }
-
-  const user = auth.currentUser
 
   return (
     <div>

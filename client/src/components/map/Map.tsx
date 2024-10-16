@@ -1,20 +1,18 @@
 import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer } from 'react-leaflet'
-import { LockStation, MapProps } from '../types'
+import { LockStation, MapProps } from '../../types'
 import { FC, useEffect, useState } from 'react'
-import { TheftMarker } from './TheftMarker'
-import { Pins } from './Pins'
-import theftService from '../services/theftService'
+import { TheftMarker } from '../pins/TheftMarker'
+import { Pins } from '../pins/Pins'
+import theftService from '../../services/theftService'
 import styles from './Map.module.css'
-import lockStationService from '../services/lockStationService'
+import lockStationService from '../../services/lockStationService'
 import MarkerClusterGroup from "react-leaflet-cluster"
-import ZoomLevelUpdater from './ZoomLevel'
-import LockStationMarker from './LockStationMarker'
-import CursorPosition from './cursor/CursorPosition'
+import LockStationMarker from '../pins/LockStationMarker'
+import CursorPosition from '../cursor/CursorPosition'
 
 const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
   const [lockStations, setLockStations] = useState<LockStation[][]>([])
-  const [zoomLevel, setZoomLevel] = useState<number>(13) 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,11 +87,10 @@ const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setThe
           deletePin={deleteTheftMarker}
         />
       </MarkerClusterGroup>
-      {filters.lockStation.isChecked && zoomLevel > 9 && lockStations.map((stationsGroup) => (
-        <LockStationMarker stationsGroup={stationsGroup} />
+      {filters.lockStation.isChecked && lockStations.map((stationsGroup) => (
+        <LockStationMarker key={stationsGroup[0]?.groupId} stationsGroup={stationsGroup} />
       ))}
       {reportMode && <CursorPosition />}
-      <ZoomLevelUpdater setZoomLevel={setZoomLevel} />
     </MapContainer>
   )
 }

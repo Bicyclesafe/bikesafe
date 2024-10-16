@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import {render, screen} from '@testing-library/react'
-import { PinFilterOption } from '../components/PinFilterOption'
+import { PinFilterOption } from '../components/filter/PinFilterOption'
 
 describe("PinfilterOption component", () => {
   

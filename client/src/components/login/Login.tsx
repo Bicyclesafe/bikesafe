@@ -1,15 +1,16 @@
 import { useState } from "react"
-import { auth, provider } from "../services/google_authentication"
-import { signInWithEmailAndPassword, signInWithPopup, User } from "firebase/auth"
+import { auth, provider } from "../../services/google_authentication"
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import { Navigate } from "react-router-dom"
-import Notification from "./Notification"
+import Notification from "../notification/Notification"
+import { useAuth } from "../../hooks/useAuth"
 
 const Login = () => {
-  const [user, setUser] = useState<User | null>(null)
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [notification, setNotification] = useState<boolean>(false)
   const [notificationMessage, setNotificationMessage] = useState<string>("")
+  const { user } = useAuth()
 
   const createNotification = (message: string) => {
     setNotificationMessage(message)
@@ -21,8 +22,7 @@ const Login = () => {
 
   const googlePopupLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, provider)
-      setUser(result.user)
+      await signInWithPopup(auth, provider)
     } catch(error) {
       console.error(error)
     }
@@ -31,8 +31,7 @@ const Login = () => {
   const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password)
-      setUser(userCredential.user)
+      await signInWithEmailAndPassword(auth, email, password)
     } catch (error) {
       console.error(error)
       createNotification('Invalid user credentials')
