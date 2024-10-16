@@ -50,7 +50,7 @@ const HomePage = () => {
           handleFilterChange={handleFilterChange}
           />
           <button className={`${styles['base-button']}`} id={styles['theft-button']} onClick={reportHandler}>{reportMode ? "Cancel" : "Report theft"}</button>
-          <Notification message={"Place me where the theft happened"} visible={reportMode}/>
+          <Notification message={"Place the pin on the map where the theft happened"} visible={reportMode}/>
           <ReportModal theftPosition={theftPosition} setTheftPosition={setTheftPosition} bikeThefts={bikeThefts} setBikeThefts={setBikeThefts} />
           {user && <p>You are logged in as {user.email}</p>}
       </div>
