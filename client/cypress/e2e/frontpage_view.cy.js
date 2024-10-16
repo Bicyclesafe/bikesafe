@@ -20,7 +20,7 @@ describe('Frontpage-tests:', () => {
     cy.contains('Report theft').click()
     cy.get('.leaflet-container').should('exist').click(500,200)
     cy.contains('Confirm').click()
-    cy.get('.leaflet-container').should('exist').click(500,200)
+    cy.get('.leaflet-container').should('exist').click(500,198)
     cy.contains('Täällä asuu TKT')
   })
   it('Cluster is formed when markers are close', () => {

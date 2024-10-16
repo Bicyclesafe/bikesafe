@@ -61,16 +61,18 @@ const Login = () => {
           <form onSubmit={loginUser}>
           email
           <input
+            id="email"
             value={email}
             onChange={handleEmailChange}
           />
           password
           <input
+            id="password"
             type="password"
             value={password}
             onChange={handlePasswordChange}
           />
-          <button type="submit">Login</button>
+          <button id="login-button" type="submit">Login</button>
         </form>
           <button onClick={googlePopupLogin}>Google</button>
         </div>
