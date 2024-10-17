@@ -4,6 +4,7 @@ import Notification from "../notification/Notification"
 import { PinFilter } from "../filter/PinFilter"
 import { BikeTheft, Filters } from "../../types"
 import styles from '../../App.module.css'
+import stylesHome from './HomePage.module.css'
 import { LatLng } from "leaflet"
 import ReportModal from "../report/ReportModal"
 import { useAuth } from "../../hooks/useAuth"
@@ -43,8 +44,9 @@ const HomePage = () => {
   }
 
   return (
-    <div>
-      <div className={styles['content-container']}>
+    <div className={stylesHome['home-container']}>
+      <div className={stylesHome['filter-container']}>
+          <h2>Filters</h2>
           <PinFilter
           filters={filters}
           handleFilterChange={handleFilterChange}

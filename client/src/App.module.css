@@ -5,18 +5,8 @@
     --color-blue: #3A86FF;
     font-family: "Open Sans", sans-serif;
     font-size: 1rem;
-}
-
-.content-container {
-    position: fixed;
-    right: 10px;
-    width: 210px;
-    z-index: 2; 
-    padding: 20px;
-    background-color: var(--color-white);
-    font-family: "Open Sans", sans-serif;
-    border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    margin: 0;
+    padding: 0;
 }
 
 .base-button {
@@ -37,6 +27,7 @@
 
 
 #theft-button {
+    margin: 0.5rem 0;
     background-color: var(--color-red);
 }
 

@@ -7,16 +7,16 @@ export const PinFilter: FC<PinFilterProps> = ({
   handleFilterChange
 }) => {
   return (
-    <>
-    {Object.entries(filters).map(([filterName, { isChecked, label }]) => (
-      <PinFilterOption
-        key={filterName}
-        name={filterName}
-        isChecked={isChecked}
-        onChange={handleFilterChange}
-        label={label}
-      />
-    ))}
-    </>
+    <div>
+      {Object.entries(filters).map(([filterName, { isChecked, label }]) => (
+        <PinFilterOption
+          key={filterName}
+          name={filterName}
+          isChecked={isChecked}
+          onChange={handleFilterChange}
+          label={label}
+        />
+      ))}
+    </div>
   )
 }

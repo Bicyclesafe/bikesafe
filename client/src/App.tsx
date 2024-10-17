@@ -3,18 +3,22 @@ import HomePage from "./components/homepage/HomePage"
 import Login from "./components/login/Login"
 import Register from "./components/register/Register"
 import AuthProvider from "./components/context/AuthProvider"
+import NavBar from "./components/navigation/NavBar"
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path={"/"} element={<HomePage />} />
-          <Route path={"/login"} element={<Login />} />
-          <Route path={"/register"} element={<Register />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <div>
+      <AuthProvider>
+        <Router>
+          <NavBar/>
+          <Routes>
+            <Route path={"/"} element={<HomePage />} />
+            <Route path={"/login"} element={<Login />} />
+            <Route path={"/register"} element={<Register />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </div>
   )
 }
 
