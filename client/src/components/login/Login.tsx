@@ -18,7 +18,7 @@ const Login = () => {
     setTimeout(() => {
       setNotification(false)  
       }, 3000)
-}
+  }
 
   const googlePopupLogin = async () => {
     try {
@@ -47,11 +47,9 @@ const Login = () => {
     setPassword(event.currentTarget.value)
   }
 
-
-
   return (
     user
-      ? <Navigate replace to="/" />
+      ? <Navigate replace to="/dashboard" />
       : <div>
           <Notification visible={notification} message={notificationMessage} />
           <div>
