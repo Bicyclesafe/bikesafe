@@ -1,12 +1,12 @@
 .login-container {
-    background-color: blue;
+  background-color: lightblue;
     display: flex;
     justify-content: center;
     padding: 0 1.5rem;
 }
 
 .content-container {
-    background-color: green;
+    background-color: white;
     display: flex;
     height: 100vh;
     max-width: 80rem;
@@ -37,13 +37,14 @@
     text-align: center;
 }
 
+/* FORM */
+
 .form header{
   font-size: 2rem;
   font-weight: 500;
   text-align: center;
   margin-bottom: 1.5rem;
 }
-
  .form input{
    height: 60px;
    width: 100%;
@@ -54,24 +55,40 @@
    border-radius: 6px;
    outline: none;
  }
-
  .form input:focus{
    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
  }
-
 .form a{
   font-size: 16px;
-  color: #009579;
+  color: var(--color-blue);
   text-decoration: none;
 }
-
 .form a:hover{
   text-decoration: underline;
 }
+.button {
+  height: 60px;
+  width: 100%;
+  padding: 0 15px;
+  font-size: 17px; 
+  border: 1px solid #ddd; 
+  border-radius: 6px; 
+  background: var(--color-blue); 
+  color: #fff; 
+  font-weight: 500; 
+  letter-spacing: 1px; 
+  margin-top: 1.7rem;
+  cursor: pointer; 
+  transition: 0.4s; 
+  outline: none;/
+}
 
+.button:hover {
+  background: #006653; /* Hover background color */
+}
 .form input.button{
   color: #fff;
-  background: #009579;
+  background: var(--color-blue);
   font-size: 1.2rem;
   font-weight: 500;
   letter-spacing: 1px;
@@ -81,4 +98,15 @@
 }
 .form input.button:hover{
   background: #006653;
+}
+.signup{
+  font-size: 17px;
+  text-align: center;
+}
+.signup label{
+  color: var(--color-blue);
+  cursor: pointer;
+}
+.signup label:hover{
+  text-decoration: underline;
 }
