@@ -4,6 +4,8 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import { Navigate } from "react-router-dom"
 import Notification from "../notification/Notification"
 import { useAuth } from "../../hooks/useAuth"
+import stylesLogin from "../login/Login.module.css"
+import image from "../../assets/polkupyora_kuva.jpg"
 
 const Login = () => {
   const [email, setEmail] = useState<string>("")
@@ -52,29 +54,38 @@ const Login = () => {
   return (
     user
       ? <Navigate replace to="/" />
-      : <div>
-          <Notification visible={notification} message={notificationMessage} />
-          <div>
-            Login
+      : <div className={stylesLogin['login-container']}>
+          <div className={stylesLogin['content-container']}>
+            <Notification visible={notification} message={notificationMessage} />
+            <div className={stylesLogin['column-left']}>
+              <div className={stylesLogin['login form']}>
+              <form className={stylesLogin['login-form']} onSubmit={loginUser}>
+                <label>email</label>
+                <input
+                  id="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                />
+              
+                
+                <label>password</label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                />
+                <button id="login-button" type="submit">Login</button>
+              </form>
+              <button onClick={googlePopupLogin}>Google</button>
+              </div>
+            </div>
+            <div className={stylesLogin['column-right']}>
+              <img src={image}/>
+            </div>
           </div>
-          <form onSubmit={loginUser}>
-          email
-          <input
-            id="email"
-            value={email}
-            onChange={handleEmailChange}
-          />
-          password
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          <button id="login-button" type="submit">Login</button>
-        </form>
-          <button onClick={googlePopupLogin}>Google</button>
         </div>
+       
   )
 }
 
