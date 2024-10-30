@@ -22,7 +22,7 @@ const NavBar = () => {
                         <li><a href="/">Home</a></li>
                         <li><a href="/">About</a></li>
                         {user
-                            ? <li><button onClick={logOut}>Log out</button></li>
+                            ? <li><button id="logout-button" onClick={logOut}>Log out</button></li>
                             : <li><a href="/login">Log In</a></li>
                         }
                         
