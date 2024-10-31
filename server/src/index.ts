@@ -2,6 +2,7 @@ import { app } from "./app"
 import { connectToDatabase } from "./util/db"
 import { PORT } from "./util/config"
 import { initializeLockStations } from "./services/lockStationService"
+import * as admin from 'firebase-admin'
 
 const startServer = async (): Promise<void> => {
   try {
@@ -17,6 +18,7 @@ const startServer = async (): Promise<void> => {
 const startAndInitialize = async () => {
   await startServer()
   await initializeLockStations()
+  admin.initializeApp()
 }
 
 startAndInitialize().catch((error) => {
