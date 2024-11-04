@@ -10,6 +10,7 @@ import stylesLogin from "../login/Login.module.css"
 const Login = () => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   //const [notification, setNotification] = useState<boolean>(false)
   //const [notificationMessage, setNotificationMessage] = useState<string>("")
   const { user } = useAuth()
@@ -30,14 +31,28 @@ const Login = () => {
     }
   }
 
+  const handleErrorMessage = (message : string) => {
+    setErrorMessage(message)
+  }
+
   const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
       await signInWithEmailAndPassword(auth, email, password)
-    } catch (error) {
-      console.error(error)
-      //createNotification('Invalid user credentials')
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+      console.error(error.message)
+      if (error.message == "Firebase: Error (auth/invalid-credential).") {
+        handleErrorMessage("Invalid email or password")
+      }
+      if (error.message == "Firebase: Error (auth/invalid-email).") {
+        handleErrorMessage("Please provide a valid email")
+      }
+      if (error.message == "Firebase: Error (auth/missing-password).") {
+        handleErrorMessage("Please provide a password")
+      }      
     }
+  }
 
   }
 
@@ -58,6 +73,9 @@ const Login = () => {
         <div className={stylesLogin['column-left']}>
           <div className={stylesLogin.form}>
             <header>Login</header>
+            {errorMessage && 
+            <div className={stylesLogin['error-wrapper']}>
+            <div className={stylesLogin['error-notification']}>{errorMessage}</div></div>}
             <form onSubmit={loginUser}>
               <input
                 id="email"

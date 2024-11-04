@@ -39,11 +39,13 @@
 
 /* FORM */
 
+
+
 .form header{
   font-size: 2rem;
   font-weight: 500;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 4rem;
 }
  .form input{
    height: 60px;
@@ -80,7 +82,7 @@
   margin-top: 1.7rem;
   cursor: pointer; 
   transition: 0.4s; 
-  outline: none;/
+  outline: none;
 }
 
 .button:hover {
@@ -109,4 +111,23 @@
 }
 .signup label:hover{
   text-decoration: underline;
+}
+
+.error-notification {
+  position: absolute;
+  top: -60px;
+  color: red;
+  font-size: 20px;
+  background-color: rgb(252, 233, 237);
+  border: solid 1px red;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.error-wrapper {
+  position: relative; /* Allows .error-notification to be positioned within this container */
+  height: 0; /* Prevents extra space from being added */
+  overflow: visible; /* Allows the error message to extend out if needed */
 }
