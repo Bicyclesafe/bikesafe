@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom"
 //import Notification from "../notification/Notification"
 import { useAuth } from "../../hooks/useAuth"
 import stylesLogin from "../login/Login.module.css"
-//import image from "../../assets/polkupyora_kuva.jpg"
+import image from "../../assets/polkupyora_kuva.jpg"
 
 const Login = () => {
   const [email, setEmail] = useState<string>("")
@@ -91,7 +91,8 @@ const Login = () => {
               <a href="#">Forgot password?</a>
               <button id='login-button' type="submit" className={stylesLogin.button}>Login</button>
             </form>
-            <button onClick={googlePopupLogin}>Google</button>
+            <div className={stylesLogin['divider']}>OR</div>
+            <button className={stylesLogin['google-button']}onClick={googlePopupLogin}>Login with Google</button>
             <div className={stylesLogin.signup}>
               <span>
                 Don't have an account?
@@ -103,6 +104,7 @@ const Login = () => {
           </div>
         </div>
         <div className={stylesLogin['column-right']}>
+          <img src={image}/>
         </div>
       </div>
     </div>
