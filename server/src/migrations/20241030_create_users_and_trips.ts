@@ -54,7 +54,7 @@ export const up: Migration = async ({ context: queryInterface }) => {
 
 
 export const down: Migration = async ({ context: queryInterface }) => {
-  await queryInterface.dropTable('users')
   await queryInterface.dropTable('trips')
+  await queryInterface.dropTable('users')
 }
 
