@@ -23,6 +23,7 @@ const Login = () => {
       }, 3000)
     }*/
 
+
   const googlePopupLogin = async () => {
     try {
       await signInWithPopup(auth, provider)
@@ -66,7 +67,7 @@ const Login = () => {
 
   return (
     user 
-    ? <Navigate replace to="/" />
+    ? <Navigate replace to="/dashboard" />
     :
     <div className={stylesLogin['login-container']}>
       <div className={stylesLogin['content-container']}>

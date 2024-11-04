@@ -26,7 +26,8 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-    await sequelize.truncate({ cascade: true, restartIdentity: true })
+    await Coordinate.truncate({ cascade: true, restartIdentity: true })
+    //await sequelize.truncate({ cascade: true, restartIdentity: true })
 })
 
 describe("GET /api/coordinates", () => {
