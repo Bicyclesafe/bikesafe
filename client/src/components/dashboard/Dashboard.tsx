@@ -1,5 +1,5 @@
 import { useAuth } from "../../hooks/useAuth"
-import { getTrips } from "../../services/tripService"
+import { addTrips } from "../../services/tripService"
 
 const Dashboard = () => {
   const { user } = useAuth()
@@ -7,7 +7,9 @@ const Dashboard = () => {
   const sendToken = async () => {
     const token = await user?.getIdToken(true)
     console.log(token)
-    getTrips(token as string)
+    
+      
+    addTrips({data: "asratdj"}, token as string)
   }
   sendToken()
   return (
