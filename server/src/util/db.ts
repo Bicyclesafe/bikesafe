@@ -4,6 +4,8 @@ import { BikeTheft } from '../models/bikeTheft'
 import { LockStation } from '../models/lockStation'
 import { Umzug, SequelizeStorage } from 'umzug'
 import { DATABASE_URL, TEST_DATABASE_URL } from './config'
+import { Trip } from '../models/trip'
+import { User } from '../models/user'
 
 const databaseUrl = process.env.NODE_ENV === 'test'
   ? TEST_DATABASE_URL
@@ -14,7 +16,7 @@ if (!databaseUrl) {
 }
 
 export const sequelize = new Sequelize(databaseUrl, {
-  models: [Coordinate, BikeTheft, LockStation],
+  models: [Coordinate, BikeTheft, LockStation, Trip, User],
   logging: false
   // logging: process.env.NODE_ENV !== 'test',
 })

@@ -8,7 +8,6 @@ import stylesHome from './HomePage.module.css'
 import { LatLng } from "leaflet"
 import ReportModal from "../report/ReportModal"
 import { useAuth } from "../../hooks/useAuth"
-import NavBar from "../navigation/NavBar"
 
 const initialFilters: Filters = {
   bikeTheft: {
@@ -46,7 +45,6 @@ const HomePage = () => {
 
   return (
     <div className={stylesHome['home-container']}>
-      <NavBar/>
       <div className={stylesHome['filter-container']}>
           <h2>Filters</h2>
           <PinFilter
