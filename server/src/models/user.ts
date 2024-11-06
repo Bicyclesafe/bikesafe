@@ -11,8 +11,8 @@ export class User extends Model {
   @Column
   id!: number
 
-  @Column
   @Unique
+  @Column
   uid!: string
 
   @Column
