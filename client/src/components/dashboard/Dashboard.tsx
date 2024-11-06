@@ -11,22 +11,22 @@ const Dashboard = () => {
           <SeasonalDistance />
         </div>
         <div className={stylesDashboard['component-container']}>
-            <div className={stylesDashboard['row-container']}>
-              <div className={stylesDashboard['item-left']}>
-                <PersonalGoal/>
-              </div>
-              <div className={stylesDashboard['item-right']}>
-                <PersonalGoal/>
-              </div>
+          <div className={stylesDashboard['row-container']}>
+            <div className={stylesDashboard['item-left']}>
+              <PersonalGoal/>
             </div>
-            <div className={stylesDashboard['row-container']}>
-              <div className={stylesDashboard['item-left']}>
-                <PersonalGoal/>
-              </div>
-              <div className={stylesDashboard['item-right']}>
-                <PersonalGoal/>
-              </div>
+            <div className={stylesDashboard['item-right']}>
+              <PersonalGoal/>
             </div>
+          </div>
+          <div className={stylesDashboard['row-container']}>
+            <div className={stylesDashboard['item-left']}>
+              <PersonalGoal/>
+            </div>
+            <div className={stylesDashboard['item-right']}>
+              <PersonalGoal/>
+            </div>
+          </div>
         </div>
       </div>
     </div>

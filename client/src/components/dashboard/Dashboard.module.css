@@ -1,5 +1,4 @@
 .dashboard-container {
-    background-color: blue;
     display: flex;
     justify-content: center;
     padding: 0 1.5rem;
@@ -7,7 +6,6 @@
   }
 
 .content-container {
-    background-color: gray;
     max-width: 80rem;
     width: 100%;
   }
@@ -15,20 +13,24 @@
 .component-container {
     display: flex;
     flex-direction: column;
-    background-color: black;
-    padding: 5px;
+    padding: 30px;
 }
 
 .row-container {
     display: flex;
-    background-color: yellow;
-    padding: 2px;
-    border: 1px solid red;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .item-left, .item-right {
     flex: 1;
-    height: 300px;
-    border: 13px solid green;
+    min-width: 250px;
+    max-width: 350px;
+    border: 1px solid black;
+    border-radius: 20px;
+    aspect-ratio: 1;
+    margin: 20px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    padding: 20px;
+    text-align: center;
 }
