@@ -5,11 +5,12 @@ import { Navigate } from "react-router-dom"
 //import Notification from "../notification/Notification"
 import { useAuth } from "../../hooks/useAuth"
 import stylesLogin from "../login/Login.module.css"
-//import image from "../../assets/polkupyora_kuva.jpg"
+import image from "../../assets/polkupyora_kuva.jpg"
 
 const Login = () => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   //const [notification, setNotification] = useState<boolean>(false)
   //const [notificationMessage, setNotificationMessage] = useState<string>("")
   const { user } = useAuth()
@@ -21,6 +22,10 @@ const Login = () => {
       setNotification(false)  
       }, 3000)
     }*/
+<<<<<<< HEAD
+=======
+
+>>>>>>> staging
 
   const googlePopupLogin = async () => {
     try {
@@ -30,14 +35,28 @@ const Login = () => {
     }
   }
 
+  const handleErrorMessage = (message : string) => {
+    setErrorMessage(message)
+  }
+
   const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
       await signInWithEmailAndPassword(auth, email, password)
-    } catch (error) {
-      console.error(error)
-      //createNotification('Invalid user credentials')
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+      console.error(error.message)
+      if (error.message == "Firebase: Error (auth/invalid-credential).") {
+        handleErrorMessage("Invalid email or password")
+      }
+      if (error.message == "Firebase: Error (auth/invalid-email).") {
+        handleErrorMessage("Please provide a valid email")
+      }
+      if (error.message == "Firebase: Error (auth/missing-password).") {
+        handleErrorMessage("Please provide a password")
+      }      
     }
+  }
 
   }
 
@@ -51,13 +70,16 @@ const Login = () => {
 
   return (
     user 
-    ? <Navigate replace to="/" />
+    ? <Navigate replace to="/dashboard" />
     :
     <div className={stylesLogin['login-container']}>
       <div className={stylesLogin['content-container']}>
         <div className={stylesLogin['column-left']}>
           <div className={stylesLogin.form}>
             <header>Login</header>
+            {errorMessage && 
+            <div className={stylesLogin['error-wrapper']}>
+            <div className={stylesLogin['error-notification']}>{errorMessage}</div></div>}
             <form onSubmit={loginUser}>
               <input
                 id="email"
@@ -73,7 +95,8 @@ const Login = () => {
               <a href="#">Forgot password?</a>
               <button id='login-button' type="submit" className={stylesLogin.button}>Login</button>
             </form>
-            <button onClick={googlePopupLogin}>Google</button>
+            <div className={stylesLogin['divider']}>OR</div>
+            <button className={stylesLogin['google-button']}onClick={googlePopupLogin}>Login with Google</button>
             <div className={stylesLogin.signup}>
               <span>
                 Don't have an account?
@@ -85,6 +108,7 @@ const Login = () => {
           </div>
         </div>
         <div className={stylesLogin['column-right']}>
+          <img src={image}/>
         </div>
       </div>
     </div>

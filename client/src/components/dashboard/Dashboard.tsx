@@ -1,5 +1,6 @@
 import { useAuth } from "../../hooks/useAuth"
 import { addTrips } from "../../services/tripService"
+import SeasonalDistance from "./SeasonalDistance"
 
 const Dashboard = () => {
   const { user } = useAuth()
@@ -15,6 +16,7 @@ const Dashboard = () => {
   return (
     <div>
       <h1>Dashboard</h1>
+      <SeasonalDistance />
     </div>
   )
 }
