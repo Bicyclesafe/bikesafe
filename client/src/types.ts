@@ -21,6 +21,14 @@ export interface LockStation {
   groupId: number
 }
 
+export interface PersonalGoal {
+  id: number
+  goalDistance: number
+  startTime: Date
+  endTime: Date
+  userId: number
+}
+
 export interface PinsProps {
   pinData: Coordinate[]
   isChecked: boolean

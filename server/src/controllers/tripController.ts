@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express"
 import { Trip } from "../models/trip"
 import { User } from "../models/user"
+import { Op } from "sequelize"
 
 export const getTripsForUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -24,7 +25,20 @@ export const getTotalDistanceForUser = async (req: Request, res: Response, next:
   }
 }
 
+export const getTripsBetweenDates = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { uid } = req.params
+    const { startTime, endTime } = req.query
+    const user: User | null = await User.findOne({ where: { uid }})
+    const trips  = await Trip.sum('trip_distance', { where: { userId: user?.id, startTime: { [Op.gte]: startTime}, endTime: {[Op.lte]: endTime}}})
+    res.status(200).json(trips)
+  } catch(err) {
+    next(err)
+  }
+}
+
 export default {
   getTripsForUser,
-  getTotalDistanceForUser
+  getTotalDistanceForUser,
+  getTripsBetweenDates
 }
