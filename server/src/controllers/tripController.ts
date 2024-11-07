@@ -2,9 +2,9 @@ import { Response, Request, NextFunction } from "express"
 import { Trip } from "../models/trip"
 import { User } from "../models/user"
 
-export const getTripsForUser = async (req: Request, res: Response, next: NextFunction) => {
+export const getTripsForUser = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
   try {
-    const { uid } = req.params
+    const uid = req.body.uid
     const user: User | null = await User.findOne({ where: { uid }})
     const trips: Trip[] = await Trip.findAll({ where: { userId: user?.id }})
     res.status(200).json(trips)

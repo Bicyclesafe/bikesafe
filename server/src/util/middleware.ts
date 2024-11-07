@@ -10,13 +10,13 @@ export const tokenVerification = async (req: Request<null, null, {uid: string}>,
   try {
     const token = req.get("Authorization")?.split(" ")[1]
     if (!token) {
-      res.status(401).json({ error: "Unauthorized: No token provided" })
+      return res.status(401).json({ error: "Unauthorized: No token provided" })
     }
-    const decodedToken = await auth.verifyIdToken(token as string)
+    const decodedToken = await auth.verifyIdToken(token)
     req.body.uid = decodedToken.uid
-    next()
+    return next()
   } catch (error) {
-    res.status(401).json({ error: "Unauthorized: Token is invalid" })
     console.log(error)
+    return res.status(401).json({ error: "Unauthorized: Token is invalid" })
   }
 }

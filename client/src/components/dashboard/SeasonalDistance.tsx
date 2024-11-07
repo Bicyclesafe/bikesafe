@@ -8,9 +8,11 @@ const SeasonalDistance = () => {
   
   useEffect(() => {
     const fetchData = async () => {
-      const token = await user?.getIdToken(true)
-      const distanceResponse = await tripService.getTotalDistanceForUser(user?.uid, token as string)
-      setDistance(distanceResponse)
+      if (user) {
+        const token = await user.getIdToken(true)
+        const distanceResponse = await tripService.getTotalDistanceForUser(token as string)
+        setDistance(distanceResponse)
+      }
     }
     fetchData()
   }, [user, user?.uid])
