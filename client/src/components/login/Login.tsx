@@ -22,10 +22,6 @@ const Login = () => {
       setNotification(false)  
       }, 3000)
     }*/
-<<<<<<< HEAD
-=======
-
->>>>>>> staging
 
   const googlePopupLogin = async () => {
     try {

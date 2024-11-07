@@ -86,13 +86,8 @@
   font-weight: 500;
   letter-spacing: 1px;
   margin-top: 1.7rem;
-<<<<<<< HEAD
-  cursor: pointer; 
-  transition: 0.4s; 
-=======
   cursor: pointer;
   transition: 0.4s;
->>>>>>> staging
   outline: none;
 }
 

@@ -3,11 +3,6 @@ import HomePage from "./components/homepage/HomePage"
 import Login from "./components/login/Login"
 import Register from "./components/register/Register"
 import AuthProvider from "./components/context/AuthProvider"
-<<<<<<< HEAD
-//import NavBar from "./components/navigation/NavBar"
-import Dashboard from "./components/dashboard/Dashboard"
-import AuthWrapper from "./components/context/AuthWrapper"
-=======
 import NavBar from "./components/navigation/NavBar"
 import Dashboard from "./components/dashboard/Dashboard"
 import AuthWrapper from "./components/context/AuthWrapper"
@@ -20,7 +15,6 @@ const Layout = () => {
     </>
   )
 }
->>>>>>> staging
 
 const App = () => {
   return (
