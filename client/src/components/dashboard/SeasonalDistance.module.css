@@ -1,0 +1,21 @@
+.seasonal-distance-container {
+    display: flex;
+    border-radius: 20px;
+}
+
+.year, .distance {
+    font-size: 1.5rem;
+    padding: 15px 30px;
+    border-radius: 20px 0px 0px 20px;
+}
+
+.year {
+    background-color: black;
+    color: white;
+}
+
+.distance {
+    color: black;
+    border-radius: 0px 20px 20px 0px;
+    border: 1px solid black;
+}
