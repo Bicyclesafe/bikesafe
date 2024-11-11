@@ -3,6 +3,7 @@
     "@types/leaflet.markercluster": "^1.5.4"
   },
   "dependencies": {
+    "email-validator": "^2.0.4",
     "leaflet.markercluster": "^1.5.3"
   },
   "scripts": {
