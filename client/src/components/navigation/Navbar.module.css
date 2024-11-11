@@ -3,10 +3,12 @@
     justify-content: space-between;
     align-items: center;
     font-weight: 500;
+    width: 80%;
+    margin: 0 auto;
   }
 
 .header {
-    background-color: #333;
+    background-color: #36a38d;
     color: #fff;
     padding: 1.5rem 0.625rem;
   }

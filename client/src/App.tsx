@@ -6,13 +6,16 @@ import AuthProvider from "./components/context/AuthProvider"
 import NavBar from "./components/navigation/NavBar"
 import Dashboard from "./components/dashboard/Dashboard"
 import AuthWrapper from "./components/context/AuthWrapper"
+import stylesApp from "./App.module.css"
 
 const Layout = () => {
   return (
-    <>
+    <div className={stylesApp['layout-container']}>
       <NavBar />
-      <Outlet />
-    </>
+      <div className={stylesApp['main-content']}>
+        <Outlet />
+      </div>
+    </div>
   )
 }
 
