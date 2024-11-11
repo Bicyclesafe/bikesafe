@@ -3,6 +3,16 @@ import supertest from "supertest"
 import { migrator, sequelize } from "../src/util/db"
 import { User } from "../src/models/user"
 import { Trip } from "../src/models/trip"
+import admin from "firebase-admin"
+
+jest.mock("firebase-admin", () => {
+  return {
+    auth: jest.fn().mockReturnValue({
+      verifyIdToken: jest.fn(),
+    }),
+    initializeApp: jest.fn()
+  }
+})
 
 const api = supertest(app)
 
@@ -38,13 +48,22 @@ const initialTrips = [
   }
 ]
 
+let mockVerifyIdToken: jest.Mock
+let validToken: string
+const mockDecodedToken = {
+  uid: "123"
+}
+
 beforeAll(async () => {
-  await migrator.up()
+  await migrator.up();
+  validToken = "mockValidFirebaseToken";
 })
 
 beforeEach(async () => {
   await User.bulkCreate(initialUsers)
   await Trip.bulkCreate(initialTrips)
+  mockVerifyIdToken = admin.auth().verifyIdToken as jest.Mock
+  mockVerifyIdToken.mockResolvedValue(mockDecodedToken)
 })
 
 afterEach(async () => {
@@ -52,21 +71,22 @@ afterEach(async () => {
   await Trip.truncate({ cascade: true, restartIdentity: true })
 })
 
-describe("GET /api/users/:uid/trips", () => {
+describe("GET /api/trips", () => {
   test("Trips are returned as JSON",async () => {
     await api
-    .get("/api/users/123/trips")
+    .get("/api/trips")
+    .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
     .expect("Content-Type", /application\/json/) 
   })
 
   test("Correct amount of trips are returned",async () => {
-    const response = await api.get("/api/users/123/trips").expect(200)
+    const response = await api.get("/api/trips").set("Authorization", `Bearer ${validToken}`).expect(200)
     expect(response.body).toHaveLength(2)
   })
 
   test("Correct format of trips are returned",async () => {
-    const response = await api.get("/api/users/123/trips").expect(200)
+    const response = await api.get("/api/trips").set("Authorization", `Bearer ${validToken}`).expect(200)
     const trip = response.body[0]
     expect(trip.userId).toBe(1)
     expect(typeof trip.startTime).toBe("string")
@@ -77,41 +97,65 @@ describe("GET /api/users/:uid/trips", () => {
   })
 
   test("Only returns trips for correct user",async () => {
-    const response = await api.get("/api/users/123/trips").expect(200)
+    const response = await api.get("/api/trips").set("Authorization", `Bearer ${validToken}`).expect(200)
     for (const trip of response.body) {
       expect(trip.userId).toBe(1)
     }
   })
 
-  test("Return error if user does not exist",async () => {
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
     await api
-    .get("/api/users/999/trips")
-    .expect(500)
+    .get("/api/trips")
+    .set("Authorization", `Bearer invalidToken`)
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+      .get("/api/trips")
+      .expect(401)
   })
 
 })
 
 
 
-describe("GET /api/users/:uid/total-distance", () => {
+describe("GET /api/trips/total-distance", () => {
   test("total distance is returned as JSON",async () => {
     await api
-    .get("/api/users/123/total-distance")
+    .get("/api/trips/total-distance")
+    .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
     .expect("Content-Type", /application\/json/) 
   })
 
   test("Correct total distance is returned",async () => {
     const response = await api
-    .get("/api/users/123/total-distance")
+    .get("/api/trips/total-distance")
+    .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
     expect(response.body).toBe(350)
   })
 
-  test("Return error if user does not exist",async () => {
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
     await api
-    .get("/api/users/999/total-distance")
-    .expect(500)
+    .get("/api/trips/total-distance")
+    .set("Authorization", `Bearer invalidToken`)
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+      .get("/api/trips/total-distance")
+      .expect(401)
   })
 })
 

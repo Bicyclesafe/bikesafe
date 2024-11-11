@@ -23,7 +23,6 @@ const Login = () => {
       }, 3000)
     }*/
 
-
   const googlePopupLogin = async () => {
     try {
       await signInWithPopup(auth, provider)

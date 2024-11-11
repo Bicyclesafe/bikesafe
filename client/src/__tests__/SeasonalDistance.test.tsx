@@ -4,12 +4,12 @@ import { getTotalDistanceForUser } from "../services/tripService"
 
 
 jest.mock("../services/tripService", () => ({
-    getTotalDistanceForUser: jest.fn(),
-  }))
+  getTotalDistanceForUser: jest.fn(),
+}))
 
 // Mockataan useAuth kokonaan, jotta se ei kutsu google_authentication.ts-tiedostoa
 jest.mock("../hooks/useAuth", () => ({
-  useAuth: () => ({ user: { uid: "testUserId" } }) // Määrittele mockattu käyttäjä
+  useAuth: () => ({ user: { uid: "testUserId", getIdToken: jest.fn() } }) // Määrittele mockattu käyttäjä
 }))
 
 describe("SeasonalDistance component", () => {
