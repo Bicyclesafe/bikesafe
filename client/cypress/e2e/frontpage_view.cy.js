@@ -2,7 +2,7 @@
 describe('Frontpage-tests:', () => {
   beforeEach(() => {
     cy.request('POST', 'http:/localhost:3000/testing/reset/db')
-    cy.visit('http://localhost:5173')
+    cy.visit('http://localhost:8080')
   })
   it('Frontpage can be opened', () => {
     cy.contains('Report theft')

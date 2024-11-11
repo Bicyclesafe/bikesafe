@@ -1,6 +1,6 @@
 describe('Register-tests:', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:5173/register')
+        cy.visit('http://localhost:8080/register')
       })
       
     it('Register page can be opened', () => {

@@ -1,6 +1,6 @@
 describe('Logout-tests:', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:5173/login')
+    cy.visit('http://localhost:8080/login')
   })
     
   it('Can log out when user logged in', () => {
