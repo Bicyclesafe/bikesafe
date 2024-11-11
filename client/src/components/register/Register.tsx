@@ -4,7 +4,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth"
 import { Navigate } from "react-router-dom"
 import { useAuth } from "../../hooks/useAuth"
 import styles from './Register.module.css'
-import { FirebaseError } from "firebase/app" 
+import { FirebaseError } from "firebase/app"
+import emailValidator from "email-validator"
 
 
 const Register = () => {
@@ -20,7 +21,7 @@ const Register = () => {
     let formIsValid = true
 
     if (password !== passwordConfirm) {
-      fieldErrors.passwordConfirm = 'Passwords dont match'
+      fieldErrors.passwordConfirm = "Passwords don't match"
       formIsValid = false
       }
 
@@ -29,13 +30,13 @@ const Register = () => {
       formIsValid = false
     }
 
-    if (!email) {
-      fieldErrors.email = 'Email is required'
+    if (!passwordConfirm) {
+      fieldErrors.passwordConfirm = 'Password confirmation is required'
       formIsValid = false
     }
 
-    if (!passwordConfirm) {
-      fieldErrors.passwordConfirm = 'Password confirmation is required'
+    if (!emailValidator.validate(email)) {
+      fieldErrors.email = 'Email is invalid'
       formIsValid = false
     }
 
@@ -90,7 +91,7 @@ const Register = () => {
                 id="email"
                 value={email}
                 onChange={handleEmailChange}
-                type="email"
+                type="text"
                 className={errors.email ? styles.errorInput : ''}
               />
               {errors.email && <span className={styles.errorMessage}>{errors.email}</span>}
