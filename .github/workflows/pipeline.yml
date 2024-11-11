@@ -67,4 +67,3 @@ jobs:
             uses: cypress-io/github-action@v6
             with:
               command: npm run cypress:test
-              wait-on: "http://localhost:8080, http://localhost:3000"
