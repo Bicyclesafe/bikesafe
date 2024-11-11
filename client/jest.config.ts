@@ -26,6 +26,9 @@ module.exports = {
   testEnvironmentOptions: {
     jsdom: '25.0.1', // or the version you want to use
   },
+  moduleNameMapper: {
+      "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js"
+  },
 
 setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 }
