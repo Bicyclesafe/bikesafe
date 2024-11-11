@@ -1,10 +1,34 @@
 import SeasonalDistance from "./SeasonalDistance"
+import stylesDashboard from "./Dashboard.module.css"
+import PersonalGoal from "./PersonalGoal"
 
 const Dashboard = () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <SeasonalDistance />
+    <div className={stylesDashboard['dashboard-container']}>
+      <div className={stylesDashboard['content-container']}>
+        <div>
+          <h1>Dashboard</h1>
+          <SeasonalDistance />
+        </div>
+        <div className={stylesDashboard['component-container']}>
+          <div className={stylesDashboard['row-container']}>
+            <div className={stylesDashboard['item-left']}>
+              <PersonalGoal/>
+            </div>
+            <div className={stylesDashboard['item-right']}>
+              <PersonalGoal/>
+            </div>
+          </div>
+          <div className={stylesDashboard['row-container']}>
+            <div className={stylesDashboard['item-left']}>
+              <PersonalGoal/>
+            </div>
+            <div className={stylesDashboard['item-right']}>
+              <PersonalGoal/>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
