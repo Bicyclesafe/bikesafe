@@ -59,3 +59,12 @@ jobs:
             run: npm run lint
           - name: Test
             run: npm run test
+          - name: Run docker-compose
+            uses: hoverkraft-tech/compose-action@v2.0.2
+            with:
+              compose-file: "./docker-compose.yaml"
+          - name: e2e tests
+            uses: cypress-io/github-action@v6
+            with:
+              command: npm run cypress:test
+              wait-on: "http://localhost:8080, http://localhost:3000"
