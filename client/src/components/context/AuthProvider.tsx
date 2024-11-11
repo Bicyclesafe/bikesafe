@@ -14,28 +14,24 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  
-  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setLoading(false)
       setUser(user)
     })
     return unsubscribe
   })
-
+  
   useEffect(() => {
     if (user) {
-      // Call the async function once the user state has been set
       (async () => {
         try {
           const token = await user.getIdToken(true)
-          console.log('this is token ', token)
-          await addUser(token as string);
+          await addUser(token as string)
+          setLoading(false)
         } catch (error) {
-          console.error('Error adding user to the database:', error);
+          console.error('Error adding user to the database:', error)
         }
-      })();
+      })()
     }
   }, [user])
 
