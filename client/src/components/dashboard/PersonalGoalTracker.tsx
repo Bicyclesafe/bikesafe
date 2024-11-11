@@ -10,11 +10,13 @@ const PersonalGoalTracker = () => {
   const [loading, setLoading] = useState<Boolean>(true)
   const { user } = useAuth()
   
-
   useEffect(() => {
     const fetchGoals = async () => {
-      const currentGoalResponse = await goalService.getCurrentGoalsForUser(user?.uid)
-      setCurrentGoals(currentGoalResponse || [])
+      if (user) {
+        const token = await user.getIdToken(true)
+        const currentGoalResponse = await goalService.getCurrentGoalsForUser(token as string)
+        setCurrentGoals(currentGoalResponse || [])
+      }
     }
     fetchGoals()
   }, [user?.uid])
@@ -22,8 +24,9 @@ const PersonalGoalTracker = () => {
   useEffect(() => {
     const fetchProgress = async () => {
       if (currentGoals.length > 0 && user?.uid) {
+        const token = await user.getIdToken(true)
         const tripsResponse = await tripService.getTripsBetweenDates(
-          user.uid,
+          token as string,
           currentGoals[0].startTime,
           currentGoals[0].endTime
         )

@@ -5,7 +5,7 @@ export const getTotalDistanceForUser = async (token: string) => {
   try {
     const authHeader = {"headers": {
       "Authorization": "Bearer " + token
-  }}
+    }}
     const response = await axios.get(`${apiUrl}/api/trips/total-distance`, authHeader)
     return response.data
   } catch(err) {
@@ -13,16 +13,18 @@ export const getTotalDistanceForUser = async (token: string) => {
   }
 }
 
-export const getTripsBetweenDates = async (uid: string | undefined, startTime: Date, endTime: Date) => {
+export const getTripsBetweenDates = async (token: string, startTime: Date, endTime: Date) => {
   try {
-    const response = await axios.get(`${apiUrl}/api/users/${uid}/trips/date-range`, {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+    const response = await axios.get(`${apiUrl}/api/trips/date-range`, {
+      ...authHeader,
       params: {
         startTime,
         endTime
-      }
+      },
     })
-
-    console.log(response)
 
     return response.data
   } catch(err) {

@@ -8,6 +8,7 @@ import bikeTheftRouter from './routes/bikeTheftRoute'
 import lockStationRouter from './routes/lockStationRoute'
 import tripRouter from './routes/tripRoute'
 import testingRouter from './routes/testingRoute'
+import goalRouter from './routes/goalRoute'
 
 export const app = express()
 
@@ -19,6 +20,7 @@ app.use('/api/coordinates', coordinatesRouter)
 app.use('/api/bike_thefts', bikeTheftRouter)
 app.use('/api/lock_stations', lockStationRouter)
 app.use('/api/trips', tripRouter)
+app.use('/api/goals', goalRouter)
 
 app.use('/testing', testingRouter)
 

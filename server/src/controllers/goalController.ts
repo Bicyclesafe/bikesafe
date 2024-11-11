@@ -3,9 +3,9 @@ import { Goal } from "../models/goal"
 import { User } from "../models/user"
 import { Op } from "sequelize"
 
-export const getGoalsForUser = async (req: Request, res: Response, next: NextFunction) => {
+export const getGoalsForUser = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
   try {
-    const { uid } = req.params
+    const uid = req.body.uid
     const user: User | null = await User.findOne({ where: { uid }})
     const goals: Goal[] = await Goal.findAll({ where: { userId: user?.id }})
     res.status(200).json(goals)
@@ -14,9 +14,9 @@ export const getGoalsForUser = async (req: Request, res: Response, next: NextFun
   }
 }
 
-export const getCurrentGoalForUser = async (req: Request, res: Response, next: NextFunction) => {
+export const getCurrentGoalForUser = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
     try {
-        const { uid } = req.params
+        const uid = req.body.uid
         const current_date = new Date()
         const user: User | null = await User.findOne({ where: { uid }})
         const goals: Goal[] = await Goal.findAll({ where: { userId: user?.id, startTime: { [Op.lte]: current_date}, endTime: {[Op.gte]:current_date}}})
