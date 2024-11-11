@@ -5,16 +5,18 @@ import stylesSeasonalDistance from './SeasonalDistance.module.css'
 
 const SeasonalDistance = () => {
   const [distance, setDistance] = useState(0)
-
   const { user } = useAuth()
-
+  
   useEffect(() => {
     const fetchData = async () => {
-      const distanceResponse = await tripService.getTotalDistanceForUser(user?.uid)
-      setDistance(distanceResponse)
+      if (user) {
+        const token = await user.getIdToken(true)
+        const distanceResponse = await tripService.getTotalDistanceForUser(token as string)
+        setDistance(distanceResponse)
+      }
     }
     fetchData()
-  }, [user?.uid])
+  }, [user, user?.uid])
 
   const year = new Date().getFullYear()
 
