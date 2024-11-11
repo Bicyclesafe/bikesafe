@@ -6,14 +6,15 @@ import tripService from "../../services/tripService"
 
 const PersonalGoalTracker = () => {
   const [currentGoals, setCurrentGoals] = useState<PersonalGoal[]>([])
-  const [currentProgress, setCurrentProgress] = useState<number>(0)
+  const [currentProgress, setCurrentProgress] = useState<number | null>(null)
+  const [loading, setLoading] = useState<Boolean>(true)
   const { user } = useAuth()
   
 
   useEffect(() => {
     const fetchGoals = async () => {
       const currentGoalResponse = await goalService.getCurrentGoalsForUser(user?.uid)
-      setCurrentGoals(currentGoalResponse)
+      setCurrentGoals(currentGoalResponse || [])
     }
     fetchGoals()
   }, [user?.uid])
@@ -28,21 +29,23 @@ const PersonalGoalTracker = () => {
         )
         setCurrentProgress(tripsResponse || 0)
       }
-    }
-    fetchProgress()
-  }, [currentGoals, user?.uid])
+    };
+    fetchProgress();
+    setLoading(false)
+  }, [currentGoals])
   
   return(
-    currentGoals.length > 0 ? (
-      <>
-        {currentProgress || 0} / {currentGoals[0].goalDistance}
-        <progress value={currentProgress/currentGoals[0].goalDistance}/>
-      </>
-    ) : (
-      <>
-        No current goals. <button onClick={() => {}}>Set a Goal</button>
-      </>   
-    )
+    loading 
+      ? <div>Loading...</div>
+      :
+    currentGoals.length > 0 && currentProgress
+      ?
+        <>
+          {currentProgress || 0} / {currentGoals[0].goalDistance}
+          <progress value={currentProgress/currentGoals[0].goalDistance}/>
+        </>
+      :
+        <div>No personal goals yet</div>
   )
 }
 
