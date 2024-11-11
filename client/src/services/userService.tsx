@@ -6,7 +6,8 @@ export const addUser = async (token: string) => {
     const authHeader = {"headers": {
       "Authorization": "Bearer " + token
   }}
-    const response = await axios.post(`${apiUrl}/api/users`, authHeader)
+    const data = null
+    const response = await axios.post(`${apiUrl}/api/users`, data, authHeader)
     return response.data
   } catch(err) {
     console.error("Error adding user", err)

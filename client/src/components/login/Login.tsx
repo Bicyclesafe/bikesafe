@@ -6,7 +6,6 @@ import { Navigate } from "react-router-dom"
 import { useAuth } from "../../hooks/useAuth"
 import stylesLogin from "../login/Login.module.css"
 import image from "../../assets/polkupyora_kuva.jpg"
-import userService from "../../services/userService"
 
 const Login = () => {
   const [email, setEmail] = useState<string>("")
@@ -23,19 +22,11 @@ const Login = () => {
       setNotification(false)  
       }, 3000)
     }*/
-  const addUserToDB = async () => {
-    if (user) {
-      const token = await user.getIdToken(true)
-      await userService.addUser(token as string)
-  } else {
-    console.log('ei tehdä pyyntöä ei käyttäjää')
-  }
-}
+  
 
   const googlePopupLogin = async () => {
     try {
       await signInWithPopup(auth, provider)
-      await addUserToDB()
 
     } catch(error) {
       console.error(error)
@@ -50,7 +41,6 @@ const Login = () => {
     event.preventDefault()
     try {
       await signInWithEmailAndPassword(auth, email, password)
-      addUserToDB()
     } catch (error: unknown) {
       if (error instanceof Error) {
       console.error(error.message)
