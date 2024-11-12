@@ -5,7 +5,7 @@
   }
 
 .content-container {
-    width: 90%;
+    width: 80%;
     margin: 0 auto;
   }
 
@@ -23,12 +23,12 @@
 
 .item-left, .item-right {
     flex: 1;
-    min-width: 200px;
-    max-width: 250px;
+    min-width: 300px;
+    max-width: 350px;
     border-radius: 10px;
     aspect-ratio: 1;
     margin: 20px;
-    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.4), 0 6px 15px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 3px 9px 0 rgba(0,0,0,0.4);
     padding: 30px;
     text-align: center;
     background-color: white;
