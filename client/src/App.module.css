@@ -36,7 +36,7 @@
 }
 
 .layout-container {
-    background-color: rgb(92, 92, 92);
+    background-color: white;
     display: flex;
     flex-direction: column;
 }
@@ -45,8 +45,10 @@
     width: 80%;
     margin: 0 auto;
     padding: 2rem;
-    background-color: #f0f0f0;
+    background-color: white;
     height: calc(100vh - 74px);
+    border-left: 0.2px solid grey;
+    border-right: 0.2px solid grey;
 }
 
 @media (max-width: 1200px) {
