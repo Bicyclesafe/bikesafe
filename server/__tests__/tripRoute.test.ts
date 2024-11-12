@@ -55,8 +55,8 @@ const mockDecodedToken = {
 }
 
 beforeAll(async () => {
-  await migrator.up();
-  validToken = "mockValidFirebaseToken";
+  await migrator.up()
+  validToken = "mockValidFirebaseToken"
 })
 
 beforeEach(async () => {
