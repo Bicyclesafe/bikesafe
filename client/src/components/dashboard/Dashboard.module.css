@@ -26,11 +26,15 @@
     flex: 1;
     min-width: 250px;
     max-width: 350px;
-    border: 1px solid black;
     border-radius: 20px;
+    border: 1px solid rgb(149, 149, 149);
     aspect-ratio: 1;
     margin: 20px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    padding: 20px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4), 0 6px 20px 0 rgba(0,0,0,0.19);
+    padding: 30px;
     text-align: center;
+}
+
+header {
+  font-size: 1.7rem;
 }
