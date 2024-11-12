@@ -17,6 +17,7 @@ export const getGoalsForUser = async (req: Request<null, null, {uid: string}>, r
 export const getCurrentGoalForUser = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
     try {
         const uid = req.body.uid
+        console.log(uid)
         const current_date = new Date()
         const user: User | null = await User.findOne({ where: { uid }})
         const goals: Goal[] = await Goal.findAll({ where: { userId: user?.id, startTime: { [Op.lte]: current_date}, endTime: {[Op.gte]:current_date}}})
