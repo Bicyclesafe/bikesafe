@@ -13,4 +13,16 @@ export const getTotalDistanceForUser = async (token: string) => {
   }
 }
 
-export default { getTotalDistanceForUser }
+export const getYearlyDistanceForUser = async (token: string, year: string) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+    const response = await axios.get(`${apiUrl}/api/trips/yearly-distance/${year}`, authHeader)
+    return response.data
+  } catch(err) {
+    console.error("Error fetching yearly distance for user", err)
+  }
+}
+
+export default { getTotalDistanceForUser, getYearlyDistanceForUser }
