@@ -12,8 +12,10 @@ const Layout = () => {
   return (
     <div className={stylesApp['layout-container']}>
       <NavBar />
-      <div className={stylesApp['main-content']}>
-        <Outlet />
+      <div className={stylesApp['main-content-container']}>
+        <div className={stylesApp['main-content']}>
+          <Outlet />
+        </div>
       </div>
     </div>
   )
