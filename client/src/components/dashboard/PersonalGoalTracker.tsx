@@ -48,7 +48,7 @@ const PersonalGoalTracker = () => {
   ] : []
   
   return (
-    <div style={{ height: 200 }}>
+    <div style={{ height: 150 }}>
       <header>
         Viikkotavoite
       </header>

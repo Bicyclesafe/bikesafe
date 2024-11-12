@@ -1,6 +1,6 @@
 const PersonalGoal = () => {
     return (
-        <div>THIS IS YOUR PERSONAL GOAL</div>
+        <div></div>
     )
 }
 
