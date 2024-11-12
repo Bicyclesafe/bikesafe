@@ -48,19 +48,18 @@ const PersonalGoalTracker = () => {
   ] : []
   
   return (
-    <div style={{ height: '80%' }}>
+    <div>
       <div className={stylesPersonalGoal['progress-text']}>
         {currentProgress || 0} / {currentGoals[0].goalDistance}
       </div>
+      <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
         <ResponsivePie
           data={data}
-          margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
           innerRadius={0.7}
           startAngle={-90}
           endAngle={90}
           padAngle={1}
           cornerRadius={3}
-          activeOuterRadiusOffset={3}
           colors={{ datum: 'data.color' }}
           enableArcLabels={false}
           enableArcLinkLabels={false}
@@ -71,13 +70,14 @@ const PersonalGoalTracker = () => {
           borderColor={{
             from: 'color',
             modifiers: [
-                [
-                    'darker',
-                    0.2
-                ]
+              [
+                'darker',
+                0.2
+              ]
             ]
-        }}
-        />
+          }}
+         />
+      </div>
     </div>
   )
 }

@@ -1,40 +1,34 @@
 .dashboard-container {
+    display: grid;
+    max-width: 1300px;
+    margin: 0 auto;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 40px;
+}
+
+.seasonal-distance {
+    grid-column: 1 / -1;
+}
+
+.item-container {
     display: flex;
-    justify-content: center;
-    padding: 0 1.5rem;
-}
-
-.content-container {
-    justify-content: center;
-}
-
-.row-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 2.0rem;
-}
-
-.top-element {
-    padding-bottom: 30px;
-}
-
-.item {
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
+    flex-direction: column;
     border-radius: 10px;
     aspect-ratio: 1;
     border: 1px solid grey;
     transition: box-shadow 0.3s ease, transform 0.1s ease;
-    padding: 30px;
     text-align: center;
     background-color: white;
     cursor: pointer;
+    padding: 30px;
 }
 
-.item:hover {
+.item {
+    position: relative;
+    height: 100%;
+}
+
+.item-container:hover {
     box-shadow: 0 0 10px #db536e;
     transform: scale(1.05);
 }

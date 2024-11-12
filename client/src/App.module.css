@@ -34,22 +34,8 @@
     background-color: rgb(197, 27, 27);
 }
 
-.layout-container {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-}
-  
-.main-content {
-    padding-top: 30px;
-    background-color: white;
-    width: 70%;
-}
-
-.main-content-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.main-container {
+    padding: 30px 50px;
+    margin-bottom: 90px;
 }
   
