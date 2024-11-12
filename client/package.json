@@ -17,6 +17,7 @@
     "@nivo/core": "^0.88.0",
     "@nivo/pie": "^0.88.0",
     "axios": "^1.7.7",
+    "email-validator": "^2.0.4",
     "firebase": "^10.14.0",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
