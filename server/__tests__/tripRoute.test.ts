@@ -36,8 +36,8 @@ const initialTrips = [
   },
   {
     userId: 1,
-    startTime: new Date(),
-    endTime: new Date(),
+    startTime: new Date("2023-01-03 15:10:10+02"),
+    endTime: new Date("2023-01-03 16:10:10+02"),
     tripDistance: 250
   },
   {
@@ -45,7 +45,13 @@ const initialTrips = [
     startTime: new Date(),
     endTime: new Date(),
     tripDistance: 300
-  }
+  },
+  {
+    userId: 2,
+    startTime: new Date("2023-01-03 15:10:10+02"),
+    endTime: new Date("2023-01-03 16:10:10+02"),
+    tripDistance: 320
+  },
 ]
 
 let mockVerifyIdToken: jest.Mock
@@ -158,6 +164,43 @@ describe("GET /api/trips/total-distance", () => {
       .expect(401)
   })
 })
+
+describe("GET /api/trips/yearly-distance/:year", () => {
+  test("yearly distance is returned as JSON",async () => {
+    await api
+    .get("/api/trips/yearly-distance/2023")
+    .set("Authorization", `Bearer ${validToken}`)
+    .expect(200)
+    .expect("Content-Type", /application\/json/) 
+  })
+
+  test("Correct yearly distance is returned",async () => {
+    const response = await api
+    .get("/api/trips/yearly-distance/2023")
+    .set("Authorization", `Bearer ${validToken}`)
+    .expect(200)
+    expect(response.body).toBe(250)
+  })
+
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
+    await api
+    .get("/api/trips/yearly-distance/2023")
+    .set("Authorization", `Bearer invalidToken`)
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+      .get("/api/trips/yearly-distance/2023")
+      .expect(401)
+  })
+})
+
+
 
 afterAll(async () => {
   await sequelize.close()
