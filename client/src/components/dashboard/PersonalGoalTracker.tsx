@@ -4,6 +4,7 @@ import goalService from "../../services/goalService"
 import { useAuth } from "../../hooks/useAuth"
 import tripService from "../../services/tripService"
 import { ResponsivePie } from '@nivo/pie';
+import stylesPersonalGoal from './PersonalGoalTracker.module.css'
 
 const PersonalGoalTracker = () => {
   const [currentGoals, setCurrentGoals] = useState<PersonalGoal[]>([])
@@ -42,18 +43,21 @@ const PersonalGoalTracker = () => {
   if (currentGoals.length === 0) return <div>No personal goals yet</div>
 
   const data = currentProgress !== null ? [
-    { id: 'Completed', value: currentProgress, color: '#4caf50' },
-    { id: 'Remaining', value: Math.max(currentGoals[0].goalDistance - currentProgress, 0), color: '#e0e0e0' },
+    { id: 'Completed', value: currentProgress, color: 'hsl(150, 60%, 40%)' },
+    { id: 'Remaining', value: Math.max(currentGoals[0].goalDistance - currentProgress, 0), color: 'hsl(0, 0%, 80%)' },
   ] : []
   
   return (
-    <div style={{ height: 300 }}>
-      <div>
+    <div style={{ height: 200 }}>
+      <header>
+        Viikkotavoite
+      </header>
+      <div className={stylesPersonalGoal['progress-text']}>
         {currentProgress || 0} / {currentGoals[0].goalDistance}
       </div>
         <ResponsivePie
           data={data}
-          innerRadius={0.6}
+          innerRadius={0.7}
           startAngle={-90}
           endAngle={90}
           cornerRadius={3}
@@ -63,7 +67,7 @@ const PersonalGoalTracker = () => {
           isInteractive={true}
           legends={[]}
           motionConfig="stiff"
-          />
+        />
     </div>
   )
 }
