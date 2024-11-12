@@ -26,10 +26,15 @@
     min-width: 200px;
     max-width: 250px;
     border-radius: 10px;
+    border: 1px solid rgb(149, 149, 149);
     aspect-ratio: 1;
     margin: 20px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    padding: 20px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4), 0 6px 20px 0 rgba(0,0,0,0.19);
+    padding: 30px;
     text-align: center;
     background-color: white;
+}
+
+header {
+  font-size: 1.7rem;
 }

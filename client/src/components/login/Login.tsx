@@ -22,11 +22,12 @@ const Login = () => {
       setNotification(false)  
       }, 3000)
     }*/
-
+  
 
   const googlePopupLogin = async () => {
     try {
       await signInWithPopup(auth, provider)
+
     } catch(error) {
       console.error(error)
     }
