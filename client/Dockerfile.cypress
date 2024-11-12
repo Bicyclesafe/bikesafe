@@ -1,0 +1,17 @@
+ARG NODE_VERSION='19.7.0'
+
+
+FROM cypress/factory
+
+RUN echo "Buildataan Cypressiä varten tarkoitetulla Dockerfilella"
+
+WORKDIR /tests
+
+COPY ./package.json .
+COPY ./cypress.config.js .
+COPY ./cypress ./cypress
+
+
+RUN npm install
+
+ENTRYPOINT [ "npx", "cypress", "run" ]
