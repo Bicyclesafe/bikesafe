@@ -3,13 +3,13 @@ import { PersonalGoal } from "../../types"
 import goalService from "../../services/goalService"
 import { useAuth } from "../../hooks/useAuth"
 import tripService from "../../services/tripService"
-import { ResponsivePie } from '@nivo/pie';
+import { ResponsivePie } from '@nivo/pie'
 import stylesPersonalGoal from './PersonalGoalTracker.module.css'
 
 const PersonalGoalTracker = () => {
   const [currentGoals, setCurrentGoals] = useState<PersonalGoal[]>([])
   const [currentProgress, setCurrentProgress] = useState<number | null>(null)
-  const [loading, setLoading] = useState<Boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true)
   const { user } = useAuth()
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const PersonalGoalTracker = () => {
       }
     }
     fetchGoals()
-  }, [user?.uid])
+  }, [user?.uid, user])
 
   useEffect(() => {
     const fetchProgress = async () => {
@@ -34,10 +34,10 @@ const PersonalGoalTracker = () => {
         )
         setCurrentProgress(tripsResponse || 0)
       }
-    };
-    fetchProgress();
+    }
+    fetchProgress()
     setLoading(false)
-  }, [currentGoals])
+  }, [currentGoals, user])
 
   if (loading) return <div>Loading...</div>
   if (currentGoals.length === 0) return <div>No personal goals yet</div>
