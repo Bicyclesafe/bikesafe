@@ -2,6 +2,7 @@ import { Response, Request, NextFunction } from "express"
 import { Trip } from "../models/trip"
 import { User } from "../models/user"
 import { Op } from "sequelize"
+import { Commute } from "../models/commute"
 
 export const getTripsForUser = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
   try {
@@ -44,8 +45,28 @@ export const getTripsBetweenDates = async (req: Request<null, null, {uid: string
   }
 }
 
+export const addTrip = async (req: Request<null, null, {uid: string, startTime: Date, endTime: Date}>, res: Response, next: NextFunction) => {
+  try {
+    const { startTime, endTime, uid } = req.body
+    const user: User | null = await User.findOne({ where: { uid }})
+    const commute = await Commute.findOne({ where: { userId: user?.id }})
+    console.log("abc")
+    await Trip.create({ 
+      userId: user?.id,
+      startTime,
+      endTime,
+      tripDistance: commute?.distance
+    })
+    
+    res.status(201)
+  } catch(err) {
+    next(err)
+  }
+}
+
 export default {
   getTripsForUser,
   getTotalDistanceForUser,
-  getTripsBetweenDates
+  getTripsBetweenDates,
+  addTrip
 }
