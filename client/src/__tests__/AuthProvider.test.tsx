@@ -50,7 +50,7 @@ describe('AuthProvider', () => {
 
     test('onAuthStateChanged sets user', async () => {
         const mockUser = { uid: '123', getIdToken: jest.fn().mockResolvedValue('token') }
-        ;(onAuthStateChanged as jest.Mock).mockImplementation((auth, callback) => {
+        ;(onAuthStateChanged as jest.Mock).mockImplementation((_auth, callback) => {
             callback(mockUser)
             return jest.fn()
         })
@@ -68,7 +68,7 @@ describe('AuthProvider', () => {
 
     test('addUser is called when user is set', async () => {
         const mockUser = { uid: '123', getIdToken: jest.fn().mockResolvedValue('token') }
-        ;(onAuthStateChanged as jest.Mock).mockImplementation((auth, callback) => {
+        ;(onAuthStateChanged as jest.Mock).mockImplementation((_auth, callback) => {
             callback(mockUser)
             return jest.fn()
         })
@@ -87,7 +87,7 @@ describe('AuthProvider', () => {
 
     test('loading is set to false after user is added', async () => {
         const mockUser = { uid: '123', getIdToken: jest.fn().mockResolvedValue('token') }
-        ;(onAuthStateChanged as jest.Mock).mockImplementation((auth, callback) => {
+        ;(onAuthStateChanged as jest.Mock).mockImplementation((_auth, callback) => {
             callback(mockUser)
             return jest.fn()
         })
@@ -108,7 +108,7 @@ describe('AuthProvider', () => {
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
         ;(addUser as jest.Mock).mockRejectedValue(new Error('Failed to add user'))
         
-        ;(onAuthStateChanged as jest.Mock).mockImplementation((auth, callback) => {
+        ;(onAuthStateChanged as jest.Mock).mockImplementation((_auth, callback) => {
             callback(mockUser)
             return jest.fn()
         })
