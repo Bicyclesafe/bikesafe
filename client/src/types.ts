@@ -87,3 +87,8 @@ export interface Trip {
   startTime: Date
   endTime: Date
 }
+
+export interface SeasonalDistanceProps {
+  distance: number;
+  setDistance: React.Dispatch<React.SetStateAction<number>>;
+}

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useAuth } from "../../hooks/useAuth"
 import tripService from "../../services/tripService"
 import stylesSeasonalDistance from './SeasonalDistance.module.css'
+import { SeasonalDistanceProps } from "../../types"
 
-const SeasonalDistance = () => {
-  const [distance, setDistance] = useState(0)
+const SeasonalDistance = ({ distance, setDistance }: SeasonalDistanceProps) => {
   const { user } = useAuth()
 
   const year = new Date().getFullYear()
@@ -21,8 +21,6 @@ const SeasonalDistance = () => {
     }
     fetchData()
   }, [user, user?.uid, year])
-
-  
 
   return (
     <div className={stylesSeasonalDistance['seasonal-distance-container']}>

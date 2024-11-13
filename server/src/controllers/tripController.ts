@@ -50,7 +50,6 @@ export const addTrip = async (req: Request<null, null, {uid: string, startTime: 
     const { startTime, endTime, uid } = req.body
     const user: User | null = await User.findOne({ where: { uid }})
     const commute = await Commute.findOne({ where: { userId: user?.id }})
-    console.log("abc")
     await Trip.create({ 
       userId: user?.id,
       startTime,
@@ -58,7 +57,7 @@ export const addTrip = async (req: Request<null, null, {uid: string, startTime: 
       tripDistance: commute?.distance
     })
     
-    res.status(201)
+    res.status(201).json(commute?.distance)
   } catch(err) {
     next(err)
   }
