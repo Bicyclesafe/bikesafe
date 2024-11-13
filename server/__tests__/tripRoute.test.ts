@@ -30,22 +30,22 @@ const initialUsers = [
 const initialTrips = [
   {
     userId: 1,
-    startTime: new Date(),
-    endTime: new Date(),
+    startTime: new Date("2024-01-03 15:10:10+02"),
+    endTime: new Date("2024-01-03 16:10:10+02"),
     tripDistance: 100
   },
   {
     userId: 1,
-    startTime: new Date(),
-    endTime: new Date(),
+    startTime: new Date("2023-01-03 15:10:10+02"),
+    endTime: new Date("2023-01-03 16:10:10+02"),
     tripDistance: 250
   },
   {
     userId: 2,
-    startTime: new Date(),
-    endTime: new Date(),
-    tripDistance: 300
-  }
+    startTime: new Date("2023-01-03 15:10:10+02"),
+    endTime: new Date("2023-01-03 16:10:10+02"),
+    tripDistance: 320
+  },
 ]
 
 let mockVerifyIdToken: jest.Mock
@@ -158,6 +158,51 @@ describe("GET /api/trips/total-distance", () => {
       .expect(401)
   })
 })
+
+describe("GET /api/trips/date-range", () => {
+  test("yearly distance is returned as JSON",async () => {
+    await api
+    .get("/api/trips/date-range?startTime=2024-11-13+10:15:00&endTime=2024-11-13+10:15:00")
+    .set("Authorization", `Bearer ${validToken}`)
+    .expect(200)
+    .expect("Content-Type", /application\/json/) 
+  })
+
+  test("Correct yearly distance is returned",async () => {
+    const response = await api
+    .get("/api/trips/date-range?startTime=2023-01-01+00:00:00&endTime=2023-12-31+23:59:59")
+    .set("Authorization", `Bearer ${validToken}`)
+    .expect(200)
+    expect(response.body).toBe(250)
+  })
+
+  test("Zero is returned if no dates found between given dates", async () => {
+    const response = await api
+      .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+      .set("Authorization", `Bearer ${validToken}`)
+      .expect(200)
+    expect(response.body).toBe(null)
+  })
+
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
+    await api
+    .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+    .set("Authorization", `Bearer invalidToken`)
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+      .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+      .expect(401)
+  })
+})
+
+
 
 afterAll(async () => {
   await sequelize.close()

@@ -31,7 +31,7 @@ export const getTotalDistanceForUser = async (req: Request<null, null, {uid: str
     next(err)
   }
 }
-
+  
 export const getTripsBetweenDates = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
   try {
     const uid = req.body.uid
