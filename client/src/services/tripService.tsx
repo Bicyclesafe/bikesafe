@@ -32,4 +32,4 @@ export const getTripsBetweenDates = async (token: string, startTime: Date, endTi
   }
 }
 
-export default { getTotalDistanceForUser, getTripsBetweenDates }
+export default {getTotalDistanceForUser, getTripsBetweenDates}
