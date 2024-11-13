@@ -6,19 +6,23 @@ import stylesSeasonalDistance from './SeasonalDistance.module.css'
 const SeasonalDistance = () => {
   const [distance, setDistance] = useState(0)
   const { user } = useAuth()
+
+  const year = new Date().getFullYear()
   
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
         const token = await user.getIdToken(true)
-        const distanceResponse = await tripService.getTotalDistanceForUser(token as string)
+        const startTime = new Date(`${year}-01-01 00:00:00`)
+        const endTime = new Date(`${year}-12-31 23:59:59`)
+        const distanceResponse = await tripService.getTripsBetweenDates(token as string, startTime, endTime)
         setDistance(distanceResponse)
       }
     }
     fetchData()
-  }, [user, user?.uid])
+  }, [user, user?.uid, year])
 
-  const year = new Date().getFullYear()
+  
 
   return (
     <div className={stylesSeasonalDistance['seasonal-distance-container']}>
