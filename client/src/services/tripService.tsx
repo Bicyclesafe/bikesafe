@@ -13,22 +13,10 @@ export const getTotalDistanceForUser = async (token: string) => {
   }
 }
 
-export const getYearlyDistanceForUser = async (token: string, year: string) => {
+export const getTripsBetweenDates = async (token: string, startTime: Date, endTime: Date) => {
   try {
     const authHeader = {"headers": {
       "Authorization": "Bearer " + token
-    }}
-    const response = await axios.get(`${apiUrl}/api/trips/yearly-distance/${year}`, authHeader)
-    return response.data
-  } catch(err) {
-    console.error("Error fetching yearly distance for user", err)
-  }
-}
-
-export const getTripsBetweenDates = async (token: string, startTime: Date, endTime: Date) => {
-    try {
-      const authHeader = {"headers": {
-        "Authorization": "Bearer " + token
     }}
     const response = await axios.get(`${apiUrl}/api/trips/date-range`, {
       ...authHeader,
@@ -44,4 +32,4 @@ export const getTripsBetweenDates = async (token: string, startTime: Date, endTi
   }
 }
 
-export default {getTotalDistanceForUser, getYearlyDistanceForUser, getTripsBetweenDates}
+export default {getTotalDistanceForUser, getTripsBetweenDates}
