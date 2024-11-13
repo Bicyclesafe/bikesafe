@@ -10,6 +10,7 @@ const PersonalGoalTracker = () => {
   const [currentGoals, setCurrentGoals] = useState<PersonalGoal[]>([])
   const [currentProgress, setCurrentProgress] = useState<number | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
+  const [personalGoal, setPersonalGoal] = useState<string>("")
   const { user } = useAuth()
 
   useEffect(() => {
@@ -39,8 +40,54 @@ const PersonalGoalTracker = () => {
     setLoading(false)
   }, [currentGoals, user])
 
+
+  const handlePersonalGoalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPersonalGoal(event.currentTarget.value)
+  }
+
+  const addGoal = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    try {
+      if (user) {
+        const [monday, sunday] = calculateWeek()
+        const token = await user.getIdToken(true)
+        await goalService.addGoal(token as string, parseInt(personalGoal), monday, sunday )}
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+      console.error(error.message)
+      }
+  }}}
+
+  const calculateWeek = () => {
+    const today = new Date()
+    const day = today.getDay()
+    const diff = today.getDate() - day + (day === 0 ? -6 : 1)
+
+    const monday = new Date(today)
+    monday.setDate(diff)
+
+    const sunday = new Date(monday)
+    sunday.setDate(monday.getDate() + 6)
+
+    console.log(monday)
+    console.log(sunday)
+
+    return [monday, sunday]
+
+ }
+
   if (loading) return <div>Loading...</div>
-  if (currentGoals.length === 0) return <div>No personal goals yet</div>
+  if (currentGoals.length === 0) return (
+  <>
+    <div>
+      Set a personal goal for the week
+    </div> 
+    <form onSubmit={addGoal}>
+      <input type="text" value={personalGoal} onChange={handlePersonalGoalChange} />
+      <button type="submit">Set</button>
+    </form>
+  </>
+  )
 
   const data = currentProgress !== null ? [
     { id: 'Completed', value: currentProgress, color: 'hsl(150, 60%, 40%)' },
