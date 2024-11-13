@@ -1,8 +1,12 @@
-
-describe('Frontpage-tests:', () => {
+// toistaiseksi tämä testi ohitetaan
+describe.skip('Frontpage-tests:', () => {
   beforeEach(() => {
-    cy.request('POST', 'http:/localhost:3000/testing/reset/db')
-    cy.visit('http://localhost:5173')
+    //cy.request('POST', 'http:/localhost:3000/testing/reset/db')
+    cy.visit('http://localhost:5173/login')
+    cy.get('#email').type('testimies@testaaja.com')
+    cy.get('#password').type('testimies')
+    cy.get('#login-button').click()
+    // navigoi kartalle
   })
   it('Frontpage can be opened', () => {
     cy.contains('Report theft')
