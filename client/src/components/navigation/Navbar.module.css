@@ -1,0 +1,55 @@
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.header {
+  background-color:#db536f;
+  color: #fff;
+  padding: 1.5rem 0.625rem;
+}
+
+.nav-links {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+  
+.nav-links li {
+  margin-left: 1.25rem;
+}
+  
+.nav-links li a {
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.nav-links li a:hover {
+    text-decoration: underline;
+		text-underline-offset: 0.5rem;
+}
+
+.nav-links li a:focus {
+	text-decoration: underline;
+	text-underline-offset: 0.5rem;
+}
+
+.nav-logo a {
+  color: black;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.nav-links li button {
+  background-color: white;
+  padding: 7px;
+}

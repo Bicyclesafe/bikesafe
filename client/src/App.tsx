@@ -1,15 +1,43 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import HomePage from "./components/HomePage"
-import Login from "./components/Login"
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom"
+import HomePage from "./components/homepage/HomePage"
+import Login from "./components/login/Login"
+import Register from "./components/register/Register"
+import AuthProvider from "./components/context/AuthProvider"
+import NavBar from "./components/navigation/NavBar"
+import Dashboard from "./components/dashboard/Dashboard"
+import AuthWrapper from "./components/context/AuthWrapper"
+import stylesApp from "./App.module.css"
+
+const Layout = () => {
+  return (
+    <div className={stylesApp['layout-container']}>
+      <NavBar />
+      <div className={stylesApp['main-content']}>
+        <Outlet />
+      </div>
+    </div>
+  )
+}
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path={"/"} element={<HomePage />} />
-        <Route path={"/login"} element={<Login />} />
-      </Routes>
-    </Router>
+    <div>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path={"/login"} element={<Login />} />
+            <Route path={"/register"} element={<Register />} />
+
+            <Route element={<AuthWrapper />}>
+              <Route element={<Layout />}>
+                <Route path={"/"} element={<HomePage />} />
+                <Route path={"/dashboard"} element={<Dashboard />} />
+              </Route>
+            </Route>
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </div>
   )
 }
 

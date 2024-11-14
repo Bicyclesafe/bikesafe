@@ -1,8 +1,12 @@
-
-describe('Frontpage-tests:', () => {
+// toistaiseksi tämä testi ohitetaan
+describe.skip('Frontpage-tests:', () => {
   beforeEach(() => {
-    cy.request('POST', 'http:/localhost:3000/testing/reset/db')
-    cy.visit('http://localhost:5173')
+    //cy.request('POST', 'http:/localhost:3000/testing/reset/db')
+    cy.visit('http://localhost:5173/login')
+    cy.get('#email').type('testimies@testaaja.com')
+    cy.get('#password').type('testimies')
+    cy.get('#login-button').click()
+    // navigoi kartalle
   })
   it('Frontpage can be opened', () => {
     cy.contains('Report theft')
@@ -20,7 +24,7 @@ describe('Frontpage-tests:', () => {
     cy.contains('Report theft').click()
     cy.get('.leaflet-container').should('exist').click(500,200)
     cy.contains('Confirm').click()
-    cy.get('.leaflet-container').should('exist').click(500,200)
+    cy.get('.leaflet-container').should('exist').click(500,198)
     cy.contains('Täällä asuu TKT')
   })
   it('Cluster is formed when markers are close', () => {

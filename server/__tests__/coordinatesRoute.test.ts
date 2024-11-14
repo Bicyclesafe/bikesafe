@@ -3,6 +3,16 @@ import supertest from 'supertest'
 import { sequelize } from '../src/util/db'
 import { Coordinate } from '../src/models/coordinate'
 import { migrator } from '../src/util/db'
+import admin from "firebase-admin"
+
+jest.mock("firebase-admin", () => {
+    return {
+      auth: jest.fn().mockReturnValue({
+        verifyIdToken: jest.fn(),
+      }),
+      initializeApp: jest.fn()
+    }
+})
 
 const api = supertest(app)
 
@@ -17,28 +27,41 @@ const initialCoordinates = [
     }
 ]
 
+let mockVerifyIdToken: jest.Mock
+let validToken: string
+const mockDecodedToken = {
+  uid: "123"
+}
+
 beforeAll(async () => {
     await migrator.up()
 })
 
 beforeEach(async () => {
     await Coordinate.bulkCreate(initialCoordinates)
+    mockVerifyIdToken = admin.auth().verifyIdToken as jest.Mock
+    mockVerifyIdToken.mockResolvedValue(mockDecodedToken)
 })
 
 afterEach(async () => {
-    await sequelize.truncate({ cascade: true, restartIdentity: true })
+    await Coordinate.truncate({ cascade: true, restartIdentity: true })
+    //await sequelize.truncate({ cascade: true, restartIdentity: true })
 })
 
 describe("GET /api/coordinates", () => {
     test('Coordinates are returned as json', async () => {
         await api
           .get('/api/coordinates')
+          .set("Authorization", `Bearer ${validToken}`)
           .expect(200)
           .expect('Content-Type', /application\/json/)
     })
 
     test('Coordinates are returned in correct format.', async () => {
-        const response = await api.get('/api/coordinates').expect(200)
+        const response = await api
+            .get('/api/coordinates')
+            .set("Authorization", `Bearer ${validToken}`)
+            .expect(200)
         const coordinate = response.body[0]
         
         expect(coordinate.id).toBe(1)
@@ -47,7 +70,10 @@ describe("GET /api/coordinates", () => {
     })
 
     test("Returns correct amount of coordinates.", async () => {
-        const response = await api.get("/api/coordinates").expect(200)
+        const response = await api
+            .get("/api/coordinates")
+            .set("Authorization", `Bearer ${validToken}`)
+            .expect(200)
 
         expect(response.body).toHaveLength(initialCoordinates.length)
     })
@@ -57,12 +83,16 @@ describe("GET /api/coordinates/:id", () => {
     test('Coordinate is returned as json', async () => {
         await api
           .get('/api/coordinates/1')
+          .set("Authorization", `Bearer ${validToken}`)
           .expect(200)
           .expect('Content-Type', /application\/json/)
     })
 
     test('Coordinate is returned in correct format.', async () => {
-        const response = await api.get('/api/coordinates/1').expect(200)
+        const response = await api
+            .get('/api/coordinates/1')
+            .set("Authorization", `Bearer ${validToken}`)
+            .expect(200)
         const coordinate = response.body
         
         expect(coordinate.id).toBe(1)
@@ -80,11 +110,13 @@ describe("POST /api/coordinates", () => {
 
         await api
             .post("/api/coordinates")
+            .set("Authorization", `Bearer ${validToken}`)
             .send(newCoordinate)
             .expect(201)
 
         const response = await api
             .get("/api/coordinates")
+            .set("Authorization", `Bearer ${validToken}`)
             .expect(200)
 
         expect(response.body).toHaveLength(initialCoordinates.length + 1)
@@ -97,6 +129,7 @@ describe("POST /api/coordinates", () => {
 
         await api
             .post("/api/coordinates")
+            .set("Authorization", `Bearer ${validToken}`)
             .send(newCoordinate)
             .expect(400)
     })
@@ -109,6 +142,7 @@ describe("POST /api/coordinates", () => {
 
         await api
             .post("/api/coordinates")
+            .set("Authorization", `Bearer ${validToken}`)
             .send(newCoordinate)
             .expect(400)
     })
@@ -120,11 +154,13 @@ describe("POST /api/coordinates", () => {
 
         await api
             .post("/api/coordinates")
+            .set("Authorization", `Bearer ${validToken}`)
             .send(newCoordinate)
             .expect(400)
 
         const response = await api
             .get("/api/coordinates")
+            .set("Authorization", `Bearer ${validToken}`)
             .expect(200)
 
         expect(response.body).toHaveLength(initialCoordinates.length)

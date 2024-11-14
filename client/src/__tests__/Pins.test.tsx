@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import { Pins } from '../components/Pins'
+import { Pins } from '../components/pins/Pins'
 
 // Mock Leaflet's marker creation
 jest.mock('react-leaflet', () => {
@@ -40,5 +40,10 @@ test('renders markers at correct coordinates', async () => {
   render(<Pins pinData={coordinates} isChecked={true} typeOfPin='' deletePin={mockDeletePin}/>)
   expect(await screen.getByText("51.505 -0.09")).toBeInTheDocument()
   expect(await screen.getByText("52.505 -0.09")).toBeInTheDocument()
+})
+
+test('Renders null when isChecked is false', async () => {
+  const { container } = render(<Pins pinData={[]} isChecked={false} typeOfPin='' deletePin={() => {}}/>)
+  expect(container.firstChild).toBeNull()
 })
  

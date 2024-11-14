@@ -43,6 +43,10 @@ export const up: Migration = async ({ context: queryInterface }) => {
         primaryKey: true,
         autoIncrement: true
       },
+      group_id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: false
+      },
       coordinate_id: {
         type: DataTypes.INTEGER,
         references: {

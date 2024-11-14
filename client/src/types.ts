@@ -18,6 +18,15 @@ export interface BikeTheft extends Pin {
 export interface LockStation {
   id: number
   coordinate: Coordinate
+  groupId: number
+}
+
+export interface PersonalGoal {
+  id: number
+  goalDistance: number
+  startTime: Date
+  endTime: Date
+  userId: number
 }
 
 export interface PinsProps {
@@ -72,4 +81,14 @@ export interface ReportModalProps {
   setTheftPosition: React.Dispatch<React.SetStateAction<LatLng | null>>
   setBikeThefts: React.Dispatch<React.SetStateAction<BikeTheft[]>>
   bikeThefts: BikeTheft[]
+}
+
+export interface Trip {
+  startTime: Date
+  endTime: Date
+}
+
+export interface SeasonalDistanceProps {
+  distance: number;
+  setDistance: React.Dispatch<React.SetStateAction<number>>;
 }

@@ -1,33 +1,59 @@
-.content-container {
-    position: fixed;
-    right: 10px;
-    width: 210px;
-    z-index: 2; 
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.7);
-    font-size: 20px;
-    font-family:'Courier New', Courier, monospace;
+* {
+    box-sizing: border-box;
+    --color-white: #FDFDFD;
+    --color-red: #f44336;
+    --color-blue: #3A86FF;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
 }
 
 .base-button {
-    margin-top: 15px;
-    color: white;
-    background-color: rgb(98, 171, 235);
-    border-radius: 7px;
-    padding: 10px;
-    font-size: 20px;
-    width: 100%;
-    border: 2px;
-    text-align: center;
-    cursor: pointer;
-    font-weight: bold;
-    border: 2px solid black
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 3px;
+    border: none;
+    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+    color: var(--color-white);
+    background-color: var(--color-blue);
 }
 
+.base-button:hover {
+    background-color: #2a6fde;
+}
+
+
 #theft-button {
-    background-color: red;
+    margin: 0.5rem 0;
+    background-color: var(--color-red);
 }
 
 #theft-button:hover {
-    background-color: darkred;
+    background-color: rgb(197, 27, 27);
 }
+
+.layout-container {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+  
+.main-content {
+    width: 70%;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: white;
+    height: calc(100vh - 74px);
+    border-left: 0.2px solid grey;
+    border-right: 0.2px solid grey;
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+      width: 100%;
+}
+}
+  
