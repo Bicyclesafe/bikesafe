@@ -82,3 +82,13 @@ export interface ReportModalProps {
   setBikeThefts: React.Dispatch<React.SetStateAction<BikeTheft[]>>
   bikeThefts: BikeTheft[]
 }
+
+export interface Trip {
+  startTime: Date
+  endTime: Date
+}
+
+export interface SeasonalDistanceProps {
+  distance: number;
+  setDistance: React.Dispatch<React.SetStateAction<number>>;
+}
