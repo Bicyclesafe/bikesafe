@@ -20,7 +20,7 @@ const SeasonalDistance = ({ distance, setDistance }: SeasonalDistanceProps) => {
       }
     }
     fetchData()
-  }, [user, user?.uid, year])
+  }, [setDistance, user, user?.uid, year])
 
   return (
     <div className={stylesSeasonalDistance['seasonal-distance-container']}>

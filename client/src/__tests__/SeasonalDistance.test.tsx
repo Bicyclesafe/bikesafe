@@ -2,7 +2,6 @@ import { render, screen, waitFor } from "@testing-library/react"
 import SeasonalDistance from "../components/dashboard/SeasonalDistance"
 import { getTripsBetweenDates } from "../services/tripService"
 
-
 jest.mock("../services/tripService", () => ({
   getTripsBetweenDates: jest.fn()
 }))
