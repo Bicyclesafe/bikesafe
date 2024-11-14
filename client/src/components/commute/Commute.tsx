@@ -12,7 +12,6 @@ const Commute = () => {
     let RoutingMachineRef: L.Routing.Control
     setTimeout(() => {
       const map = mapRef.current
-      console.log("after timeout", map)
 
       if (!map) return
 
