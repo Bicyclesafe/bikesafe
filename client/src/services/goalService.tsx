@@ -13,7 +13,7 @@ export const getCurrentGoalsForUser = async (token: string) => {
   }
 }
 
-export const addGoal = async (token: string, goal: string, startTime: Date, endTime: Date) => {
+export const addGoal = async (token: string, goal: number, startTime: Date, endTime: Date) => {
   try {
     const authHeader = {"headers": {
       "Authorization": "Bearer " + token
@@ -22,7 +22,7 @@ export const addGoal = async (token: string, goal: string, startTime: Date, endT
     const response = await axios.post(`${apiUrl}/api/goals`,data, authHeader)
     return response.data
   } catch(err) {
-    console.error("Error fetching current goals for user", err)
+    console.error("Error adding goal", err)
   }
 }
 
