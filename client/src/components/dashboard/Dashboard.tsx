@@ -6,22 +6,24 @@ import PersonalGoalTracker from "./PersonalGoalTracker"
 const Dashboard = () => {
   return (
     <div className={stylesDashboard['dashboard-container']}>
-      <div className={stylesDashboard['seasonal-distance']}>
-        <SeasonalDistance />
-      </div>
-      <div className={stylesDashboard['item-container']}>
-        <div className={stylesDashboard['item']}>
-          <PersonalGoalTracker/>
+      <div className={stylesDashboard['dashboard-content']}>
+        <div className={stylesDashboard['seasonal-distance']}>
+          <SeasonalDistance />
         </div>
-      </div>
-      <div className={stylesDashboard['item-container']}>
-        <div className={stylesDashboard['item']}>
-          <PersonalGoal/>
+        <div className={stylesDashboard['item-container']}>
+          <div className={stylesDashboard['item']}>
+            <PersonalGoalTracker/>
+          </div>
         </div>
-      </div>
-      <div className={stylesDashboard['item-container']}>
-        <div className={stylesDashboard['item']}>
-          <PersonalGoal/>
+        <div className={stylesDashboard['item-container']}>
+          <div className={stylesDashboard['item']}>
+            <PersonalGoal/>
+          </div>
+        </div>
+        <div className={stylesDashboard['item-container']}>
+          <div className={stylesDashboard['item']}>
+            <PersonalGoal/>
+          </div>
         </div>
       </div>
     </div>
