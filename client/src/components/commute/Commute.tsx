@@ -4,14 +4,20 @@ import styles from "./Commute.module.css"
 import L from "leaflet"
 import { useEffect, useRef, useState } from 'react'
 import "leaflet-routing-machine"
+import { addCommuteDistance } from '../../services/commuteService'
+import { useAuth } from "../../hooks/useAuth"
 
 const Commute = () => {
   const mapRef = useRef(null)
   const [routeDistance, setRouteDistance] = useState<number>(0)
 	const [routeTime, setRouteTime] = useState<number>(0)
+	const { user } = useAuth()
 
-	const saveDistance = () => {
-		console.log(routeDistance)
+	const saveDistance = async () => {
+		if (user) {
+			const token = await user.getIdToken(true)
+			await addCommuteDistance(token, routeDistance)
+		}
 	}
 
   useEffect(() => {
@@ -61,8 +67,6 @@ const Commute = () => {
   }, [])
 
 	useEffect(() => {
-		console.log("Total distance: " + routeDistance + "km")
-		console.log("Total time: " + routeTime + "min")
   }, [routeDistance, routeTime])
 
   return (
