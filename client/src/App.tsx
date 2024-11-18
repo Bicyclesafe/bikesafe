@@ -10,10 +10,12 @@ import stylesApp from "./App.module.css"
 
 const Layout = () => {
   return (
-    <div className={stylesApp['layout-container']}>
+    <div>
       <NavBar />
-      <div className={stylesApp['main-content']}>
-        <Outlet />
+      <div className={stylesApp['main-container']}>
+        <div>
+          <Outlet />
+        </div>
       </div>
     </div>
   )
