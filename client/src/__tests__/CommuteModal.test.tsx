@@ -12,7 +12,7 @@ jest.mock("../services/commuteService", () => ({
 describe("CommuteModal component", () => {
   test("renders correctly", async () => {
 		render(<CommuteModal routeDistance={2.87} />)
-		const distanceText = await screen.findByText('Commute distance: 2.87')
+		const distanceText = await screen.findByText('Commute distance: 2.87km')
 		const buttonText = await screen.findByText('Save Commute')
 		expect(distanceText).toBeInTheDocument()
 		expect(buttonText).toBeInTheDocument()
