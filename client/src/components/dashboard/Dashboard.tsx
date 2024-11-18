@@ -30,13 +30,9 @@ const Dashboard = () => {
     <div className={stylesDashboard['dashboard-container']}>
       <div className={stylesDashboard['dashboard-content']}>
         <div className={stylesDashboard['seasonal-distance']}>
-          <div>
-            <h1>Dashboard</h1>
-            <SeasonalDistance distance={distance} setDistance={setDistance}/>
-            <button onClick={cycleToWork}>Cycle to work</button>
-          </div>
+          <SeasonalDistance distance={distance} setDistance={setDistance}/>
+          <button onClick={cycleToWork}>Cycle to work</button>
         </div>
-      <div className={stylesDashboard['content-container']}>
         <div className={stylesDashboard['item-container']}>
           <div className={stylesDashboard['item']}>
             <PersonalGoalTracker/>
