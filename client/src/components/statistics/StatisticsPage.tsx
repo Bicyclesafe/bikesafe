@@ -1,7 +1,9 @@
+import DistanceBarChart from "./DistanceBarChart"
+
 const StatisticsPage = () => {
     return (
         <div>
-            statistics
+            <DistanceBarChart/>
         </div>
     )
 }

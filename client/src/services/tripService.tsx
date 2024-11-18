@@ -1,6 +1,6 @@
 import axios from "axios"
 import { apiUrl } from "../util/config"
-import { Trip } from "../types"
+import { BaseTrip } from "../types"
 
 export const getTotalDistanceForUser = async (token: string) => {
   try {
@@ -33,7 +33,7 @@ export const getTripsBetweenDates = async (token: string, startTime: Date, endTi
   }
 }
 
-export const addTrip = async (token: string, trip: Trip) => {
+export const addTrip = async (token: string, trip: BaseTrip) => {
   try {
     const authHeader = {"headers": {
       "Authorization": "Bearer " + token
@@ -46,4 +46,21 @@ export const addTrip = async (token: string, trip: Trip) => {
   }
 }
 
-export default {getTotalDistanceForUser, getTripsBetweenDates}
+export const getAllTrips = async (token: string) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+
+    const response = await axios.get(`${apiUrl}/api/trips`, authHeader)
+    return response.data
+  } catch(err) {
+    console.error("", err)
+  }
+}
+
+export default {
+  getTotalDistanceForUser,
+  getTripsBetweenDates,
+  getAllTrips
+}

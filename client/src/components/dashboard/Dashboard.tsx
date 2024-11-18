@@ -2,7 +2,7 @@ import SeasonalDistance from "./SeasonalDistance"
 import stylesDashboard from "./Dashboard.module.css"
 import PersonalGoal from "./PersonalGoal"
 import PersonalGoalTracker from "./PersonalGoalTracker"
-import { Trip } from "../../types"
+import { BaseTrip } from "../../types"
 import { addTrip } from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { useState } from "react"
@@ -18,7 +18,7 @@ const Dashboard = () => {
 
     const token = await user.getIdToken(true)
 
-    const trip: Trip = { 
+    const trip: BaseTrip = { 
       startTime: new Date(),
       endTime: new Date()
     }
