@@ -11,7 +11,7 @@
 .overlay-container {
     display: flex;
     flex-direction: column;
-    width: 15rem;
+    width: 17rem;
     margin-top: 3rem;
     margin-left: 0.625rem;
     position: absolute;

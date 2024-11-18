@@ -4,22 +4,13 @@ import styles from "./Commute.module.css"
 import L from "leaflet"
 import { useEffect, useRef, useState } from 'react'
 import "leaflet-routing-machine"
-import { addCommuteDistance } from '../../services/commuteService'
-import { useAuth } from "../../hooks/useAuth"
+import CommuteModal from './CommuteModal'
 
 const Commute = () => {
   const mapRef = useRef(null)
   const [routeDistance, setRouteDistance] = useState<number>(0)
 	const [routeTime, setRouteTime] = useState<number>(0)
-	const { user } = useAuth()
-
-	const saveDistance = async () => {
-		if (user) {
-			const token = await user.getIdToken(true)
-			await addCommuteDistance(token, routeDistance)
-		}
-	}
-
+  
   useEffect(() => {
     let RoutingMachineRef: L.Routing.Control
     setTimeout(() => {
@@ -71,10 +62,7 @@ const Commute = () => {
 
   return (
 		<div>
-			<div className={styles['overlay-container']}>
-				<h2>Commute distance: {routeDistance}</h2>
-				<button onClick={saveDistance} className={`${styles['base-button']}`} id={styles['theft-button']}>Save Commute</button>
-      </div>
+      <CommuteModal routeDistance={routeDistance}/>
 			<MapContainer 
 				center={[60.1695, 24.9354]}
 				zoom={13}
