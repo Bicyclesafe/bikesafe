@@ -111,26 +111,39 @@ const PersonalGoalTracker = () => {
   ] : []
   
   return (
-    <div style={{ height: 150 }}>
+    <div>
       <header>
         Viikkotavoite
       </header>
       <div className={stylesPersonalGoal['progress-text']} data-testid="progress-text">
         {currentProgress || 0} / {currentGoals[0].goalDistance}
       </div>
+      <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
         <ResponsivePie
           data={data}
           innerRadius={0.7}
           startAngle={-90}
           endAngle={90}
+          padAngle={1}
           cornerRadius={3}
           colors={{ datum: 'data.color' }}
           enableArcLabels={false}
           enableArcLinkLabels={false}
           isInteractive={true}
           legends={[]}
+          borderWidth={1}
           motionConfig="stiff"
-        />
+          borderColor={{
+            from: 'color',
+            modifiers: [
+              [
+                'darker',
+                0.2
+              ]
+            ]
+          }}
+         />
+      </div>
     </div>
   )
 }

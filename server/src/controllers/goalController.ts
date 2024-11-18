@@ -40,7 +40,7 @@ export const addGoal = async (req: Request<null, null, AddGoalRequestBody>, res:
     if (!user) {
       return res.status(404).json({ message: "User not found" })
     }
-    const newGoal = await Goal.create({ userId: user.id, goal, startTime, endTime })
+    const newGoal = await Goal.create({ userId: user.id, goalDistance: goal, startTime, endTime })
     return res.status(201).json(newGoal)
   } catch (err) {
     return next(err)
