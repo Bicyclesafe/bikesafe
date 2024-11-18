@@ -18,7 +18,6 @@ export const addCommuteDistance = async (req: Request<null, null, {uid: string, 
       // If a commute exists, update it with the new distance
       oldCommute.distance = distance
       await oldCommute.save()
-      console.log("Update")
       res.status(200).json(oldCommute)
     } else {
       // If no commute record exists, create a new one
@@ -26,7 +25,6 @@ export const addCommuteDistance = async (req: Request<null, null, {uid: string, 
         userId: user?.id,
         distance,
       })
-      console.log("create")
       res.status(201).json(commute)
     }
   } catch (err) {
@@ -38,8 +36,8 @@ export const getCommuteDistance = async (req: Request<null, null, {uid: string}>
   try {
     const uid = req.body.uid
     const user: User | null = await User.findOne({ where: { uid }})
-		console.log(user)
-    res.status(200).json(user)
+    const commute = await Commute.findOne({ where: { user_id: user?.id}})
+    res.status(200).json(commute?.distance)
   } catch (err) {
     next(err)
   }
