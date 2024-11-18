@@ -17,6 +17,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user)
+      setLoading(false)
     })
     return unsubscribe
   })
@@ -27,10 +28,10 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         try {
           const token = await user.getIdToken(true)
           await addUser(token as string)
-          setLoading(false)
+
         } catch (error) {
           console.error('Error adding user to the database:', error)
-        }
+        } 
       })()
     }
   }, [user])
