@@ -46,13 +46,19 @@ export const addTrip = async (token: string, trip: BaseTrip) => {
   }
 }
 
-export const getAllTrips = async (token: string) => {
+export const getAllTrips = async (token: string, year: string, month?: string | null) => {
   try {
     const authHeader = {"headers": {
       "Authorization": "Bearer " + token
     }}
 
-    const response = await axios.get(`${apiUrl}/api/trips`, authHeader)
+    const response = await axios.get(`${apiUrl}/api/trips`, {
+      ...authHeader,
+      params: {
+        year,
+        month
+      },
+    })
     return response.data
   } catch(err) {
     console.error("", err)
