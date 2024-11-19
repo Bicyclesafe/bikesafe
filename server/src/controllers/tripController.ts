@@ -4,14 +4,48 @@ import { User } from "../models/user"
 import { Op } from "sequelize"
 import { Commute } from "../models/commute"
 
-export const getTripsForUser = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
+export const getTripsForUser = async (req: Request<null, null, {uid: string, year?: string, month?: string}>,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const uid = req.body.uid
+    const { year, month } = req.query
+
     const user: User | null = await User.findOne({ where: { uid }})
-    const trips: Trip[] = await Trip.findAll({ where: { userId: user?.id }})
-    res.status(200).json(trips)
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" })
+    }
+
+    const whereCondition: any = { userId: user.id }
+
+    if (year) {
+      whereCondition.startTime = { [Op.gte]: `${year}-01-01 00:00:00` }
+      whereCondition.endTime = { [Op.lte]: `${year}-12-31 23:59:59` }
+    }
+
+    if (year && month) {
+      if (typeof month !== "string" || typeof year !== "string") {
+        return res.status(400).json({ message: "Invalid date format" })
+      }
+  
+      const formattedMonth = month.padStart(2, '0')
+
+      const startOfMonth = `${year}-${formattedMonth}-01 00:00:00`
+
+      const lastDay = new Date(parseInt(year), parseInt(formattedMonth), 0).getDate()
+      const endOfMonth = `${year}-${formattedMonth}-${lastDay} 23:59:59`
+
+      whereCondition.startTime = { [Op.gte]: startOfMonth }
+      whereCondition.endTime = { [Op.lte]: endOfMonth }
+    }
+
+    // const trips: Trip[] = await Trip.findAll({ where: { userId: user?.id }})
+    const trips  = await Trip.findAll({ where: whereCondition })
+    return res.status(200).json(trips)
   } catch (err) {
-    next(err)
+    return next(err)
   }
 }
 
