@@ -41,7 +41,6 @@ export const getTripsForUser = async (req: Request<null, null, {uid: string, yea
       whereCondition.endTime = { [Op.lte]: endOfMonth }
     }
 
-    // const trips: Trip[] = await Trip.findAll({ where: { userId: user?.id }})
     const trips  = await Trip.findAll({ where: whereCondition })
     return res.status(200).json(trips)
   } catch (err) {

@@ -1,53 +1,117 @@
 import { BarDatum, ResponsiveBar } from "@nivo/bar"
 import { useEffect, useState } from "react"
-import tripService from "../../services/tripService";
-import { useAuth } from "../../hooks/useAuth";
-import { Trip } from "../../types";
+import tripService from "../../services/tripService"
+import { useAuth } from "../../hooks/useAuth"
+import { Trip } from "../../types"
+import { getDate, getDaysInMonth, getMonth } from "date-fns"
+
+interface nivoBarProps {
+  index: "month" | "day"
+  axisBottomLegend: "Month" | "Day"
+  onClick: (barData: any) => void
+}
 
 const DistanceBarChart = () => {
     const [data, setData] = useState<BarDatum[] | []>([])
+    const [month, setMonth] = useState<string | null>(null)
+    const [year, setYear] = useState<string>(new Date().getFullYear().toString())
+    const [nivoBarSettings, setNivoBarSettings] = useState<nivoBarProps>({
+      index: "month",
+      axisBottomLegend: "Month",
+      onClick: (barData) => {
+        getMonthNumber(barData.data.month)
+      }
+    })
     const { user } = useAuth()
+
+    const getMonthNumber = (monthAbbreviation: string | number) => {
+      const date = new Date(`${monthAbbreviation} 1, 2000`)
+      const month = isNaN(date.getTime()) ? null : (date.getMonth() + 1).toString()
+      setMonth(month)
+    }
+
+    const switchToDailyView = () => {
+      setNivoBarSettings({
+        ...nivoBarSettings,
+        index: "day",
+        axisBottomLegend: "Day",
+        onClick: () => {}
+      })
+    }
+
+    const switchToYearlyView = () => {
+      setMonth(null)
+      setNivoBarSettings({
+        ...nivoBarSettings,
+        index: "month",
+        axisBottomLegend: "Month",
+        onClick: (barData) => {
+          getMonthNumber(barData.data.month)
+          switchToDailyView()
+        }
+      })
+    }
+
     useEffect(() => {
-        console.log('ennnen')
         const fetchData = async () => {
-          // Fetch trip data and group by month
           if (user) {
             try {
-              console.log('hello')
               const token = await user.getIdToken(true)
-              const trips = await tripService.getAllTrips(token as string)
-              console.log(trips)
-              const monthlyData = Array.from({ length: 12 }, (_, month) => ({
-                month: new Date(0, month).toLocaleString('default', { month: 'short' }),
-                distance: 0,
-              }))
 
-    
-              trips.forEach((trip: Trip) => {
-                const month = new Date(trip.startTime).getMonth();
-                monthlyData[month].distance += trip.tripDistance;
-              });
-              console.log(monthlyData)
-        
-              setData(monthlyData)
+              const trips = await tripService.getAllTrips(token as string, year, month)
+              
+              if (!month) {
+                const monthlyData = Array.from({ length: 12 }, (_, month) => ({
+                  month: new Date(0, month).toLocaleString('default', { month: 'short' }),
+                  distance: 0,
+                }))
+  
+                trips.forEach((trip: Trip) => {
+                  const month = new Date(trip.startTime).getMonth()
+                  monthlyData[month].distance += Number(trip.tripDistance.toFixed(0))
+                })
+          
+                setData(monthlyData)
+              } else {
+                const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month)))
+                const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
+                  day: (day + 1).toString(),
+                  distance: 0,
+                }))
+                
+                trips.forEach((trip: Trip) => {
+                  const tripDate = trip.startTime
+                  if (getMonth(tripDate) + 1 === Number(month)) { // Check if trip month matches the specified month
+                    const day = getDate(tripDate) - 1 // date-fns getDate is 1-indexed
+                    dailyData[day].distance += Number(trip.tripDistance.toFixed(0))
+                  }
+                })
+                
+                setData(dailyData)
+                switchToDailyView()
+              }
             } catch (error) {
-              console.error('Error fetching goals:', error)
+              console.error('Error fetching trip data:', error)
             }
           }
         }
-        fetchData();
-      }, []);
+        fetchData()
+      }, [month, year])
 
     return (
-      <div style={{ height: '500px' }}>
+      <div style={{ height: '600px' }}>
+        <select onChange={(e) => setYear(e.target.value)}>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+        </select>
         <ResponsiveBar
           data={data}
           keys={['distance']}
-          indexBy="month"
+          indexBy={nivoBarSettings.index}
           enableLabel={false}
           margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
           padding={0.3}
-          colors={{ scheme: 'nivo' }}
+          colors={{ scheme: 'dark2' }}
           borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
           axisTop={null}
           axisRight={null}
@@ -55,7 +119,7 @@ const DistanceBarChart = () => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'Month',
+            legend: nivoBarSettings.axisBottomLegend,
             legendPosition: 'middle',
             legendOffset: 32,
           }}
@@ -96,7 +160,9 @@ const DistanceBarChart = () => {
           ]}
           animate={true}
           motionConfig="stiff"
+          onClick={nivoBarSettings.onClick}
         />
+        {month && <button onClick={switchToYearlyView}>Return to yearly view</button>}
       </div>
     )};
   
