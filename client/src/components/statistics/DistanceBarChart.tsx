@@ -52,6 +52,41 @@ const DistanceBarChart = () => {
       })
     }
 
+    const transformDataToMonthly = (trips: Trip[]) => {
+      const monthlyData = Array.from({ length: 12 }, (_, month) => ({
+        month: new Date(0, month).toLocaleString('default', { month: 'short' }),
+        distance: 0,
+      }))
+
+      trips.forEach((trip: Trip) => {
+        const month = new Date(trip.startTime).getMonth()
+        monthlyData[month].distance += Number(trip.tripDistance.toFixed(0))
+      })
+
+      return monthlyData
+    }
+
+    const transformDataToDaily = (trips: Trip[]) => {
+      if (month) {
+        const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month)))
+        const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
+          day: (day + 1).toString(),
+          distance: 0,
+        }))
+        
+        trips.forEach((trip: Trip) => {
+          const tripDate = trip.startTime
+          if (getMonth(tripDate) + 1 === Number(month)) {
+            const day = getDate(tripDate) - 1
+            dailyData[day].distance += Number(trip.tripDistance.toFixed(0))
+          }
+        })
+        return dailyData
+      }
+
+      return []
+    }
+
     useEffect(() => {
         const fetchData = async () => {
           if (user) {
@@ -61,32 +96,10 @@ const DistanceBarChart = () => {
               const trips = await tripService.getAllTrips(token as string, year, month)
               
               if (!month) {
-                const monthlyData = Array.from({ length: 12 }, (_, month) => ({
-                  month: new Date(0, month).toLocaleString('default', { month: 'short' }),
-                  distance: 0,
-                }))
-  
-                trips.forEach((trip: Trip) => {
-                  const month = new Date(trip.startTime).getMonth()
-                  monthlyData[month].distance += Number(trip.tripDistance.toFixed(0))
-                })
-          
+                const monthlyData = transformDataToMonthly(trips)
                 setData(monthlyData)
               } else {
-                const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month)))
-                const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
-                  day: (day + 1).toString(),
-                  distance: 0,
-                }))
-                
-                trips.forEach((trip: Trip) => {
-                  const tripDate = trip.startTime
-                  if (getMonth(tripDate) + 1 === Number(month)) { // Check if trip month matches the specified month
-                    const day = getDate(tripDate) - 1 // date-fns getDate is 1-indexed
-                    dailyData[day].distance += Number(trip.tripDistance.toFixed(0))
-                  }
-                })
-                
+                const dailyData = transformDataToDaily(trips)
                 setData(dailyData)
                 switchToDailyView()
               }
@@ -164,6 +177,6 @@ const DistanceBarChart = () => {
         />
         {month && <button onClick={switchToYearlyView}>Return to yearly view</button>}
       </div>
-    )};
+    )}
   
   export default DistanceBarChart
