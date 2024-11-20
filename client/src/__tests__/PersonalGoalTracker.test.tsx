@@ -12,9 +12,29 @@ jest.mock("../services/tripService", () => ({
   getTripsBetweenDates: jest.fn(),
 }))
 
+interface LayerProps {
+  centerX: number;
+  centerY: number;
+}
+
+type Layer = string | ((props: LayerProps) => JSX.Element);
+
 jest.mock("@nivo/pie", () => ({
-    ResponsivePie: () => <div data-testid="mock-responsive-pie">Mocked Pie Chart</div>
-  }))
+  ResponsivePie: ({ layers }: { layers: Layer[] }) => (
+    <div data-testid="mock-responsive-pie">
+      {layers.map((layer, index) => {
+        if (typeof layer === "function") {
+          return (
+            <div key={index} data-testid="custom-layer">
+              {layer({ centerX: 0, centerY: 0 })}
+            </div>
+          )
+        }
+        return <div key={index} data-testid={`default-layer-${layer}`}>{layer}</div>
+      })}
+    </div>
+  ),
+}))
 
 jest.mock("../hooks/useAuth", () => ({
   useAuth: () => ({ user: { uid: "testUserId", getIdToken: jest.fn(() => Promise.resolve("testToken")) } })
