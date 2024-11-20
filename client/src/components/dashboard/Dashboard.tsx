@@ -37,7 +37,7 @@ const Dashboard = () => {
         <NavLink to="/">
           <div className={stylesDashboard['item-container']}>
             <div className={stylesDashboard['item']}>
-              <PersonalGoalTracker/>
+              <PersonalGoalTracker yearly_distance={distance}/>
             </div>
           </div>
         </NavLink>
