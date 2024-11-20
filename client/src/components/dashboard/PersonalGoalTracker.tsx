@@ -34,7 +34,7 @@ const PersonalGoalTracker = () => {
       if (currentGoals.length > 0 && user) {
         try {
           const token = await user.getIdToken(true)
-          const tripsResponse = await tripService.getTripsBetweenDates(
+          const tripsResponse = await tripService.getSumOfTripsBetweenDates(
             token,
             currentGoals[0].startTime,
             currentGoals[0].endTime

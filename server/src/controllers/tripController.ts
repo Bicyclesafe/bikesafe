@@ -69,12 +69,24 @@ export const getTotalDistanceForUser = async (req: Request<null, null, {uid: str
   }
 }
   
-export const getTripsBetweenDates = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
+export const getSumOfTripsBetweenDates = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
   try {
     const uid = req.body.uid
     const { startTime, endTime } = req.query
     const user: User | null = await User.findOne({ where: { uid }})
     const trips  = await Trip.sum('trip_distance', { where: { userId: user?.id, startTime: { [Op.gte]: startTime}, endTime: {[Op.lte]: endTime}}})
+    res.status(200).json(trips)
+  } catch(err) {
+    next(err)
+  }
+}
+
+export const getTripsBetweenDates = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
+  try {
+    const uid = req.body.uid
+    const { startTime, endTime } = req.query
+    const user: User | null = await User.findOne({ where: { uid }})
+    const trips  = await Trip.findAll({ where: { userId: user?.id, startTime: { [Op.gte]: startTime}, endTime: {[Op.lte]: endTime}}})
     res.status(200).json(trips)
   } catch(err) {
     next(err)
@@ -103,5 +115,6 @@ export default {
   getTripsForUser,
   getTotalDistanceForUser,
   getTripsBetweenDates,
-  addTrip
+  addTrip,
+  getSumOfTripsBetweenDates
 }

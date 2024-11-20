@@ -14,6 +14,26 @@ export const getTotalDistanceForUser = async (token: string) => {
   }
 }
 
+export const getSumOfTripsBetweenDates = async (token: string, startTime: Date, endTime: Date) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+    const response = await axios.get(`${apiUrl}/api/trips/sum-date-range`, {
+      ...authHeader,
+      params: {
+        startTime,
+        endTime
+      },
+    })
+
+    return response.data
+  } catch(err) {
+    console.error("Error fetching sum of trips between dates", err)
+  }
+}
+
+
 export const getTripsBetweenDates = async (token: string, startTime: Date, endTime: Date) => {
   try {
     const authHeader = {"headers": {
@@ -68,5 +88,6 @@ export const getAllTrips = async (token: string, year: string, month?: string | 
 export default {
   getTotalDistanceForUser,
   getTripsBetweenDates,
-  getAllTrips
+  getAllTrips,
+  getSumOfTripsBetweenDates
 }
