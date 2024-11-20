@@ -11,12 +11,10 @@ import StatisticsPage from "./components/statistics/StatisticsPage"
 
 const Layout = () => {
   return (
-    <div>
+    <div className={stylesApp['main-container']}>
       <NavBar />
-      <div className={stylesApp['main-container']}>
-        <div>
-          <Outlet />
-        </div>
+      <div className={stylesApp['main-content']}>
+        <Outlet />
       </div>
     </div>
   )
