@@ -1,8 +1,9 @@
 .progress-text {
-  font-size: 1.6rem;
+    font-size: 2rem;
+    font-weight: 400;
 }
 
 .set-goal-text {
-  font-size: 1.6rem;
-  padding-bottom: 1rem;
+    font-size: 1.6rem;
+    padding-bottom: 1rem;
 }
