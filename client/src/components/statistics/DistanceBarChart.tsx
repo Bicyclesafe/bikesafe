@@ -91,7 +91,6 @@ const DistanceBarChart = () => {
         console.error('Error fetching trip data:', error)
       }
     }
-    console.log('use-effect renders')
     fetchData()
   }, [month, transformDataToDaily, user, viewMode, year])
 

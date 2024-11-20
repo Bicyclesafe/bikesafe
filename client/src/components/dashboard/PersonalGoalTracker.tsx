@@ -98,11 +98,11 @@ const PersonalGoalTracker = () => {
   <>
     <div className={stylesPersonalGoal['set-goal-text']}>
       Set a personal goal for the week
-    </div> 
     <form onSubmit={addGoal}>
       <input type="number" min="1" value={personalGoal} placeholder="Enter your goal" onChange={handlePersonalGoalChange} />
       <button type="submit" data-testid="set-goal-button">Set</button>
     </form>
+    </div> 
   </>
   )
 
