@@ -6,6 +6,7 @@ import { Trip } from "../../types"
 import { addTrip } from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { useState } from "react"
+import { NavLink } from "react-router-dom"
 
 const Dashboard = () => {
   const [distance, setDistance] = useState<number>(0)
@@ -33,21 +34,27 @@ const Dashboard = () => {
           <SeasonalDistance distance={distance} setDistance={setDistance}/>
           <button onClick={cycleToWork}>Cycle to work</button>
         </div>
-        <div className={stylesDashboard['item-container']}>
-          <div className={stylesDashboard['item']}>
-            <PersonalGoalTracker yearly_distance={distance}/>
+        <NavLink to="/">
+          <div className={stylesDashboard['item-container']}>
+            <div className={stylesDashboard['item']}>
+              <PersonalGoalTracker yearly_distance={distance}/>
+            </div>
           </div>
-        </div>
+        </NavLink>
+        <NavLink to="/">
+          <div className={stylesDashboard['item-container']}>
+            <div className={stylesDashboard['item']}>
+              <PersonalGoal/>
+            </div>
+          </div>
+        </NavLink>
+        <NavLink to="/">
         <div className={stylesDashboard['item-container']}>
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
           </div>
         </div>
-        <div className={stylesDashboard['item-container']}>
-          <div className={stylesDashboard['item']}>
-            <PersonalGoal/>
-          </div>
-        </div>
+        </NavLink>
       </div>
     </div>
   )
