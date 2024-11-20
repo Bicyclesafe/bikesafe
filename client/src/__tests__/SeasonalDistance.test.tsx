@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import SeasonalDistance from "../components/dashboard/SeasonalDistance"
-import { getTripsBetweenDates } from "../services/tripService"
+import { getSumOfTripsBetweenDates } from "../services/tripService"
 
 jest.mock("../services/tripService", () => ({
-  getTripsBetweenDates: jest.fn()
+  getSumOfTripsBetweenDates: jest.fn()
 }))
 
 // Mockataan useAuth kokonaan, jotta se ei kutsu google_authentication.ts-tiedostoa
@@ -12,9 +12,9 @@ jest.mock("../hooks/useAuth", () => ({
 }))
 
 describe("SeasonalDistance component", () => {
-  const mockGetTripsBetweenDates = getTripsBetweenDates as jest.Mock
+  const mockGetSumOfTripsBetweenDates = getSumOfTripsBetweenDates as jest.Mock
   it("renders distance data from tripService", async () => {
-    mockGetTripsBetweenDates.mockResolvedValue(150)
+    mockGetSumOfTripsBetweenDates.mockResolvedValue(150)
     const setDistanceMock = jest.fn()
 
     render(<SeasonalDistance distance={150} setDistance={setDistanceMock} />)
@@ -27,7 +27,7 @@ describe("SeasonalDistance component", () => {
   })
 
   it("displays 0km when no distance data is available", async () => {
-    mockGetTripsBetweenDates.mockResolvedValue(0)
+    mockGetSumOfTripsBetweenDates.mockResolvedValue(0)
     const setDistanceMock = jest.fn()
 
     render(<SeasonalDistance distance={0} setDistance={setDistanceMock} />)

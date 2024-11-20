@@ -159,10 +159,10 @@ describe("GET /api/trips/total-distance", () => {
   })
 })
 
-describe("GET /api/trips/date-range", () => {
+describe("GET /api/trips/sum-date-range", () => {
   test("yearly distance is returned as JSON",async () => {
     await api
-    .get("/api/trips/date-range?startTime=2024-11-13+10:15:00&endTime=2024-11-13+10:15:00")
+    .get("/api/trips/sum-date-range?startTime=2024-11-13+10:15:00&endTime=2024-11-13+10:15:00")
     .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
     .expect("Content-Type", /application\/json/) 
@@ -170,7 +170,7 @@ describe("GET /api/trips/date-range", () => {
 
   test("Correct yearly distance is returned",async () => {
     const response = await api
-    .get("/api/trips/date-range?startTime=2023-01-01+00:00:00&endTime=2023-12-31+23:59:59")
+    .get("/api/trips/sum-date-range?startTime=2023-01-01+00:00:00&endTime=2023-12-31+23:59:59")
     .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
     expect(response.body).toBe(250)
@@ -178,7 +178,7 @@ describe("GET /api/trips/date-range", () => {
 
   test("Zero is returned if no dates found between given dates", async () => {
     const response = await api
-      .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+      .get("/api/trips/sum-date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
       .set("Authorization", `Bearer ${validToken}`)
       .expect(200)
     expect(response.body).toBe(null)
@@ -190,14 +190,14 @@ describe("GET /api/trips/date-range", () => {
     })
 
     await api
-    .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+    .get("/api/trips/sum-date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
     .set("Authorization", `Bearer invalidToken`)
     .expect(401)
   })
 
   test("Return Unauthorized when access token not given", async () => {
     await api
-      .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+      .get("/api/trips/sum-date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
       .expect(401)
   })
 })
