@@ -6,6 +6,7 @@ import { BaseTrip } from "../../types"
 import { addTrip } from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { useState } from "react"
+import DistanceOverview from "./DistanceOverview"
 
 const Dashboard = () => {
   const [distance, setDistance] = useState<number>(0)
@@ -24,26 +25,47 @@ const Dashboard = () => {
     }
     const distance = await addTrip(token as string, trip)
     setDistance(prevDistance => (prevDistance) + distance)  
-    }
+  }
 
   return (
     <div className={stylesDashboard['dashboard-container']}>
       <div className={stylesDashboard['dashboard-content']}>
-        <div className={stylesDashboard['seasonal-distance']}>
-          <SeasonalDistance distance={distance} setDistance={setDistance}/>
-          <button onClick={cycleToWork}>Cycle to work</button>
-        </div>
-        <div className={stylesDashboard['item-container']}>
-          <div className={stylesDashboard['item']}>
-            <PersonalGoalTracker/>
+        <div className={stylesDashboard['highlight-box']}>
+          <div className={stylesDashboard['side-area']}>
+            <div className={stylesDashboard['row']}>
+              <div className={stylesDashboard['row-item']}>
+                <div className={stylesDashboard['row-title']}>Year</div>
+                <div className={stylesDashboard['row-content']}>
+                    <SeasonalDistance distance={distance} setDistance={setDistance} />
+                </div>
+              </div>
+            </div>
+            <div className={stylesDashboard['row']}>
+              <div className={stylesDashboard['row-item']}>
+                <div className={stylesDashboard['row-title']}>Clickity click</div>
+                <div className={stylesDashboard['row-content']}>
+                  <button onClick={cycleToWork}>Cycle to work</button>
+                </div>
+              </div>
+            </div>
+            <div className={stylesDashboard['row']}>Row 3</div>
+          </div>
+          <div className={stylesDashboard['center-area']}>
+            <PersonalGoalTracker />
+          </div>
+          <div className={stylesDashboard['side-area']}>
+            <div className={stylesDashboard['row']}>Row 1</div>
+            <div className={stylesDashboard['row']}>Row 2</div>
+            <div className={stylesDashboard['row']}>Row 3</div>
           </div>
         </div>
         <div className={stylesDashboard['item-container']}>
+          <div className={stylesDashboard['item']}>
+            <DistanceOverview />
+          </div>
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
           </div>
-        </div>
-        <div className={stylesDashboard['item-container']}>
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
           </div>
