@@ -1,15 +1,21 @@
 // import { Sequelize } from 'sequelize-typescript';
 import { Trip } from '../models/trip' // Adjust the path as needed
+import { User } from '../models/user'
 // import { User } from '../models/user'; // Ensure this is correctly imported if needed
 
 async function seedTrips() {
+  const userId = 1 // Setting userId to 1 for all trips
+  const user: User | null = await User.findOne({ where: { id: userId }})
+  if (!user) {
+    console.log('Did not find user for seeding, skipping process')
+    return
+  }
   const existingTrips = await Trip.findOne()
   if (existingTrips) {
     console.log('Trips have already been seeded. Skipping seeding process.')
     return
   }
   // Adjust the range and count as needed for more realistic data
-  const userId = 1 // Setting userId to 1 for all trips
   
   for (let month = 0; month < 12; month++) {
     // Randomize number of trips for each month (e.g., between 3 and 10 trips)
