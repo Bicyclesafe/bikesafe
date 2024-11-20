@@ -34,21 +34,21 @@ const Dashboard = () => {
           <SeasonalDistance distance={distance} setDistance={setDistance}/>
           <button onClick={cycleToWork}>Cycle to work</button>
         </div>
-        <NavLink to="/goal">
+        <NavLink to="/">
           <div className={stylesDashboard['item-container']}>
             <div className={stylesDashboard['item']}>
               <PersonalGoalTracker/>
             </div>
           </div>
         </NavLink>
-        <NavLink to="/a">
+        <NavLink to="/">
           <div className={stylesDashboard['item-container']}>
             <div className={stylesDashboard['item']}>
               <PersonalGoal/>
             </div>
           </div>
         </NavLink>
-        <NavLink to="/commute">
+        <NavLink to="/">
         <div className={stylesDashboard['item-container']}>
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
