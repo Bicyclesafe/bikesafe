@@ -7,6 +7,7 @@ import NavBar from "./components/navigation/NavBar"
 import Dashboard from "./components/dashboard/Dashboard"
 import AuthWrapper from "./components/context/AuthWrapper"
 import stylesApp from "./App.module.css"
+import Commute from "./components/commute/Commute"
 
 const Layout = () => {
   return (
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "dashboard", element: <Dashboard /> },
+      { path: "commute", element: <Commute /> },
     ],
   },
   { path: "/login", element: <Login /> },
