@@ -5,8 +5,9 @@ import { useAuth } from "../../hooks/useAuth"
 import tripService from "../../services/tripService"
 import { ResponsivePie } from '@nivo/pie'
 import stylesPersonalGoal from './PersonalGoalTracker.module.css'
+import { FC } from "react"
 
-const PersonalGoalTracker = () => {
+const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => {
   const [currentGoals, setCurrentGoals] = useState<PersonalGoal[]>([])
   const [currentProgress, setCurrentProgress] = useState<number | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
@@ -49,7 +50,7 @@ const PersonalGoalTracker = () => {
       }
     }
     fetchProgress()
-  }, [currentGoals, user])
+  }, [currentGoals, user, yearly_distance])
 
 
   const handlePersonalGoalChange = (event: React.ChangeEvent<HTMLInputElement>) => {

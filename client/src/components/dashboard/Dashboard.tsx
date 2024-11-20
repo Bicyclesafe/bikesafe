@@ -35,7 +35,7 @@ const Dashboard = () => {
         </div>
         <div className={stylesDashboard['item-container']}>
           <div className={stylesDashboard['item']}>
-            <PersonalGoalTracker/>
+            <PersonalGoalTracker yearly_distance={distance}/>
           </div>
         </div>
         <div className={stylesDashboard['item-container']}>
