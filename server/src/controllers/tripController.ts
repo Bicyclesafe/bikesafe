@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express"
 import { Trip } from "../models/trip"
 import { User } from "../models/user"
-import { Op } from "sequelize"
+import { Op, WhereOptions } from "sequelize"
 import { Commute } from "../models/commute"
 
 export const getTripsForUser = async (req: Request<null, null, {uid: string, year?: string, month?: string}>,
@@ -18,9 +18,12 @@ export const getTripsForUser = async (req: Request<null, null, {uid: string, yea
       return res.status(404).json({ error: "User not found" })
     }
 
-    const whereCondition: any = { userId: user.id }
+    const whereCondition: WhereOptions = { userId: user.id }
 
     if (year) {
+      if (typeof year !== "string")  {
+        return res.status(400).json({ message: "Invalid date format" })
+      }
       whereCondition.startTime = { [Op.gte]: `${year}-01-01 00:00:00` }
       whereCondition.endTime = { [Op.lte]: `${year}-12-31 23:59:59` }
     }

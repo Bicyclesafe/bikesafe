@@ -1,17 +1,79 @@
-import { BarDatum, ResponsiveBar } from "@nivo/bar"
-import { useEffect, useState } from "react"
+import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
+import { useCallback, useEffect, useState } from "react"
 import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
 
 const DistanceBarChart = () => {
-  const [data, setData] = useState<BarDatum[] | []>([])
+  const [data, setData] = useState<BarDatum[]>([])
   const [viewMode, setViewMode] = useState<"day" | "year">("year")
   const [month, setMonth] = useState<string | null>(null)
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
   const { user } = useAuth()
 
+  
+  const getNivoBarSettings = (mode: "day" | "year") => {
+    if (mode === "year") {
+      return {
+        index: "month",
+        axisBottomLegend: "Month",
+        onClick: (barData: ComputedDatum<BarDatum>) => {
+          setMonth(getMonthNumber(barData.data.month))
+          setViewMode("day")
+        },
+      }
+    }
+  
+    return {
+      index: "day",
+      axisBottomLegend: "Day",
+      onClick: () => {}
+    }
+  }
+  
+  const getMonthNumber = (monthAbbreviation: string | number) => {
+    const date = new Date(`${monthAbbreviation} 1, 2000`)
+    const monthNumber = isNaN(date.getTime()) ? null : (date.getMonth() + 1).toString()
+    return monthNumber
+  }
+  
+  const transformDataToMonthly = (trips: Trip[]) => {
+    const monthlyData = Array.from({ length: 12 }, (_, month) => ({
+      month: new Date(0, month).toLocaleString('default', { month: 'short' }),
+      distance: 0,
+    }))
+    
+    trips.forEach((trip: Trip) => {
+      const month = new Date(trip.startTime).getMonth()
+      monthlyData[month].distance += Number(trip.tripDistance.toFixed(0))
+    })
+    
+    return monthlyData
+  }
+  
+  const transformDataToDaily = useCallback((trips: Trip[]) => {
+    if (!month) {
+      return []
+    }
+    
+    const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month)))
+    const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
+      day: (day + 1).toString(),
+      distance: 0,
+    }))
+    
+    trips.forEach((trip: Trip) => {
+      const tripDate = trip.startTime
+      if (getMonth(tripDate) + 1 === Number(month)) {
+        const day = getDate(tripDate) - 1
+        dailyData[day].distance += Number(trip.tripDistance.toFixed(0))
+      }
+    })
+    
+    return dailyData
+  }, [month, year])
+  
   useEffect(() => {
     const fetchData = async () => {
       if (!user) return
@@ -29,69 +91,9 @@ const DistanceBarChart = () => {
         console.error('Error fetching trip data:', error)
       }
     }
+    console.log('use-effect renders')
     fetchData()
-  }, [month, year])
-
-  const getNivoBarSettings = (mode: "day" | "year") => {
-    if (mode === "year") {
-      return {
-        index: "month",
-        axisBottomLegend: "Month",
-        onClick: (barData: any) => {
-          setMonth(getMonthNumber(barData.data.month))
-          setViewMode("day")
-        },
-      }
-    }
-  
-    return {
-      index: "day",
-      axisBottomLegend: "Day",
-      onClick: () => {}
-    }
-  }
-
-  const getMonthNumber = (monthAbbreviation: string | number) => {
-    const date = new Date(`${monthAbbreviation} 1, 2000`)
-    const monthNumber = isNaN(date.getTime()) ? null : (date.getMonth() + 1).toString()
-    return monthNumber
-  }
-
-  const transformDataToMonthly = (trips: Trip[]) => {
-    const monthlyData = Array.from({ length: 12 }, (_, month) => ({
-      month: new Date(0, month).toLocaleString('default', { month: 'short' }),
-      distance: 0,
-    }))
-
-    trips.forEach((trip: Trip) => {
-      const month = new Date(trip.startTime).getMonth()
-      monthlyData[month].distance += Number(trip.tripDistance.toFixed(0))
-    })
-
-    return monthlyData
-  }
-
-  const transformDataToDaily = (trips: Trip[]) => {
-    if (!month) {
-      return []
-    }
-
-    const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month)))
-    const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
-      day: (day + 1).toString(),
-      distance: 0,
-    }))
-    
-    trips.forEach((trip: Trip) => {
-      const tripDate = trip.startTime
-      if (getMonth(tripDate) + 1 === Number(month)) {
-        const day = getDate(tripDate) - 1
-        dailyData[day].distance += Number(trip.tripDistance.toFixed(0))
-      }
-    })
-
-    return dailyData
-  }
+  }, [month, transformDataToDaily, user, viewMode, year])
 
   return (
     <div style={{ height: '600px' }}>
