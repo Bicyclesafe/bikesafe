@@ -7,6 +7,7 @@ import { addTrip } from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { useState } from "react"
 import DistanceOverview from "./DistanceOverview"
+import { NavLink } from "react-router-dom"
 
 const Dashboard = () => {
   const [distance, setDistance] = useState<number>(0)
@@ -51,7 +52,7 @@ const Dashboard = () => {
             <div className={stylesDashboard['row']}>Row 3</div>
           </div>
           <div className={stylesDashboard['center-area']}>
-            <PersonalGoalTracker />
+            <PersonalGoalTracker yearly_distance={distance}/>
           </div>
           <div className={stylesDashboard['side-area']}>
             <div className={stylesDashboard['row']}>Row 1</div>
@@ -60,15 +61,21 @@ const Dashboard = () => {
           </div>
         </div>
         <div className={stylesDashboard['item-container']}>
+          <NavLink to="/statistics">
           <div className={stylesDashboard['item']}>
             <DistanceOverview />
           </div>
+          </NavLink>
+          <NavLink to="/">
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
           </div>
+          </NavLink>
+          <NavLink to="/commute">
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
           </div>
+          </NavLink>
         </div>
       </div>
     </div>
