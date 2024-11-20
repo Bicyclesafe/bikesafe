@@ -10,6 +10,7 @@ import tripRouter from './routes/tripRoute'
 import testingRouter from './routes/testingRoute'
 import userRouter from './routes/userRoute'
 import goalRouter from './routes/goalRoute'
+import commuteRouter from './routes/commuteRoute'
 
 export const app = express()
 
@@ -23,6 +24,7 @@ app.use('/api/lock_stations', lockStationRouter)
 app.use('/api/trips', tripRouter)
 app.use('/api/users', userRouter)
 app.use('/api/goals', goalRouter)
+app.use('/api/commute', commuteRouter)
 
 app.use('/testing', testingRouter)
 
