@@ -4,10 +4,12 @@ import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
 import { linearGradientDef } from "@nivo/core"
+import { startOfWeek, endOfWeek } from "date-fns"
 
 const DistanceOverview = () => {
   const [data, setData] = useState<BarDatum[] | []>([])
   const { user } = useAuth()
+  console.log(data)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,9 +17,12 @@ const DistanceOverview = () => {
 
       try {
         const token = await user.getIdToken(true)
-        const year = new Date().getFullYear().toString()
-        const trips = await tripService.getAllTrips(token as string, year)
-        setData(transformDataToMonthly(trips))
+        const startTime = startOfWeek(new Date(), {weekStartsOn:1})
+        const endTime = endOfWeek(new Date(), {weekStartsOn: 1})
+        const trips = await tripService.getTripsBetweenDates(token as string, startTime, endTime)
+        if (trips.length !== 0 ) {
+          setData(transformDataToWeekly(trips))
+        }
       } catch (error) {
         console.error('Error fetching trip data:', error)
       }
@@ -25,26 +30,32 @@ const DistanceOverview = () => {
     fetchData()
   }, [user])
 
-  const transformDataToMonthly = (trips: Trip[]) => {
-    const monthlyData = Array.from({ length: 12 }, (_, month) => ({
-      month: new Date(0, month).toLocaleString('default', { month: 'short' }),
+
+  const transformDataToWeekly = (trips: Trip[]) => {
+    const weeklyData = Array.from({ length: 7 }, (_, day) => ({
+      day: new Date(2023, 0, 2 + day).toLocaleString('default', { weekday: 'short' }),
       distance: 0,
     }))
-
+  
     trips.forEach((trip: Trip) => {
-      const month = new Date(trip.startTime).getMonth()
-      monthlyData[month].distance += Number(trip.tripDistance.toFixed(0))
+      const day = new Date(trip.startTime).getDay() - 1// Sunday is 0, Monday is 1, ..., Saturday is 6
+      weeklyData[day].distance += Number(trip.tripDistance.toFixed(0))
     })
-
-    return monthlyData
+  
+    return weeklyData
   }
+
+  if (data.length == 0) {
+    return <div>No weekly data available</div>
+  }
+
 
   return (
     <div style={{ height: '100%' }}>
       <ResponsiveBar
         data={data}
         keys={['distance']}
-        indexBy="month"
+        indexBy="day"
         enableLabel={false}
         margin={{ top: 50, right: 60, bottom: 50, left: 70 }}
         padding={0.3}
