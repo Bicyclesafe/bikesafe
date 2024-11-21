@@ -108,8 +108,8 @@ const PersonalGoalTracker:FC<{ yearlyDistance: number }> = ({ yearlyDistance = [
   )
 
   const data = currentProgress !== null ? [
-    { id: 'completed', value: currentProgress, color: 'hsl(150, 60%, 40%)' },
-    { id: 'remaining', value: Math.max(currentGoals[0].goalDistance - currentProgress, 0), color: 'hsl(0, 0%, 80%)' },
+    { id: 'completed', value: currentProgress.toFixed(1), color: 'hsl(150, 60%, 40%)' },
+    { id: 'remaining', value: Math.max(currentGoals[0].goalDistance - currentProgress, 0).toFixed(1), color: 'hsl(0, 0%, 80%)' },
   ] : []
   
   return (

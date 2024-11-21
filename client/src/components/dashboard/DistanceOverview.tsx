@@ -41,6 +41,10 @@ const DistanceOverview = () => {
       if (day < 0) day = 6
       weeklyData[day].distance += trip.tripDistance
     })
+
+    weeklyData.forEach((data) => {
+      data.distance = parseFloat(data.distance.toFixed(1))
+    })
   
     return weeklyData
   }
