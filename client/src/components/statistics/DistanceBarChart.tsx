@@ -1,4 +1,5 @@
 import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
+//import { Line } from "@nivo/line"
 import { useCallback, useEffect, useState } from "react"
 import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
@@ -89,8 +90,16 @@ const DistanceBarChart = () => {
     fetchData()
   }, [month, transformDataToDaily, user, viewMode, year])
 
+  const lineData = data.map((entry) => ({
+    x: entry.month || entry.day,
+    y: entry.distance,
+  }))
+  console.log(lineData)
+  console.log(data)
+  console.log("M 30,23 L " + data.map(d => `${30 + Number(d.monthNumber) * 30},${d.distance}`).join(" L "))
+
   return (
-    <div style={{ height: '600px' }}>
+    <div style={{ position: "relative", height: '600px' }}>
       <select onChange={(e) => setYear(e.target.value)}>
         <option value="2024">2024</option>
         <option value="2023">2023</option>
@@ -152,7 +161,42 @@ const DistanceBarChart = () => {
         animate={true}
         motionConfig="stiff"
         onClick={getNivoBarSettings(viewMode).onClick}
+        layers={[
+          "grid",
+          "axes",
+          "bars",
+          // Add a custom layer for the Line chart
+          ({ innerWidth, innerHeight, xScale, yScale }) => {
+            console.log(xScale.range())
+            console.log(yScale.range())
+            console.log(innerHeight)
+            console.log(innerWidth)
+            return(
+            /*<Line
+              data={[{ id: "Distance", data: lineData }]}
+              xScale={{ type: "point" }}
+              yScale={{ type: "linear", min: "auto", max: "auto" }}
+              width={innerWidth}
+              height={innerHeight}
+              lineWidth={3}
+              colors={{ scheme: "dark2" }}
+              curve="monotoneX"
+              enableArea={false}
+              enablePoints={false}
+              axisBottom={null} // Disable bottom axis, as it is already drawn by the bar chart
+              axisLeft={null} // Disable left axis, as it is already drawn by the bar chart
+            />*/
+            <path
+              d={
+                `M 0,${innerHeight} L ` + data.map(d => `${-20 + Number(d.monthNumber) * innerWidth / 12.5},${innerHeight - Number(d.distance) * 2.97}`).join(" L ")
+              }
+              fill="none"
+              stroke="red"
+            />
+          )},
+        ]}
       />
+      
       {month &&
         <button onClick={() => { setMonth(null); setViewMode("year") }}>
           Return to yearly view
@@ -161,5 +205,40 @@ const DistanceBarChart = () => {
     </div>
   )
 }
+
+/*<Line
+  data={[
+    {
+      id: "Distance",
+      data: lineData,
+    },
+  ]}
+  margin={{ top: 0, right: 0, bottom: 50, left: 60 }}
+  xScale={{ type: "point" }}
+  yScale={{ type: "linear", min: "auto", max: "auto" }}
+  lineWidth={3}
+  colors={{ scheme: "dark2" }}
+  curve="monotoneX"
+  enableArea={false}
+  enablePoints={false}
+  axisBottom={{
+    tickSize: 5,
+    tickPadding: 5,
+    tickRotation: 0,
+    legend: getNivoBarSettings(viewMode).axisBottomLegend,
+    legendPosition: "middle",
+    legendOffset: 32,
+  }}
+  axisLeft={{
+    tickSize: 5,
+    tickPadding: 5,
+    tickRotation: 0,
+    legend: "Distance (km)",
+    legendPosition: "middle",
+    legendOffset: -40,
+  }}
+  height={600}
+  width={800}
+/>*/
   
 export default DistanceBarChart
