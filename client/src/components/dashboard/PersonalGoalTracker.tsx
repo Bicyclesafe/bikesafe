@@ -151,7 +151,7 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
                 dominantBaseline="central"
                 className={stylesPersonalGoal['progress-text']} data-testid="progress-text"
               >
-                {currentProgress || 0} / {currentGoals[0].goalDistance}
+                {currentProgress?.toFixed(1) || 0} / {currentGoals[0].goalDistance}
               </text>
             ),
           ]}
