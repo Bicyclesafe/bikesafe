@@ -92,7 +92,11 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
     sunday.setHours(23, 59, 59, 59)
 
     return [monday, sunday]
- }
+  }
+
+  const completedPieColor = (currentProgress ?? 0) >= (currentGoals?.[0]?.goalDistance ?? 0)
+    ? "gradientFull"
+    : "gradientCompleted"
 
   if (loading) return <div>Loading...</div>
   if (currentGoals.length === 0) return (
@@ -136,9 +140,13 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
               { offset: 0, color: '#ffc821', opacity: 0.6 },
               { offset: 100, color: '#ff4545', opacity: 0.6 },
             ]),
+            linearGradientDef('gradientFull', [
+              { offset: 0, color: '#ad8de3' },
+              { offset: 100, color: '#4ea8ed' },
+            ]),
           ]}
           fill={[
-            { match: { id: 'completed' }, id: 'gradientCompleted' },
+            { match: { id: 'completed' }, id: completedPieColor },
             { match: { id: 'remaining' }, id: 'gradientRemaining' },
           ]}
           layers={[
