@@ -52,7 +52,7 @@ const Dashboard = () => {
             <div className={stylesDashboard['row']}>Row 3</div>
           </div>
           <div className={stylesDashboard['center-area']}>
-            <PersonalGoalTracker yearly_distance={distance}/>
+            <PersonalGoalTracker yearlyDistance={distance}/>
           </div>
           <div className={stylesDashboard['side-area']}>
             <div className={stylesDashboard['row']}>Row 1</div>

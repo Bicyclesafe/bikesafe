@@ -8,7 +8,7 @@ import stylesPersonalGoal from './PersonalGoalTracker.module.css'
 import { linearGradientDef } from "@nivo/core"
 import { FC } from "react"
 
-const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => {
+const PersonalGoalTracker:FC<{ yearlyDistance: number }> = ({ yearlyDistance = [] }) => {
   const [currentGoals, setCurrentGoals] = useState<PersonalGoal[]>([])
   const [currentProgress, setCurrentProgress] = useState<number | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
@@ -51,7 +51,7 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
       }
     }
     fetchProgress()
-  }, [currentGoals, user, yearly_distance])
+  }, [currentGoals, user, yearlyDistance])
 
 
   const handlePersonalGoalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
