@@ -38,7 +38,8 @@ const DistanceOverview = () => {
     }))
   
     trips.forEach((trip: Trip) => {
-      const day = new Date(trip.startTime).getDay() - 1// Sunday is 0, Monday is 1, ..., Saturday is 6
+      let day = new Date(trip.startTime).getDay() - 1// Sunday is 0, Monday is 1, ..., Saturday is 6
+      if (day < 0) day = 6
       weeklyData[day].distance += Number(trip.tripDistance.toFixed(0))
     })
   
