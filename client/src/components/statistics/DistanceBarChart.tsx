@@ -16,10 +16,10 @@ const DistanceBarChart = () => {
   const getNivoBarSettings = (mode: "day" | "year") => {
     if (mode === "year") {
       return {
-        index: "month",
+        index: "monthName",
         axisBottomLegend: "Month",
         onClick: (barData: ComputedDatum<BarDatum>) => {
-          setMonth(getMonthNumber(barData.data.month))
+          setMonth(barData.data.monthNumber.toString())
           setViewMode("day")
         },
       }
@@ -32,16 +32,11 @@ const DistanceBarChart = () => {
     }
   }
   
-  const getMonthNumber = (monthAbbreviation: string | number) => {
-    const date = new Date(`${monthAbbreviation} 1, 2000`)
-    const monthNumber = isNaN(date.getTime()) ? null : (date.getMonth() + 1).toString()
-    return monthNumber
-  }
-  
   const transformDataToMonthly = (trips: Trip[]) => {
     const monthlyData = Array.from({ length: 12 }, (_, month) => ({
-      month: new Date(0, month).toLocaleString('default', { month: 'short' }),
+      monthName: new Date(0, month).toLocaleString('default', { month: 'short' }),
       distance: 0,
+      monthNumber: month + 1
     }))
     
     trips.forEach((trip: Trip) => {
