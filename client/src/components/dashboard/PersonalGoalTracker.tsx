@@ -5,6 +5,7 @@ import { useAuth } from "../../hooks/useAuth"
 import tripService from "../../services/tripService"
 import { ResponsivePie } from '@nivo/pie'
 import stylesPersonalGoal from './PersonalGoalTracker.module.css'
+import { linearGradientDef } from "@nivo/core"
 import { FC } from "react"
 
 const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => {
@@ -34,7 +35,7 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
       if (currentGoals.length > 0 && user) {
         try {
           const token = await user.getIdToken(true)
-          const tripsResponse = await tripService.getTripsBetweenDates(
+          const tripsResponse = await tripService.getSumOfTripsBetweenDates(
             token,
             currentGoals[0].startTime,
             currentGoals[0].endTime
@@ -98,52 +99,63 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
   <>
     <div className={stylesPersonalGoal['set-goal-text']}>
       Set a personal goal for the week
-    </div> 
     <form onSubmit={addGoal}>
       <input type="number" min="1" value={personalGoal} placeholder="Enter your goal" onChange={handlePersonalGoalChange} />
       <button type="submit" data-testid="set-goal-button">Set</button>
     </form>
+    </div> 
   </>
   )
 
   const data = currentProgress !== null ? [
-    { id: 'Completed', value: currentProgress, color: 'hsl(150, 60%, 40%)' },
-    { id: 'Remaining', value: Math.max(currentGoals[0].goalDistance - currentProgress, 0), color: 'hsl(0, 0%, 80%)' },
+    { id: 'completed', value: currentProgress, color: 'hsl(150, 60%, 40%)' },
+    { id: 'remaining', value: Math.max(currentGoals[0].goalDistance - currentProgress, 0), color: 'hsl(0, 0%, 80%)' },
   ] : []
   
   return (
     <div>
-      <header>
-        Viikkotavoite
-      </header>
-      <div className={stylesPersonalGoal['progress-text']} data-testid="progress-text">
-        {currentProgress || 0} / {currentGoals[0].goalDistance}
-      </div>
       <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
         <ResponsivePie
           data={data}
-          innerRadius={0.7}
-          startAngle={-90}
-          endAngle={90}
-          padAngle={1}
+          innerRadius={0.75}
+          startAngle={-160}
+          endAngle={160}
+          padAngle={1.5}
           cornerRadius={3}
-          colors={{ datum: 'data.color' }}
           enableArcLabels={false}
           enableArcLinkLabels={false}
           isInteractive={true}
           legends={[]}
-          borderWidth={1}
           motionConfig="stiff"
-          borderColor={{
-            from: 'color',
-            modifiers: [
-              [
-                'darker',
-                0.2
-              ]
-            ]
-          }}
-         />
+          defs={[
+            linearGradientDef('gradientCompleted', [
+              { offset: 0, color: '#66e375' },
+              { offset: 100, color: '#4ea8ed' },
+            ]),
+            linearGradientDef('gradientRemaining', [
+              { offset: 0, color: '#ffc821', opacity: 0.6 },
+              { offset: 100, color: '#ff4545', opacity: 0.6 },
+            ]),
+          ]}
+          fill={[
+            { match: { id: 'completed' }, id: 'gradientCompleted' },
+            { match: { id: 'remaining' }, id: 'gradientRemaining' },
+          ]}
+          layers={[
+            'arcs',
+            ({ centerX, centerY }) => (
+              <text
+                x={centerX}
+                y={centerY-3}
+                textAnchor="middle"
+                dominantBaseline="central"
+                className={stylesPersonalGoal['progress-text']} data-testid="progress-text"
+              >
+                {currentProgress || 0} / {currentGoals[0].goalDistance}
+              </text>
+            ),
+          ]}
+        />
       </div>
     </div>
   )

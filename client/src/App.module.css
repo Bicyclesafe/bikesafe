@@ -35,6 +35,11 @@
 }
 
 .main-container {
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.main-content {
     margin: 0;
 }
   

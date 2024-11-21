@@ -1,8 +1,9 @@
 import { useEffect } from "react"
 import { useAuth } from "../../hooks/useAuth"
 import tripService from "../../services/tripService"
-import stylesSeasonalDistance from './SeasonalDistance.module.css'
 import { SeasonalDistanceProps } from "../../types"
+import stylesSeasonalDistance from "./SeasonalDistance.module.css"
+
 
 const SeasonalDistance = ({ distance, setDistance }: SeasonalDistanceProps) => {
   const { user } = useAuth()
@@ -15,7 +16,8 @@ const SeasonalDistance = ({ distance, setDistance }: SeasonalDistanceProps) => {
         const token = await user.getIdToken(true)
         const startTime = new Date(`${year}-01-01 00:00:00`)
         const endTime = new Date(`${year}-12-31 23:59:59`)
-        const distanceResponse = await tripService.getTripsBetweenDates(token as string, startTime, endTime)
+        const distanceResponse = await tripService.getSumOfTripsBetweenDates(token as string, startTime, endTime)
+        console.log(distanceResponse)
         setDistance(distanceResponse)
       }
     }
@@ -23,13 +25,8 @@ const SeasonalDistance = ({ distance, setDistance }: SeasonalDistanceProps) => {
   }, [setDistance, user, user?.uid, year])
 
   return (
-    <div className={stylesSeasonalDistance['seasonal-distance-container']}>
-      <div className={stylesSeasonalDistance['year']}>
-        {year}
-      </div>
-      <div id="total-distance" className={stylesSeasonalDistance['distance']}>
-        {distance || 0}km
-      </div>
+    <div className={stylesSeasonalDistance['total-distance']} id="total-distance">
+      {distance || 0}km
     </div>
   )
 }

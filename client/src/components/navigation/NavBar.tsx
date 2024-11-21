@@ -15,11 +15,11 @@ const NavBar = () => {
         <header className={styles['header']}>
             <div className={styles['nav-container']}>
                 <div className={styles['nav-logo']}>
-                    <a href="/">Bike safe</a>
+                    <a href="/dashboard">Bike safe</a>
                 </div>
                 <nav>
                     <ul className={styles['nav-links']}>
-                        <li><a href="/">Home</a></li>
+                        <li><a href="/dashboard">Home</a></li>
                         <li><a href="/">About</a></li>
                         {user
                             ? <li><button id="logout-button" onClick={logOut}>Log out</button></li>

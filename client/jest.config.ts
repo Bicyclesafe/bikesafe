@@ -27,7 +27,8 @@ module.exports = {
     jsdom: '25.0.1', // or the version you want to use
   },
   moduleNameMapper: {
-      "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js"
+      "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js",
+      '^d3-(.+)$': '<rootDir>/node_modules/d3-$1/dist/d3-$1.js',
   },
 
 setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],

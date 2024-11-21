@@ -7,16 +7,15 @@ import NavBar from "./components/navigation/NavBar"
 import Dashboard from "./components/dashboard/Dashboard"
 import AuthWrapper from "./components/context/AuthWrapper"
 import stylesApp from "./App.module.css"
+import StatisticsPage from "./components/statistics/StatisticsPage"
 import Commute from "./components/commute/Commute"
 
 const Layout = () => {
   return (
-    <div>
+    <div className={stylesApp['main-container']}>
       <NavBar />
-      <div className={stylesApp['main-container']}>
-        <div>
-          <Outlet />
-        </div>
+      <div className={stylesApp['main-content']}>
+        <Outlet />
       </div>
     </div>
   )
@@ -30,6 +29,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "dashboard", element: <Dashboard /> },
       { path: "commute", element: <Commute /> },
+      { path: "statistics", element: <StatisticsPage />},
     ],
   },
   { path: "/login", element: <Login /> },
