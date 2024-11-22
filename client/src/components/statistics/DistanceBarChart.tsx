@@ -41,7 +41,11 @@ const DistanceBarChart = () => {
     
     trips.forEach((trip: Trip) => {
       const month = new Date(trip.startTime).getMonth()
-      monthlyData[month].distance += Number(trip.tripDistance.toFixed(0))
+      monthlyData[month].distance += trip.tripDistance
+    })
+
+    monthlyData.forEach((data) => {
+      data.distance = parseFloat(data.distance.toFixed(1))
     })
     
     return monthlyData
@@ -62,8 +66,12 @@ const DistanceBarChart = () => {
       const tripDate = trip.startTime
       if (getMonth(tripDate) + 1 === Number(month)) {
         const day = getDate(tripDate) - 1
-        dailyData[day].distance += Number(trip.tripDistance.toFixed(0))
+        dailyData[day].distance += trip.tripDistance
       }
+    })
+
+    dailyData.forEach((data) => {
+      data.distance = parseFloat(data.distance.toFixed(1))
     })
     
     return dailyData

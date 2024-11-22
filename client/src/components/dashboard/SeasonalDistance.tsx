@@ -17,7 +17,6 @@ const SeasonalDistance = ({ distance, setDistance }: SeasonalDistanceProps) => {
         const startTime = new Date(`${year}-01-01 00:00:00`)
         const endTime = new Date(`${year}-12-31 23:59:59`)
         const distanceResponse = await tripService.getSumOfTripsBetweenDates(token as string, startTime, endTime)
-        console.log(distanceResponse)
         setDistance(distanceResponse)
       }
     }
@@ -26,7 +25,7 @@ const SeasonalDistance = ({ distance, setDistance }: SeasonalDistanceProps) => {
 
   return (
     <div className={stylesSeasonalDistance['total-distance']} id="total-distance">
-      {distance || 0}km
+      {distance?.toFixed(1) || 0}km
     </div>
   )
 }

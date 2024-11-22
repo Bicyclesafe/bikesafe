@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom"
 
 jest.mock("../services/tripService", () => ({
   getSumOfTripsBetweenDates: jest.fn(),
+  getTripsBetweenDates: jest.fn(),
   addTrip: jest.fn(),
   getAllTrips: jest.fn()
 }))
@@ -36,11 +37,13 @@ describe("Dashboard component", () => {
       </BrowserRouter>
     )
 
-    fireEvent.click(getByText(container, "Cycle to work"))
+    act (() => {
+      fireEvent.click(getByText(container, "Cycle to work"))
+    })
 
     await waitFor(() => {
       expect(mockGetSumOfTripsBetweenDates).toHaveBeenCalled()
-      expect(screen.getByText(/1km/)).toBeInTheDocument()
+      expect(screen.getByText(/1.0km/)).toBeInTheDocument()
     })
   })
 
@@ -56,12 +59,14 @@ describe("Dashboard component", () => {
         <Dashboard />
       </BrowserRouter>
     )
+
     act (() => {
-    fireEvent.click(getByText(container, 'Cycle to work'))
+      fireEvent.click(getByText(container, 'Cycle to work'))
     })
+
     setTimeout(() => {
       expect(mockGetCurrentGoalsForUser).toHaveBeenCalled()
       expect(screen.getByText(/1\/200/)).toBeInTheDocument()  
-  }, 1000)
+    }, 1000)
   })
 })

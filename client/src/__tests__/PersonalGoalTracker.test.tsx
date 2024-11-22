@@ -53,17 +53,17 @@ describe("PersonalGoalTracker component", () => {
     mockGetCurrentGoalsForUser.mockResolvedValue([{ goalDistance: 200, startTime: "2024-11-01", endTime: "2024-11-30" }])
     mockGetSumOfTripsBetweenDates.mockResolvedValue(150)
 
-    render(<PersonalGoalTracker yearly_distance={0} />)
+    render(<PersonalGoalTracker yearlyDistance={0} />)
 
     await waitFor(() => {
-      expect(screen.getByText(/150 \/ 200/)).toBeInTheDocument()
+      expect(screen.getByText(/150.0 \/ 200/)).toBeInTheDocument()
     })
   })
 
   it("displays 'Set a personal goal for the week' when no goals are available", async () => {
     mockGetCurrentGoalsForUser.mockResolvedValue([])
 
-    render(<PersonalGoalTracker yearly_distance={0} />)
+    render(<PersonalGoalTracker yearlyDistance={0} />)
 
     await waitFor(() => {
       expect(screen.getByText(/Set a personal goal for the week/)).toBeInTheDocument()
@@ -74,7 +74,7 @@ describe("PersonalGoalTracker component", () => {
     mockGetCurrentGoalsForUser.mockResolvedValueOnce([]).mockResolvedValueOnce([{ goalDistance: 100, startTime: "2024-11-01", endTime: "2024-11-30" }])
     mockAddGoal.mockResolvedValue({})
 
-    render(<PersonalGoalTracker yearly_distance={0}/>)
+    render(<PersonalGoalTracker yearlyDistance={0}/>)
 
     await waitFor(() => {
       expect(screen.getByText(/Set a personal goal for the week/)).toBeInTheDocument()
@@ -96,7 +96,7 @@ describe("PersonalGoalTracker component", () => {
     mockGetCurrentGoalsForUser.mockResolvedValueOnce([])
     mockAddGoal.mockRejectedValue(new Error("Failed to add goal"))
 
-    render(<PersonalGoalTracker yearly_distance={0}/>)
+    render(<PersonalGoalTracker yearlyDistance={0}/>)
 
     await waitFor(() => {
       expect(screen.getByText(/Set a personal goal for the week/)).toBeInTheDocument()
