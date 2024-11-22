@@ -63,7 +63,7 @@ const Dashboard = () => {
         <div className={stylesDashboard['item-container']}>
           <NavLink to="/statistics">
           <div className={stylesDashboard['item']}>
-            <DistanceOverview />
+            <DistanceOverview distance={distance} />
           </div>
           </NavLink>
           <NavLink to="/">
