@@ -1,12 +1,12 @@
 import { BarDatum, ResponsiveBar } from "@nivo/bar"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
 import { linearGradientDef } from "@nivo/core"
 import { startOfWeek, endOfWeek } from "date-fns"
 
-const DistanceOverview = () => {
+const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
   const [data, setData] = useState<BarDatum[]>([])
   const { user } = useAuth()
 
@@ -27,7 +27,7 @@ const DistanceOverview = () => {
       }
     }
     fetchData()
-  }, [user])
+  }, [user, distance])
 
 
   const transformDataToWeekly = (trips: Trip[]) => {
