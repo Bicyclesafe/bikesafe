@@ -2,13 +2,19 @@ import styles from './Navbar.module.css'
 import { useAuth } from '../../hooks/useAuth'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../services/google_authentication'
+import { useState } from 'react'
 
 const NavBar = () => {
     const { user } = useAuth()
+    const [menuOpen, setMenuOpen] = useState(false)
 
     const logOut = async () => {
         await signOut(auth)
         console.log("Logged out")
+    }
+
+    const toggleMenu = () => {
+        setMenuOpen((prev) => !prev)
     }
 
     return (
@@ -17,8 +23,17 @@ const NavBar = () => {
                 <div className={styles['nav-logo']}>
                     <a href="/">Bike safe</a>
                 </div>
-                <nav>
-                    <ul className={styles['nav-links']}>
+                <button
+									className={styles['hamburger']}
+									onClick={toggleMenu}
+									>
+									☰
+                </button>
+								<nav className={`${styles['nav']} ${menuOpen ? styles['open'] : ''}`}>
+										<button className={styles['close-button']} onClick={toggleMenu}>
+                        ×
+                    </button>
+											<ul className={styles['nav-links']}>
                         <li><a href="/">Home</a></li>
                         <li><a href="/">About</a></li>
                         {user
@@ -34,3 +49,4 @@ const NavBar = () => {
 }
 
 export default NavBar
+
