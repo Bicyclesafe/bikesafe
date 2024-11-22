@@ -1,5 +1,4 @@
-import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
-//import { Line } from "@nivo/line"
+import { BarDatum, ComputedBarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
 import { useCallback, useEffect, useState } from "react"
 import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
@@ -90,13 +89,27 @@ const DistanceBarChart = () => {
     fetchData()
   }, [month, transformDataToDaily, user, viewMode, year])
 
-  const lineData = data.map((entry) => ({
-    x: entry.month || entry.day,
-    y: entry.distance,
-  }))
-  console.log(lineData)
-  console.log(data)
-  console.log("M 30,23 L " + data.map(d => `${30 + Number(d.monthNumber) * 30},${d.distance}`).join(" L "))
+  const lineLayer = ({innerHeight, bars}: {innerHeight: number, bars: readonly ComputedBarDatum<BarDatum>[]}) => {
+    if (bars.length === 0) return
+    if ((viewMode === "day" && !data[0].day) || (viewMode === "year" && !data[0].monthNumber)) return
+
+    const positionsAsStrings = data.map(d => {
+      const barIndex = (viewMode === "year" ? Number(d.monthNumber) : Number(d.day)) - 1
+      const xPosition = bars[barIndex].width / 2 + bars[barIndex].x
+      const yPosition = bars[barIndex].y
+      return `${xPosition},${yPosition}`
+    })
+
+    return (
+      <path
+        d={
+          `M 0,${innerHeight} L ` + positionsAsStrings.join(" L ")
+        }
+        fill="none"
+        stroke="red"
+      />
+    )
+  }
 
   return (
     <div style={{ position: "relative", height: '600px' }}>
@@ -165,35 +178,7 @@ const DistanceBarChart = () => {
           "grid",
           "axes",
           "bars",
-          // Add a custom layer for the Line chart
-          ({ innerWidth, innerHeight, xScale, yScale }) => {
-            console.log(xScale.range())
-            console.log(yScale.range())
-            console.log(innerHeight)
-            console.log(innerWidth)
-            return(
-            /*<Line
-              data={[{ id: "Distance", data: lineData }]}
-              xScale={{ type: "point" }}
-              yScale={{ type: "linear", min: "auto", max: "auto" }}
-              width={innerWidth}
-              height={innerHeight}
-              lineWidth={3}
-              colors={{ scheme: "dark2" }}
-              curve="monotoneX"
-              enableArea={false}
-              enablePoints={false}
-              axisBottom={null} // Disable bottom axis, as it is already drawn by the bar chart
-              axisLeft={null} // Disable left axis, as it is already drawn by the bar chart
-            />*/
-            <path
-              d={
-                `M 0,${innerHeight} L ` + data.map(d => `${-20 + Number(d.monthNumber) * innerWidth / 12.5},${innerHeight - Number(d.distance) * 2.97}`).join(" L ")
-              }
-              fill="none"
-              stroke="red"
-            />
-          )},
+          lineLayer,
         ]}
       />
       
@@ -205,40 +190,5 @@ const DistanceBarChart = () => {
     </div>
   )
 }
-
-/*<Line
-  data={[
-    {
-      id: "Distance",
-      data: lineData,
-    },
-  ]}
-  margin={{ top: 0, right: 0, bottom: 50, left: 60 }}
-  xScale={{ type: "point" }}
-  yScale={{ type: "linear", min: "auto", max: "auto" }}
-  lineWidth={3}
-  colors={{ scheme: "dark2" }}
-  curve="monotoneX"
-  enableArea={false}
-  enablePoints={false}
-  axisBottom={{
-    tickSize: 5,
-    tickPadding: 5,
-    tickRotation: 0,
-    legend: getNivoBarSettings(viewMode).axisBottomLegend,
-    legendPosition: "middle",
-    legendOffset: 32,
-  }}
-  axisLeft={{
-    tickSize: 5,
-    tickPadding: 5,
-    tickRotation: 0,
-    legend: "Distance (km)",
-    legendPosition: "middle",
-    legendOffset: -40,
-  }}
-  height={600}
-  width={800}
-/>*/
   
 export default DistanceBarChart
