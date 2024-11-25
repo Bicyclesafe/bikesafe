@@ -4,7 +4,7 @@ import stylesStatistics from "./StatisticsPage.module.css"
 import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
-import { format } from "date-fns"
+import { Duration, format, intervalToDuration } from "date-fns"
 
 const StatisticsPage = () => {
   const { user } = useAuth()
@@ -27,6 +27,38 @@ const StatisticsPage = () => {
     fetchData()
   }, [user])
 
+  const formatDuration = (duration: Duration) => {
+    const { hours = 0, minutes = 0 } = duration
+  
+    if (hours === 0) {
+      return (
+        <>
+          <span className={stylesStatistics['duration']}>{minutes}</span>
+          <span className={stylesStatistics['unit']}>min</span>
+        </>
+      )
+    }
+
+    if (minutes === 0) {
+      return (
+        <>
+          <span className={stylesStatistics['duration']}>{hours}</span>
+          <span className={stylesStatistics['unit']}>h</span>
+        </>
+      )
+    }
+    return (
+      <>
+        <span className={stylesStatistics['duration']}>{hours}</span>
+        <span className={stylesStatistics['unit']}>h</span>
+        <span style={{ marginLeft: "5px" }}>
+          <span className={stylesStatistics['duration']}>{minutes}</span>
+          <span className={stylesStatistics['unit']}>min</span>
+        </span>
+      </>
+    )
+  }
+
   const latestTrips = useMemo(() => {
     return rawData
       .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
@@ -35,13 +67,22 @@ const StatisticsPage = () => {
 
   const showLatestTrips = latestTrips.map((trip) => {
     const startTime = new Date(trip.startTime)
+    const duration = intervalToDuration({ start: trip.startTime, end: trip.endTime })
+
     return (
-      <div className={stylesStatistics['row']} key={trip.id}>
-        <div className={stylesStatistics['date']}>
-          {format(startTime, 'dd MMM yyyy, hh:mm a')}
-        </div>
-        <div className={stylesStatistics['distance']}>
-          {trip.tripDistance}km
+      <div className={stylesStatistics['trip-box']} key={trip.id}>
+        <div className={stylesStatistics['date']}>{format(startTime, 'dd MMM yyyy')}</div>
+        <div className={stylesStatistics['start-time']}>{format(startTime, 'h:mm')}</div>
+        <div className={stylesStatistics['details']}>
+          <span className={stylesStatistics['duration']}>{formatDuration(duration)}</span>
+          <div>
+            <span className={stylesStatistics['distance']}>{trip.tripDistance.toFixed(1)}</span>
+            <span className={stylesStatistics['unit']}>km</span>
+          </div>
+          <div>
+            <span className={stylesStatistics['co2']}>{((140 * trip.tripDistance) / 100).toFixed(0)}</span>
+            <span className={stylesStatistics['unit']}>co2</span>
+          </div>
         </div>
       </div>
     )

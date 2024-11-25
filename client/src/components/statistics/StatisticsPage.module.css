@@ -4,7 +4,7 @@
   
 .statistics-content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: auto auto;
     margin: 0 auto;
     max-width: 1200px;
@@ -30,9 +30,8 @@
     border: 1px solid lightgrey;
     transition: box-shadow 0.3s ease, transform 0.1s ease;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-    cursor: pointer;
     padding: 20px;
-    gap: 10px;
+    gap: 15px;
 }
 
 .item-title {
@@ -41,10 +40,48 @@
     margin-bottom: 10px;
 }
 
-.row {
+.trip-box {
+    display: grid;
+    grid-template-areas:
+    "date start-time"
+    "details details";
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr auto;
+    background-color: #ebf1f7;
+    border-radius: 10px;
+    padding: 14px;
+    gap: 20px;
+}
+
+.date {
+    grid-area: date;
+    color: #1b9e77;
+    font-weight: bold;
+}
+
+.start-time {
+    grid-area: start-time;
+    color: #1b9e77;
+    font-weight: bold;
+    text-align: right;
+}
+
+.details {
+    grid-area: details;
     display: flex;
     justify-content: space-between;
-    background-color: #e2f3f3;
-    border-radius: 10px;
-    padding: 20px;
+    gap: 20px;
+}
+
+.duration, .distance, .co2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.8rem;
+}
+
+.unit {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(119, 119, 119);
+    margin-left: 4px;
 }
