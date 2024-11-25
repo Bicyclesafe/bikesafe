@@ -1,0 +1,21 @@
+.statistics-container {
+    padding: 20px 60px;
+}
+  
+.statistics-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 0 auto;
+    max-width: 1200px;
+    transition: gap 0.3s ease;
+    gap: 20px;
+}
+
+.chart {
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    padding: 20px 20px 40px 20px;
+    gap: 20px;
+}
