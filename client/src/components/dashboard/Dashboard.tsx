@@ -1,6 +1,7 @@
 import SeasonalDistance from "./SeasonalDistance"
 import stylesDashboard from "./Dashboard.module.css"
 import PersonalGoal from "./PersonalGoal"
+import TotalCommute from "./TotalCommute" 
 import PersonalGoalTracker from "./PersonalGoalTracker"
 import { BaseTrip } from "../../types"
 import { addTrip } from "../../services/tripService"
@@ -55,7 +56,14 @@ const Dashboard = () => {
             <PersonalGoalTracker yearlyDistance={distance}/>
           </div>
           <div className={stylesDashboard['side-area']}>
-            <div className={stylesDashboard['row']}>Row 1</div>
+            <div className={stylesDashboard['row']}>
+            <div className={stylesDashboard['row-item']}>
+                <div className={stylesDashboard['row-title']}>Today's cycling count!</div>
+                <div className={stylesDashboard['row-content']}>
+                  <TotalCommute/>
+                </div>
+              </div>
+            </div>
             <div className={stylesDashboard['row']}>Row 2</div>
             <div className={stylesDashboard['row']}>Row 3</div>
           </div>
