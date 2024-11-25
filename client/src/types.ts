@@ -106,6 +106,7 @@ export interface LineLayer {
   bars: readonly ComputedBarDatum<BarDatum>[]
   data: BarDatum[]
   color: string
+  highestValue: number
 }
 
 export interface ChartData {

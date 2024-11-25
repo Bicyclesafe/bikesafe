@@ -12,6 +12,7 @@ const DistanceBarChart = () => {
   const [viewMode, setViewMode] = useState<"day" | "year">("year")
   const [month, setMonth] = useState<string | null>(null)
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
+  const [highestValue, setHighestValue] = useState<number>(0)
   const { user } = useAuth()
 
   
@@ -69,6 +70,12 @@ const DistanceBarChart = () => {
     
     return dailyData
   }, [month, year])
+
+  const getHighestPoint = useCallback(() => {
+    const highestBar = Math.max(...barData.map(bar => Number(bar.value)))
+    const highestLinePoint = Number(emissionTotalData[emissionTotalData.length - 1].value)
+    return Math.max(highestBar, highestLinePoint)
+  }, [barData, emissionTotalData]) 
   
   useEffect(() => {
     const fetchData = async () => {
@@ -87,22 +94,22 @@ const DistanceBarChart = () => {
           setEmissionPerDateData(transformDataToDaily(createEmissionPerDateData(trips)))
           setEmissionTotalData(createEmissionTotalData(transformDataToDaily(createEmissionPerDateData(trips))))
         }
+        setHighestValue(getHighestPoint())
       } catch (error) {
         console.error('Error fetching trip data:', error)
       }
     }
     fetchData()
-  }, [month, transformDataToDaily, user, viewMode, year])
+  }, [month, transformDataToDaily, getHighestPoint, user, viewMode, year])
 
-  const lineLayer = ({innerHeight, bars, data, color}: LineLayer) => {
+  const lineLayer = ({innerHeight, bars, data, color, highestValue}: LineLayer) => {
     if (bars.length === 0) return
     if ((viewMode === "day" && !data[0].day) || (viewMode === "year" && !data[0].monthNumber)) return
 
-    const maxValue = Math.max(...bars.map(bar => Number(bar.data.value)))
     const positionsAsStrings = data.map(d => {
       const barIndex = (viewMode === "year" ? Number(d.monthNumber) : Number(d.day)) - 1
       const xPosition = bars[barIndex].width / 2 + bars[barIndex].x
-      const yPosition = innerHeight - Number(d.value) * innerHeight / maxValue
+      const yPosition = innerHeight - Number(d.value) * innerHeight / highestValue
       return `${xPosition},${yPosition}`
     })
 
@@ -131,9 +138,8 @@ const DistanceBarChart = () => {
     let sum = 0
     for (let i = 0; i < data.length; i++) {
       sum += Number(data[i].value)
-      emissionTotalData.push({monthName: data[i].monthName, monthNumber: data[i].monthNumber, value: sum})
+      emissionTotalData.push({...data[i], value: sum})
     }
-    console.log(emissionTotalData)
     return emissionTotalData
   }
 
@@ -153,6 +159,7 @@ const DistanceBarChart = () => {
         colors={{ scheme: 'dark2' }}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisTop={null}
+        maxValue={highestValue}
         axisRight={{
           tickSize: 5,
           tickPadding: 5,
@@ -211,8 +218,8 @@ const DistanceBarChart = () => {
           "grid",
           "axes",
           "bars",
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionPerDateData, color: "red"}),
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionTotalData, color: "blue"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionPerDateData, color: "red", highestValue}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionTotalData, color: "blue", highestValue}),
         ]}
       />
       
