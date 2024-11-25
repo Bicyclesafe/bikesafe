@@ -1,3 +1,4 @@
+import { BarDatum, ComputedBarDatum } from "@nivo/bar"
 import { LatLng } from "leaflet"
 
 export interface Coordinate {
@@ -98,4 +99,16 @@ export interface BaseTrip {
 export interface SeasonalDistanceProps {
   distance: number;
   setDistance: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface LineLayer {
+  innerHeight: number
+  bars: readonly ComputedBarDatum<BarDatum>[]
+  data: BarDatum[]
+  color: string
+}
+
+export interface ChartData {
+  time: Date
+  value: number
 }

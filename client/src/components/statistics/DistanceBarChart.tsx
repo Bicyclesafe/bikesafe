@@ -1,12 +1,14 @@
-import { BarDatum, ComputedBarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
+import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
 import { useCallback, useEffect, useState } from "react"
 import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
-import { Trip } from "../../types"
+import { ChartData, LineLayer, Trip } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
 
 const DistanceBarChart = () => {
-  const [data, setData] = useState<BarDatum[]>([])
+  const [barData, setBarData] = useState<BarDatum[]>([])
+  const [emissionPerDateData, setEmissionPerDateData] = useState<BarDatum[]>([])
+  const [emissionTotalData, setEmissionTotalData] = useState<BarDatum[]>([])
   const [viewMode, setViewMode] = useState<"day" | "year">("year")
   const [month, setMonth] = useState<string | null>(null)
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
@@ -32,22 +34,22 @@ const DistanceBarChart = () => {
     }
   }
   
-  const transformDataToMonthly = (trips: Trip[]) => {
+  const transformDataToMonthly = (data: ChartData[]) => {
     const monthlyData = Array.from({ length: 12 }, (_, month) => ({
       monthName: new Date(0, month).toLocaleString('default', { month: 'short' }),
-      distance: 0,
+      value: 0,
       monthNumber: month + 1
     }))
     
-    trips.forEach((trip: Trip) => {
-      const month = new Date(trip.startTime).getMonth()
-      monthlyData[month].distance += Number(trip.tripDistance.toFixed(0))
+    data.forEach(({time, value}) => {
+      const month = new Date(time).getMonth()
+      monthlyData[month].value += Number(value.toFixed(0))
     })
-    
+
     return monthlyData
   }
   
-  const transformDataToDaily = useCallback((trips: Trip[]) => {
+  const transformDataToDaily = useCallback((data: ChartData[]) => {
     if (!month) {
       return []
     }
@@ -55,14 +57,13 @@ const DistanceBarChart = () => {
     const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month)))
     const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
       day: (day + 1).toString(),
-      distance: 0,
+      value: 0,
     }))
     
-    trips.forEach((trip: Trip) => {
-      const tripDate = trip.startTime
-      if (getMonth(tripDate) + 1 === Number(month)) {
-        const day = getDate(tripDate) - 1
-        dailyData[day].distance += Number(trip.tripDistance.toFixed(0))
+    data.forEach(({time, value}) => {
+      if (getMonth(time) + 1 === Number(month)) {
+        const day = getDate(time) - 1
+        dailyData[day].value += Number(value.toFixed(0))
       }
     })
     
@@ -78,9 +79,13 @@ const DistanceBarChart = () => {
         const trips = await tripService.getAllTrips(token as string, year, month)
 
         if (viewMode === "year") {
-          setData(transformDataToMonthly(trips))
+          setBarData(transformDataToMonthly(createBarData(trips)))
+          setEmissionPerDateData(transformDataToMonthly(createEmissionPerDateData(trips)))
+          setEmissionTotalData(createEmissionTotalData(transformDataToMonthly(createEmissionPerDateData(trips))))
         } else if (viewMode === "day") {
-          setData(transformDataToDaily(trips))
+          setBarData(transformDataToDaily(createBarData(trips)))
+          setEmissionPerDateData(transformDataToDaily(createEmissionPerDateData(trips)))
+          setEmissionTotalData(createEmissionTotalData(transformDataToDaily(createEmissionPerDateData(trips))))
         }
       } catch (error) {
         console.error('Error fetching trip data:', error)
@@ -89,14 +94,15 @@ const DistanceBarChart = () => {
     fetchData()
   }, [month, transformDataToDaily, user, viewMode, year])
 
-  const lineLayer = ({innerHeight, bars}: {innerHeight: number, bars: readonly ComputedBarDatum<BarDatum>[]}) => {
+  const lineLayer = ({innerHeight, bars, data, color}: LineLayer) => {
     if (bars.length === 0) return
     if ((viewMode === "day" && !data[0].day) || (viewMode === "year" && !data[0].monthNumber)) return
 
+    const maxValue = Math.max(...bars.map(bar => Number(bar.data.value)))
     const positionsAsStrings = data.map(d => {
       const barIndex = (viewMode === "year" ? Number(d.monthNumber) : Number(d.day)) - 1
       const xPosition = bars[barIndex].width / 2 + bars[barIndex].x
-      const yPosition = bars[barIndex].y
+      const yPosition = innerHeight - Number(d.value) * innerHeight / maxValue
       return `${xPosition},${yPosition}`
     })
 
@@ -106,9 +112,29 @@ const DistanceBarChart = () => {
           `M 0,${innerHeight} L ` + positionsAsStrings.join(" L ")
         }
         fill="none"
-        stroke="red"
+        stroke={color}
       />
     )
+  }
+
+  const createBarData = (trips: Trip[]) => {
+    return trips.map(trip => ({time: trip.startTime, value: trip.tripDistance}))
+  }
+
+  const createEmissionPerDateData = (trips: Trip[]) => {
+    const emissionsPerKM = 248.5484 / 1000
+    return trips.map(trip => ({time: trip.startTime, value: trip.tripDistance * emissionsPerKM}))
+  }
+
+  const createEmissionTotalData = (data: BarDatum[]) => {
+    const emissionTotalData = []
+    let sum = 0
+    for (let i = 0; i < data.length; i++) {
+      sum += Number(data[i].value)
+      emissionTotalData.push({monthName: data[i].monthName, monthNumber: data[i].monthNumber, value: sum})
+    }
+    console.log(emissionTotalData)
+    return emissionTotalData
   }
 
   return (
@@ -118,8 +144,8 @@ const DistanceBarChart = () => {
         <option value="2023">2023</option>
       </select>
       <ResponsiveBar
-        data={data}
-        keys={['distance']}
+        data={barData}
+        keys={['value']}
         indexBy={getNivoBarSettings(viewMode).index}
         enableLabel={false}
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
@@ -127,7 +153,14 @@ const DistanceBarChart = () => {
         colors={{ scheme: 'dark2' }}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisTop={null}
-        axisRight={null}
+        axisRight={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: "Emissions (kg/km)",
+          legendPosition: 'middle',
+          legendOffset: 32,
+        }}
         axisBottom={{
           tickSize: 5,
           tickPadding: 5,
@@ -178,7 +211,8 @@ const DistanceBarChart = () => {
           "grid",
           "axes",
           "bars",
-          lineLayer,
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionPerDateData, color: "red"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionTotalData, color: "blue"}),
         ]}
       />
       
