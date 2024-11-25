@@ -9,6 +9,8 @@ import { format } from "date-fns"
 const StatisticsPage = () => {
   const { user } = useAuth()
   const [rawData, setRawData] = useState<Trip[]>([])
+  const [year, setYear] = useState<string>(new Date().getFullYear().toString())
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,20 +47,39 @@ const StatisticsPage = () => {
     )
   })
 
+  const yearlyTotalDistance = () => {
+    // const filteredTrips = rawData.filter(
+    //   (trip) => new Date(trip.startTime).getFullYear() === Number(year)
+    // )
+
+    return (
+      <div>
+        0km
+      </div>
+    )
+  }
+
   return (
     <div className={stylesStatistics['statistics-container']}>
       <div className={stylesStatistics['statistics-content']}>
+        <select onChange={(e) => setYear(e.target.value)}>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+        </select>
         <div className={stylesStatistics['chart']}>
-            <DistanceBarChart rawData={rawData} />
+            <DistanceBarChart rawData={rawData} year={year} />
+        </div>
+        <div className={stylesStatistics['item']}>
+          <div className={stylesStatistics['item-title']}>
+            General
+          </div>
+          {yearlyTotalDistance()}
         </div>
         <div className={stylesStatistics['item']}>
           <div className={stylesStatistics['item-title']}>
             Latest trips
           </div>
           {showLatestTrips}
-        </div>
-        <div className={stylesStatistics['item']}>
-          <div>hahaha</div>
         </div>
       </div>
     </div>

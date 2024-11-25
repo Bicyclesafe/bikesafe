@@ -3,11 +3,10 @@ import { FC, useCallback, useEffect, useState } from "react"
 import { Trip } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
 
-const DistanceBarChart: FC<{ rawData: Trip[] }> = ({ rawData = [] }) => {
+const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData = [], year }) => {
   const [transformedData, setTransformedData] = useState<BarDatum[]>([])
   const [viewMode, setViewMode] = useState<"day" | "year">("year")
   const [month, setMonth] = useState<string | null>(null)
-  const [year, setYear] = useState<string>(new Date().getFullYear().toString())
   
   const getNivoBarSettings = (mode: "day" | "year") => {
     if (mode === "year") {
@@ -28,7 +27,7 @@ const DistanceBarChart: FC<{ rawData: Trip[] }> = ({ rawData = [] }) => {
     }
   }
   
-  const transformDataToMonthly = (trips: Trip[]) => {
+  const transformDataToMonthly = useCallback((trips: Trip[]) => {
     const filteredTrips = trips.filter(
       (trip) => new Date(trip.startTime).getFullYear() === Number(year)
     )
@@ -49,7 +48,7 @@ const DistanceBarChart: FC<{ rawData: Trip[] }> = ({ rawData = [] }) => {
     })
     
     return monthlyData
-  }
+  }, [year])
   
   const transformDataToDaily = useCallback((trips: Trip[]) => {
     if (!month) {
@@ -91,10 +90,6 @@ const DistanceBarChart: FC<{ rawData: Trip[] }> = ({ rawData = [] }) => {
 
   return (
     <div style={{ height: '600px' }}>
-      <select onChange={(e) => setYear(e.target.value)}>
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-      </select>
       <ResponsiveBar
         data={transformedData}
         keys={['distance']}
