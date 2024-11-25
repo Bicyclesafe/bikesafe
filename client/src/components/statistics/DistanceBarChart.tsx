@@ -1,17 +1,13 @@
 import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
-import { useCallback, useEffect, useState } from "react"
-import tripService from "../../services/tripService"
-import { useAuth } from "../../hooks/useAuth"
+import { FC, useCallback, useEffect, useState } from "react"
 import { Trip } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
 
-const DistanceBarChart = () => {
-  const [data, setData] = useState<BarDatum[]>([])
+const DistanceBarChart: FC<{ rawData: Trip[] }> = ({ rawData = [] }) => {
+  const [transformedData, setTransformedData] = useState<BarDatum[]>([])
   const [viewMode, setViewMode] = useState<"day" | "year">("year")
   const [month, setMonth] = useState<string | null>(null)
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
-  const { user } = useAuth()
-
   
   const getNivoBarSettings = (mode: "day" | "year") => {
     if (mode === "year") {
@@ -33,13 +29,17 @@ const DistanceBarChart = () => {
   }
   
   const transformDataToMonthly = (trips: Trip[]) => {
+    const filteredTrips = trips.filter(
+      (trip) => new Date(trip.startTime).getFullYear() === Number(year)
+    )
+    
     const monthlyData = Array.from({ length: 12 }, (_, month) => ({
       monthName: new Date(0, month).toLocaleString('default', { month: 'short' }),
       distance: 0,
       monthNumber: month + 1
     }))
     
-    trips.forEach((trip: Trip) => {
+    filteredTrips.forEach((trip: Trip) => {
       const month = new Date(trip.startTime).getMonth()
       monthlyData[month].distance += trip.tripDistance
     })
@@ -55,6 +55,10 @@ const DistanceBarChart = () => {
     if (!month) {
       return []
     }
+
+    const filteredTrips = trips.filter(
+      (trip) => new Date(trip.startTime).getFullYear() === Number(year)
+    )
     
     const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month)))
     const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
@@ -62,7 +66,7 @@ const DistanceBarChart = () => {
       distance: 0,
     }))
     
-    trips.forEach((trip: Trip) => {
+    filteredTrips.forEach((trip: Trip) => {
       const tripDate = trip.startTime
       if (getMonth(tripDate) + 1 === Number(month)) {
         const day = getDate(tripDate) - 1
@@ -76,26 +80,14 @@ const DistanceBarChart = () => {
     
     return dailyData
   }, [month, year])
-  
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (!user) return
-
-      try {
-        const token = await user.getIdToken(true)
-        const trips = await tripService.getAllTrips(token as string, year, month)
-
-        if (viewMode === "year") {
-          setData(transformDataToMonthly(trips))
-        } else if (viewMode === "day") {
-          setData(transformDataToDaily(trips))
-        }
-      } catch (error) {
-        console.error('Error fetching trip data:', error)
-      }
+    if (viewMode === "year") {
+      setTransformedData(transformDataToMonthly(rawData))
+    } else if (viewMode === "day" && month) {
+      setTransformedData(transformDataToDaily(rawData))
     }
-    fetchData()
-  }, [month, transformDataToDaily, user, viewMode, year])
+  }, [rawData, viewMode, month, year, transformDataToDaily, transformDataToMonthly])
 
   return (
     <div style={{ height: '600px' }}>
@@ -104,7 +96,7 @@ const DistanceBarChart = () => {
         <option value="2023">2023</option>
       </select>
       <ResponsiveBar
-        data={data}
+        data={transformedData}
         keys={['distance']}
         indexBy={getNivoBarSettings(viewMode).index}
         enableLabel={false}
