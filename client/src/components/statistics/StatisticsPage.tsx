@@ -72,16 +72,18 @@ const StatisticsPage = () => {
     return (
       <div className={stylesStatistics['trip-box']} key={trip.id}>
         <div className={stylesStatistics['date']}>{format(startTime, 'dd MMM yyyy')}</div>
-        <div className={stylesStatistics['start-time']}>{format(startTime, 'h:mm')}</div>
+        <div className={stylesStatistics['start-time']}>{format(startTime, 'HH:mm')}</div>
         <div className={stylesStatistics['details']}>
-          <span className={stylesStatistics['duration']}>{formatDuration(duration)}</span>
+          <div>
+            <span>{formatDuration(duration)}</span>
+          </div>
           <div>
             <span className={stylesStatistics['distance']}>{trip.tripDistance.toFixed(1)}</span>
             <span className={stylesStatistics['unit']}>km</span>
           </div>
           <div>
             <span className={stylesStatistics['co2']}>{((140 * trip.tripDistance) / 100).toFixed(0)}</span>
-            <span className={stylesStatistics['unit']}>co2</span>
+            <span className={stylesStatistics['unit']}>CO<sub>2</sub></span>
           </div>
         </div>
       </div>
@@ -102,22 +104,22 @@ const StatisticsPage = () => {
 
   return (
     <div className={stylesStatistics['statistics-container']}>
+      <select onChange={(e) => setYear(e.target.value)}>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+      </select>
       <div className={stylesStatistics['statistics-content']}>
-        <select onChange={(e) => setYear(e.target.value)}>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-        </select>
         <div className={stylesStatistics['chart']}>
             <DistanceBarChart rawData={rawData} year={year} />
         </div>
-        <div className={stylesStatistics['item']}>
-          <div className={stylesStatistics['item-title']}>
+        <div className={stylesStatistics['general-container']}>
+          <div className={stylesStatistics['general-container-title']}>
             General
           </div>
           {yearlyTotalDistance()}
         </div>
-        <div className={stylesStatistics['item']}>
-          <div className={stylesStatistics['item-title']}>
+        <div className={stylesStatistics['trip-container']}>
+          <div className={stylesStatistics['trip-container-title']}>
             Latest trips
           </div>
           {showLatestTrips}
