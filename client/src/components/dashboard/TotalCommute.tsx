@@ -21,7 +21,7 @@ const TotalCommute = () => {
   fetchData()
 
   return (
-    <div>
+    <div data-testid="commute-count">
       {totalTrips}
     </div>
   )
