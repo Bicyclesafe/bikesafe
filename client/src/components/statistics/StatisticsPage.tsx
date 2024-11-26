@@ -53,7 +53,7 @@ const StatisticsPage = () => {
         <span className={stylesStatistics['unit']}>h</span>
         <span style={{ marginLeft: "5px" }}>
           <span className={stylesStatistics['duration']}>{minutes}</span>
-          <span className={stylesStatistics['unit']}>min</span>
+          <span className={stylesStatistics['unit']}>m</span>
         </span>
       </>
     )
@@ -78,7 +78,7 @@ const StatisticsPage = () => {
             <span>{formatDuration(duration)}</span>
           </div>
           <div>
-            <span className={stylesStatistics['distance']}>{trip.tripDistance.toFixed(1)}</span>
+            <span className={stylesStatistics['distance']}>{Number(trip.tripDistance.toFixed(1))}</span>
             <span className={stylesStatistics['unit']}>km</span>
           </div>
           <div>
