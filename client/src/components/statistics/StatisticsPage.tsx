@@ -5,6 +5,7 @@ import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
 import LatestTrips from "./LatestTrips"
+import GeneralStatistics from "./GeneralStatistics"
 
 const StatisticsPage = () => {
   const { user } = useAuth()
@@ -27,22 +28,6 @@ const StatisticsPage = () => {
     fetchData()
   }, [user])
 
-
-
-
-
-  const yearlyTotalDistance = () => {
-    // const filteredTrips = rawData.filter(
-    //   (trip) => new Date(trip.startTime).getFullYear() === Number(year)
-    // )
-
-    return (
-      <div>
-        0km
-      </div>
-    )
-  }
-
   return (
     <div className={stylesStatistics['statistics-container']}>
       <select onChange={(e) => setYear(e.target.value)}>
@@ -57,7 +42,7 @@ const StatisticsPage = () => {
           <div className={stylesStatistics['general-container-title']}>
             General
           </div>
-          {yearlyTotalDistance()}
+          <GeneralStatistics rawData={rawData} year={year} />
         </div>
         <div className={stylesStatistics['trip-container']}>
           <div className={stylesStatistics['trip-container-title']}>
