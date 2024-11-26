@@ -2,6 +2,7 @@ import { useAuth } from "../../hooks/useAuth"
 import { useState } from "react"
 import { getTripsForAllUsers } from "../../services/tripService"
 import {startOfDay, endOfDay} from "date-fns"
+import styles from "./TotalCommute.module.css"
 
 
 const TotalCommute = () => {
@@ -21,7 +22,7 @@ const TotalCommute = () => {
   fetchData()
 
   return (
-    <div data-testid="commute-count">
+    <div className={styles['container']} data-testid="commute-count">
       {totalTrips}
     </div>
   )

@@ -58,7 +58,7 @@ const Dashboard = () => {
           <div className={stylesDashboard['side-area']}>
             <div className={stylesDashboard['row']}>
             <div className={stylesDashboard['row-item']}>
-                <div className={stylesDashboard['row-title']}>Today's cycling count!</div>
+                <div className={stylesDashboard['row-title']}>Daily cyclists</div>
                 <div className={stylesDashboard['row-content']}>
                   <TotalCommute/>
                 </div>
