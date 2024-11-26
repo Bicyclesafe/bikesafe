@@ -8,7 +8,8 @@ jest.mock("../services/tripService", () => ({
   getSumOfTripsBetweenDates: jest.fn(),
   getTripsBetweenDates: jest.fn(),
   addTrip: jest.fn(),
-  getAllTrips: jest.fn()
+  getAllTrips: jest.fn(),
+  getTripsForAllUsers: jest.fn()
 }))
 
 jest.mock("../services/goalService", () => ({
