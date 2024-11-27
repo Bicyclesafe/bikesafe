@@ -22,7 +22,7 @@
     gap: 20px;
 }
   
-.general-container, .trip-container {
+.summary-container, .trip-container {
     display: flex;
     flex-direction: column;
     border-radius: 10px;
@@ -33,7 +33,7 @@
     gap: 15px;
 }
 
-.general-container {
+.summary-container {
     background-color: white;
 }
 
@@ -41,7 +41,7 @@
     background-color: #2c9c7b;
 }
 
-.general-container-title, .trip-container-title {
+.summary-container-title, .trip-container-title {
     font-size: 1.5rem;
     font-weight: 500;
     margin-bottom: 10px;

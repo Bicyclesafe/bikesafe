@@ -1,0 +1,56 @@
+.summary-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.distance-box, .time-box, .emission-box {
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.distance-box, .time-box, .emission-box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    position: relative;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+}
+
+.distance-box {
+    border-left: 10px solid #E09F1F;
+}
+
+.time-box {
+    border-left: 10px solid #d08df1;
+}
+
+.emission-box {
+    border-left: 10px solid #1FE09F;
+}
+
+.title {
+    font-size: 1.1rem;
+}
+
+.value {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+}
+
+.unit {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: rgb(119, 119, 119);
+    margin-left: 5px;
+}
+
+img {
+    width: 35px;
+    height: auto;
+    position: absolute;
+    left: 12px;
+}
