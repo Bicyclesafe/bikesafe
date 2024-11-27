@@ -15,7 +15,6 @@ const TotalCommute = () => {
       const startTime = startOfDay(new Date())
       const endTime = endOfDay(new Date())
       const tripsResponse = await getTripsForAllUsers(token as string, startTime, endTime)
-      console.log(tripsResponse)
       setTotalTrips(tripsResponse)
     }
   }
