@@ -2,27 +2,16 @@ import { useState } from "react"
 import { auth, provider } from "../../services/google_authentication"
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import { Navigate } from "react-router-dom"
-//import Notification from "../notification/Notification"
 import { useAuth } from "../../hooks/useAuth"
 import stylesLogin from "../login/Login.module.css"
 import image from "../../assets/polkupyora_kuva.jpg"
+import googleIcon from "../../assets/google.svg"
 
 const Login = () => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  //const [notification, setNotification] = useState<boolean>(false)
-  //const [notificationMessage, setNotificationMessage] = useState<string>("")
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const { user } = useAuth()
-
-  /*const createNotification = (message: string) => {
-    setNotificationMessage(message)
-    setNotification(true)
-    setTimeout(() => {
-      setNotification(false)  
-      }, 3000)
-    }*/
-  
 
   const googlePopupLogin = async () => {
     try {
@@ -33,27 +22,40 @@ const Login = () => {
     }
   }
 
-  const handleErrorMessage = (message : string) => {
-    setErrorMessage(message)
-  }
-
   const loginUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    const fieldErrors: { [key: string]: string } = {}
+    let formIsValid = true
+
+    if (!formIsValid) {
+      setErrors(fieldErrors)
+      return
+    }
+
+    if (!password) {
+      fieldErrors.password = 'Password is required'
+      formIsValid = false
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password)
     } catch (error: unknown) {
       if (error instanceof Error) {
       console.error(error.message)
       if (error.message == "Firebase: Error (auth/invalid-credential).") {
-        handleErrorMessage("Invalid email or password")
+        fieldErrors.invalid = "Invalid email or password"
+        formIsValid = false
       }
       if (error.message == "Firebase: Error (auth/invalid-email).") {
-        handleErrorMessage("Please provide a valid email")
+        fieldErrors.email = "Invalid email"
+        formIsValid = false
       }
       if (error.message == "Firebase: Error (auth/missing-password).") {
-        handleErrorMessage("Please provide a password")
+        fieldErrors.password = "Please fill-in the passowrd"
+        formIsValid = false
       }      
     }
+    setErrors(fieldErrors)
   }
 
   }
@@ -75,26 +77,36 @@ const Login = () => {
         <div className={stylesLogin['column-left']}>
           <div className={stylesLogin.form}>
             <header>Login</header>
-            {errorMessage && 
-            <div className={stylesLogin['error-wrapper']}>
-            <div className={stylesLogin['error-notification']}>{errorMessage}</div></div>}
+            {errors.invalid && <div className={stylesLogin.errorGeneral}>{errors.invalid}</div>}
             <form onSubmit={loginUser}>
-              <input
-                id="email"
-                value={email} type="text"
-                onChange={handleEmailChange}
-                placeholder="Enter your email"
+              <div className={stylesLogin.inputGroup}>
+                <label htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  value={email} type="text"
+                  onChange={handleEmailChange}
+                  className={errors.email ? stylesLogin.errorInput : ''}
                 />
-              <input id="password"
-                value={password}
-                onChange={handlePasswordChange}
-                type="password" placeholder="Enter your password" 
+                {errors.email && <span className={stylesLogin.errorMessage}>{errors.email}</span>}
+              </div>
+              <div className={stylesLogin.inputGroup}>
+                <label htmlFor="password">Password</label>
+                <input 
+                  id="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  type="password" 
+                  className={errors.password ? stylesLogin.errorInput : ''}
                 />
-              <a href="#">Forgot password?</a>
+                {errors.password && <span className={stylesLogin.errorMessage}>{errors.password}</span>}
+              </div>
               <button id='login-button' type="submit" className={stylesLogin.button}>Login</button>
             </form>
-            <div className={stylesLogin['divider']}>OR</div>
-            <button className={stylesLogin['google-button']}onClick={googlePopupLogin}>Login with Google</button>
+            <div className={stylesLogin['divider']}>Or</div>
+            <button className={stylesLogin['google-button']}onClick={googlePopupLogin}>
+              <img src={googleIcon}/>
+              Login with Google
+            </button>
             <div className={stylesLogin.signup}>
               <span>
                 Don't have an account?
