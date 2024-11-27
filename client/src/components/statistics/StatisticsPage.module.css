@@ -1,25 +1,49 @@
 .statistics-container {
-    max-width: 1200px;
+    max-width: 1300px;
+    min-width: 500px;
     margin: 0 auto;
     padding: 20px;
 }
   
 .statistics-content {
     display: grid;
-    grid-template-columns: 5fr 3fr;
-    grid-template-rows: auto auto;
+    grid-template-areas:
+        "chart"
+        "trips"
+        "summary";
     transition: gap 0.3s ease;
     gap: 20px;
 }
 
+@media only screen and (min-width: 684px)  {
+    .statistics-content {
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas:
+      "chart    chart"
+      "summary  trips";
+    }
+}
+
+@media only screen and (min-width: 1200px)  {
+    .statistics-content {
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas:
+      "chart    trips"
+      "summary  summary";
+      max-width: 1200px;
+    }
+}
+
 .chart {
-    grid-column: 1 / -1;
+    grid-area: chart;
     background-color: rgb(255, 255, 255);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     border: 1px solid lightgrey;
     border-radius: 10px;
     padding: 20px 20px 40px 20px;
     gap: 20px;
+    position: relative;
+    min-height: 500px;
 }
   
 .summary-container, .trip-container {
@@ -34,10 +58,12 @@
 }
 
 .summary-container {
+    grid-area: summary;
     background-color: white;
 }
 
 .trip-container {
+    grid-area: trips;
     background-color: #2c9c7b;
 }
 
@@ -49,51 +75,4 @@
 
 .trip-container-title {
     color: white;
-}
-
-.trip-box {
-    display: grid;
-    grid-template-areas:
-    "date start-time"
-    "details details";
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 1fr auto;
-    border-radius: 10px;
-    padding: 14px;
-    gap: 20px;
-    background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-}
-
-.date {
-    grid-area: date;
-    color: #1b9e77;
-    font-weight: bold;
-}
-
-.start-time {
-    grid-area: start-time;
-    color: #1b9e77;
-    font-weight: bold;
-    text-align: right;
-}
-
-.details {
-    grid-area: details;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    justify-content: space-between;
-}
-
-.duration, .distance, .co2 {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.6rem;
-}
-
-.unit {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: rgb(119, 119, 119);
-    margin-left: 3px;
 }

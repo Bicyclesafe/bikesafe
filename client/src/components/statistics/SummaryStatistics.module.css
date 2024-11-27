@@ -1,22 +1,17 @@
 .summary-box {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
 }
 
 .distance-box, .duration-box, .emission-box {
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.distance-box, .duration-box, .emission-box {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-items: center;
-    position: relative;
+    justify-content: space-between;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .distance-box {
@@ -31,13 +26,24 @@
     border-left: 10px solid #1FE09F;
 }
 
+.statistic-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 .title {
     font-size: 1.1rem;
+    text-align: end;
 }
 
 .value {
     font-family: 'Nunito', sans-serif;
     font-size: 1.6rem;
+}
+
+.value-wrapper {
+    text-align: end;
 }
 
 .unit {
@@ -50,7 +56,8 @@
 
 img {
     width: 35px;
-    height: auto;
-    position: absolute;
+    height: 35px;
+    /* position: absolute;
     left: 12px;
+    top: 12px; */
 }
