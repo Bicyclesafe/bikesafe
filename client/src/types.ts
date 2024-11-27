@@ -83,10 +83,17 @@ export interface ReportModalProps {
   bikeThefts: BikeTheft[]
 }
 
-export interface Trip {
+export interface Trip extends BaseTrip{
+  id: number
+  userId: number
+  tripDistance: number
+}
+
+export interface BaseTrip {
   startTime: Date
   endTime: Date
 }
+
 
 export interface SeasonalDistanceProps {
   distance: number;

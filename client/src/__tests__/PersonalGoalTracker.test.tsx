@@ -9,12 +9,32 @@ jest.mock("../services/goalService", () => ({
 }))
 
 jest.mock("../services/tripService", () => ({
-  getTripsBetweenDates: jest.fn(),
+  getSumOfTripsBetweenDates: jest.fn(),
 }))
 
+interface LayerProps {
+  centerX: number;
+  centerY: number;
+}
+
+type Layer = string | ((props: LayerProps) => JSX.Element);
+
 jest.mock("@nivo/pie", () => ({
-    ResponsivePie: () => <div data-testid="mock-responsive-pie">Mocked Pie Chart</div>
-  }))
+  ResponsivePie: ({ layers }: { layers: Layer[] }) => (
+    <div data-testid="mock-responsive-pie">
+      {layers.map((layer, index) => {
+        if (typeof layer === "function") {
+          return (
+            <div key={index} data-testid="custom-layer">
+              {layer({ centerX: 0, centerY: 0 })}
+            </div>
+          )
+        }
+        return <div key={index} data-testid={`default-layer-${layer}`}>{layer}</div>
+      })}
+    </div>
+  ),
+}))
 
 jest.mock("../hooks/useAuth", () => ({
   useAuth: () => ({ user: { uid: "testUserId", getIdToken: jest.fn(() => Promise.resolve("testToken")) } })
@@ -22,7 +42,7 @@ jest.mock("../hooks/useAuth", () => ({
 
 describe("PersonalGoalTracker component", () => {
   const mockGetCurrentGoalsForUser = goalService.getCurrentGoalsForUser as jest.Mock
-  const mockGetTripsBetweenDates = tripService.getTripsBetweenDates as jest.Mock
+  const mockGetSumOfTripsBetweenDates = tripService.getSumOfTripsBetweenDates as jest.Mock
   const mockAddGoal = goalService.addGoal as jest.Mock
 
   beforeEach(() => {
@@ -31,19 +51,19 @@ describe("PersonalGoalTracker component", () => {
 
   it("renders progress data correctly when goals and progress are available", async () => {
     mockGetCurrentGoalsForUser.mockResolvedValue([{ goalDistance: 200, startTime: "2024-11-01", endTime: "2024-11-30" }])
-    mockGetTripsBetweenDates.mockResolvedValue(150)
+    mockGetSumOfTripsBetweenDates.mockResolvedValue(150)
 
-    render(<PersonalGoalTracker />)
+    render(<PersonalGoalTracker yearlyDistance={0} />)
 
     await waitFor(() => {
-      expect(screen.getByText(/150 \/ 200/)).toBeInTheDocument()
+      expect(screen.getByText(/150.0 \/ 200/)).toBeInTheDocument()
     })
   })
 
   it("displays 'Set a personal goal for the week' when no goals are available", async () => {
     mockGetCurrentGoalsForUser.mockResolvedValue([])
 
-    render(<PersonalGoalTracker />)
+    render(<PersonalGoalTracker yearlyDistance={0} />)
 
     await waitFor(() => {
       expect(screen.getByText(/Set a personal goal for the week/)).toBeInTheDocument()
@@ -54,7 +74,7 @@ describe("PersonalGoalTracker component", () => {
     mockGetCurrentGoalsForUser.mockResolvedValueOnce([]).mockResolvedValueOnce([{ goalDistance: 100, startTime: "2024-11-01", endTime: "2024-11-30" }])
     mockAddGoal.mockResolvedValue({})
 
-    render(<PersonalGoalTracker />)
+    render(<PersonalGoalTracker yearlyDistance={0}/>)
 
     await waitFor(() => {
       expect(screen.getByText(/Set a personal goal for the week/)).toBeInTheDocument()
@@ -76,7 +96,7 @@ describe("PersonalGoalTracker component", () => {
     mockGetCurrentGoalsForUser.mockResolvedValueOnce([])
     mockAddGoal.mockRejectedValue(new Error("Failed to add goal"))
 
-    render(<PersonalGoalTracker />)
+    render(<PersonalGoalTracker yearlyDistance={0}/>)
 
     await waitFor(() => {
       expect(screen.getByText(/Set a personal goal for the week/)).toBeInTheDocument()

@@ -1,6 +1,6 @@
 import axios from "axios"
 import { apiUrl } from "../util/config"
-import { Trip } from "../types"
+import { BaseTrip } from "../types"
 
 export const getTotalDistanceForUser = async (token: string) => {
   try {
@@ -13,6 +13,26 @@ export const getTotalDistanceForUser = async (token: string) => {
     console.error("Error fetching total distance for user", err)
   }
 }
+
+export const getSumOfTripsBetweenDates = async (token: string, startTime: Date, endTime: Date) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+    const response = await axios.get(`${apiUrl}/api/trips/sum-date-range`, {
+      ...authHeader,
+      params: {
+        startTime,
+        endTime
+      },
+    })
+
+    return response.data
+  } catch(err) {
+    console.error("Error fetching sum of trips between dates", err)
+  }
+}
+
 
 export const getTripsBetweenDates = async (token: string, startTime: Date, endTime: Date) => {
   try {
@@ -33,7 +53,7 @@ export const getTripsBetweenDates = async (token: string, startTime: Date, endTi
   }
 }
 
-export const addTrip = async (token: string, trip: Trip) => {
+export const addTrip = async (token: string, trip: BaseTrip) => {
   try {
     const authHeader = {"headers": {
       "Authorization": "Bearer " + token
@@ -46,4 +66,50 @@ export const addTrip = async (token: string, trip: Trip) => {
   }
 }
 
-export default {getTotalDistanceForUser, getTripsBetweenDates}
+export const getAllTrips = async (token: string, year: string, month?: string | null) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+
+    const response = await axios.get(`${apiUrl}/api/trips`, {
+      ...authHeader,
+      params: {
+        year,
+        month
+      },
+    })
+    return response.data
+  } catch(err) {
+    console.error("", err)
+  }
+}
+
+export const getTripsForAllUsers = async (token: string, startTime: Date, endTime: Date) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+
+    const response = await axios.get(`${apiUrl}/api/trips/all-users`, {
+      ...authHeader,
+      params: {
+        startTime,
+        endTime
+      },
+    })
+    console.log("response")
+    return response.data
+  } catch(err) {
+    console.error("", err)
+  }
+
+
+}
+
+export default {
+  getTotalDistanceForUser,
+  getTripsBetweenDates,
+  getAllTrips,
+  getSumOfTripsBetweenDates
+}

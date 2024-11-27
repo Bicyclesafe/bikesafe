@@ -36,6 +36,12 @@ const initialTrips = [
   },
   {
     userId: 1,
+    startTime: new Date("2024-01-03 9:10:10+02"),
+    endTime: new Date("2024-01-03 10:10:10+02"),
+    tripDistance: 500
+  },
+  {
+    userId: 1,
     startTime: new Date("2023-01-03 15:10:10+02"),
     endTime: new Date("2023-01-03 16:10:10+02"),
     tripDistance: 250
@@ -82,7 +88,7 @@ describe("GET /api/trips", () => {
 
   test("Correct amount of trips are returned",async () => {
     const response = await api.get("/api/trips").set("Authorization", `Bearer ${validToken}`).expect(200)
-    expect(response.body).toHaveLength(2)
+    expect(response.body).toHaveLength(3)
   })
 
   test("Correct format of trips are returned",async () => {
@@ -138,7 +144,7 @@ describe("GET /api/trips/total-distance", () => {
     .get("/api/trips/total-distance")
     .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
-    expect(response.body).toBe(350)
+    expect(response.body).toBe(850)
   })
 
   test("Return Unauthorized if access token is invalid",async () => {
@@ -159,10 +165,10 @@ describe("GET /api/trips/total-distance", () => {
   })
 })
 
-describe("GET /api/trips/date-range", () => {
+describe("GET /api/trips/sum-date-range", () => {
   test("yearly distance is returned as JSON",async () => {
     await api
-    .get("/api/trips/date-range?startTime=2024-11-13+10:15:00&endTime=2024-11-13+10:15:00")
+    .get("/api/trips/sum-date-range?startTime=2024-11-13+10:15:00&endTime=2024-11-13+10:15:00")
     .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
     .expect("Content-Type", /application\/json/) 
@@ -170,7 +176,7 @@ describe("GET /api/trips/date-range", () => {
 
   test("Correct yearly distance is returned",async () => {
     const response = await api
-    .get("/api/trips/date-range?startTime=2023-01-01+00:00:00&endTime=2023-12-31+23:59:59")
+    .get("/api/trips/sum-date-range?startTime=2023-01-01+00:00:00&endTime=2023-12-31+23:59:59")
     .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
     expect(response.body).toBe(250)
@@ -178,7 +184,7 @@ describe("GET /api/trips/date-range", () => {
 
   test("Zero is returned if no dates found between given dates", async () => {
     const response = await api
-      .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+      .get("/api/trips/sum-date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
       .set("Authorization", `Bearer ${validToken}`)
       .expect(200)
     expect(response.body).toBe(null)
@@ -190,15 +196,47 @@ describe("GET /api/trips/date-range", () => {
     })
 
     await api
-    .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+    .get("/api/trips/sum-date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
     .set("Authorization", `Bearer invalidToken`)
     .expect(401)
   })
 
   test("Return Unauthorized when access token not given", async () => {
     await api
-      .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+      .get("/api/trips/sum-date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
       .expect(401)
+  })
+})
+
+describe("GET /api/trips/all-users", () => {
+  test("returns 0 if there is not commutes today",async () => {
+    const response = await api
+      .get("/api/trips/all-users?startTime=2024-11-26+00:00:00&endTime=2024-11-26+23:59:59")
+      .set("Authorization", `Bearer ${validToken}`)
+      .expect(200)
+    expect(response.body).toBe(0)
+  })
+
+  test("returns the number of commutes given a day", async () => {
+    const response = await api
+      .get("/api/trips/all-users?startTime=2024-01-03+00:00:00&endTime=2024-01-03+23:59:59")
+      .set("Authorization", `Bearer ${validToken}`)
+      .expect(200)
+    expect(response.body).toBe(1)
+
+    const response_2 = await api
+      .get("/api/trips/all-users?startTime=2023-01-03+00:00:00&endTime=2023-01-03+23:59:59")
+      .set("Authorization", `Bearer ${validToken}`)
+      .expect(200)
+    expect(response_2.body).toBe(2)
+  })
+
+  test("doesn't count multiple for a single user", async () => {
+    const response = await api
+      .get("/api/trips/all-users?startTime=2024-01-03+00:00:00&endTime=2024-01-03+23:59:59")
+      .set("Authorization", `Bearer ${validToken}`)
+      .expect(200)
+    expect(response.body).toBe(1)
   })
 })
 
