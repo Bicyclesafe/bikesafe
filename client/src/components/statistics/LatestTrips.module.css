@@ -1,8 +1,8 @@
 .trip-box {
     display: grid;
     grid-template-areas:
-    "date start-time"
-    "details details";
+        "date start-time"
+        "details details";
     grid-template-rows: auto 1fr;
     grid-template-columns: 1fr auto;
     border-radius: 10px;

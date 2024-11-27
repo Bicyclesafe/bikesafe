@@ -9,9 +9,8 @@
     display: grid;
     grid-template-areas:
         "chart"
-        "trips"
-        "summary";
-    transition: gap 0.3s ease;
+        "summary"
+        "trips";
     gap: 20px;
 }
 
@@ -19,8 +18,8 @@
     .statistics-content {
       grid-template-columns: 2fr 1fr;
       grid-template-areas:
-      "chart    chart"
-      "summary  trips";
+        "chart    chart"
+        "summary  trips";
     }
 }
 
@@ -28,9 +27,8 @@
     .statistics-content {
       grid-template-columns: 2fr 1fr;
       grid-template-areas:
-      "chart    trips"
-      "summary  summary";
-      max-width: 1200px;
+        "chart    trips"
+        "summary  summary";
     }
 }
 

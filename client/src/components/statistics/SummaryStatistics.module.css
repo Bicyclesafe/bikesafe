@@ -1,10 +1,10 @@
 .summary-box {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
 }
 
-.distance-box, .duration-box, .emission-box {
+.distance-box, .duration-box, .impact-box {
     display: flex;
     justify-content: space-between;
     background-color: white;
@@ -12,6 +12,13 @@
     width: 100%;
     padding: 20px;
     border-radius: 10px;
+    min-height: 128px;
+}
+
+@media only screen and (min-width: 684px)  {
+    .distance-box, .duration-box, .impact-box {
+        min-height: none;
+    }
 }
 
 .distance-box {
@@ -22,7 +29,7 @@
     border-left: 10px solid #d08df1;
 }
 
-.emission-box {
+.impact-box {
     border-left: 10px solid #1FE09F;
 }
 
@@ -30,6 +37,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    justify-content: center;
 }
 
 .title {
@@ -51,13 +59,10 @@
     font-size: 1.1rem;
     font-weight: bold;
     color: rgb(119, 119, 119);
-    margin-left: 5px;
+    margin-left: 3px;
 }
 
 img {
     width: 35px;
     height: 35px;
-    /* position: absolute;
-    left: 12px;
-    top: 12px; */
 }
