@@ -4,17 +4,21 @@ import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { ChartData, LineLayer, Trip } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
+import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "./constants"
 
 const DistanceBarChart = () => {
   const [barData, setBarData] = useState<BarDatum[]>([])
-  const [emissionPerDateData, setEmissionPerDateData] = useState<BarDatum[]>([])
-  const [emissionTotalData, setEmissionTotalData] = useState<BarDatum[]>([])
+  const [emissionCarPerDate, setEmissionCarPerDate] = useState<BarDatum[]>([])
+  const [emissionCarTotal, setEmissionCarTotal] = useState<BarDatum[]>([])
+  const [emissionBusPerDate, setEmissionBusPerDate] = useState<BarDatum[]>([])
+  const [emissionBusTotal, setEmissionBusTotal] = useState<BarDatum[]>([])
+  const [fuelCostCarPerDate, setFuelCostCarPerDate] = useState<BarDatum[]>([])
+  const [fuelCostCarTotal, setFuelCostCarTotal] = useState<BarDatum[]>([])
   const [viewMode, setViewMode] = useState<"day" | "year">("year")
   const [month, setMonth] = useState<string | null>(null)
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
-  const [highestValue, setHighestValue] = useState<number>(0)
+  const [highestValue, setHighestValue] = useState<number>(500)
   const { user } = useAuth()
-
   
   const getNivoBarSettings = (mode: "day" | "year") => {
     if (mode === "year") {
@@ -71,11 +75,15 @@ const DistanceBarChart = () => {
     return dailyData
   }, [month, year])
 
-  const getHighestPoint = useCallback(() => {
-    const highestBar = Math.max(...barData.map(bar => Number(bar.value)))
-    const highestLinePoint = Number(emissionTotalData[emissionTotalData.length - 1].value)
-    return Math.max(highestBar, highestLinePoint)
-  }, [barData, emissionTotalData]) 
+  const setData = useCallback((trips: Trip[], transformFunction: CallableFunction) => {
+    setBarData(transformFunction(createBarData(trips)))
+    setEmissionCarPerDate(transformFunction(createPerDateData(trips, emissionsCarPerKM)))
+    setEmissionCarTotal(createTotalData(transformFunction(createPerDateData(trips, emissionsCarPerKM))))
+    setEmissionBusPerDate(transformFunction(createPerDateData(trips, emissionsBusPerKM)))
+    setEmissionBusTotal(createTotalData(transformFunction(createPerDateData(trips, emissionsBusPerKM))))
+    setFuelCostCarPerDate(transformFunction(createPerDateData(trips, fuelCostCarPerKM)))
+    setFuelCostCarTotal(createTotalData(transformFunction(createPerDateData(trips, fuelCostCarPerKM))))
+  }, [])
   
   useEffect(() => {
     const fetchData = async () => {
@@ -86,24 +94,27 @@ const DistanceBarChart = () => {
         const trips = await tripService.getAllTrips(token as string, year, month)
 
         if (viewMode === "year") {
-          setBarData(transformDataToMonthly(createBarData(trips)))
-          setEmissionPerDateData(transformDataToMonthly(createEmissionPerDateData(trips)))
-          setEmissionTotalData(createEmissionTotalData(transformDataToMonthly(createEmissionPerDateData(trips))))
+          setData(trips, transformDataToMonthly)
         } else if (viewMode === "day") {
-          setBarData(transformDataToDaily(createBarData(trips)))
-          setEmissionPerDateData(transformDataToDaily(createEmissionPerDateData(trips)))
-          setEmissionTotalData(createEmissionTotalData(transformDataToDaily(createEmissionPerDateData(trips))))
+          setData(trips, transformDataToDaily)
         }
-        setHighestValue(getHighestPoint())
       } catch (error) {
         console.error('Error fetching trip data:', error)
       }
     }
     fetchData()
-  }, [month, transformDataToDaily, getHighestPoint, user, viewMode, year])
+  }, [month, transformDataToDaily, user, viewMode, year, setData])
 
-  const lineLayer = ({innerHeight, bars, data, color, highestValue}: LineLayer) => {
-    if (bars.length === 0) return
+  useEffect(() => {
+    if (barData.length === 0 || emissionCarTotal.length === 0) return
+
+    const highestBar = Math.max(...barData.map(bar => Number(bar.value)))
+    const highestLinePoint = Number(emissionCarTotal[emissionCarTotal.length - 1].value)
+    setHighestValue(Math.max(highestBar, highestLinePoint))
+  }, [barData, emissionCarTotal])
+
+  const lineLayer = ({innerHeight, bars, data, color}: LineLayer) => {
+    if (data.length === 0 || bars.length === 0) return
     if ((viewMode === "day" && !data[0].day) || (viewMode === "year" && !data[0].monthNumber)) return
 
     const positionsAsStrings = data.map(d => {
@@ -120,6 +131,7 @@ const DistanceBarChart = () => {
         }
         fill="none"
         stroke={color}
+        strokeWidth={2.2}
       />
     )
   }
@@ -128,19 +140,18 @@ const DistanceBarChart = () => {
     return trips.map(trip => ({time: trip.startTime, value: trip.tripDistance}))
   }
 
-  const createEmissionPerDateData = (trips: Trip[]) => {
-    const emissionsPerKM = 248.5484 / 1000
-    return trips.map(trip => ({time: trip.startTime, value: trip.tripDistance * emissionsPerKM}))
+  const createPerDateData = (trips: Trip[], valuePerKM: number) => {
+    return trips.map(trip => ({time: trip.startTime, value: trip.tripDistance * valuePerKM}))
   }
 
-  const createEmissionTotalData = (data: BarDatum[]) => {
-    const emissionTotalData = []
+  const createTotalData = (data: BarDatum[]) => {
+    const totalData = []
     let sum = 0
     for (let i = 0; i < data.length; i++) {
       sum += Number(data[i].value)
-      emissionTotalData.push({...data[i], value: sum})
+      totalData.push({...data[i], value: sum})
     }
-    return emissionTotalData
+    return totalData
   }
 
   return (
@@ -164,9 +175,9 @@ const DistanceBarChart = () => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "Emissions (kg/km)",
+          legend: "Emissions (kg)",
           legendPosition: 'middle',
-          legendOffset: 32,
+          legendOffset: 45,
         }}
         axisBottom={{
           tickSize: 5,
@@ -218,8 +229,12 @@ const DistanceBarChart = () => {
           "grid",
           "axes",
           "bars",
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionPerDateData, color: "red", highestValue}),
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionTotalData, color: "blue", highestValue}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionCarPerDate, color: "#55f"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionCarTotal, color: "#00f"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionBusPerDate, color: "#f00"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionBusTotal, color: "#800"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: fuelCostCarPerDate, color: "#ae00ff"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: fuelCostCarTotal, color: "#62008f"}),
         ]}
       />
       
