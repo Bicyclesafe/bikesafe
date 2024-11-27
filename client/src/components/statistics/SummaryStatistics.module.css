@@ -4,12 +4,12 @@
     gap: 20px;
 }
 
-.distance-box, .time-box, .emission-box {
+.distance-box, .duration-box, .emission-box {
     padding: 20px;
     border-radius: 10px;
 }
 
-.distance-box, .time-box, .emission-box {
+.distance-box, .duration-box, .emission-box {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -23,7 +23,7 @@
     border-left: 10px solid #E09F1F;
 }
 
-.time-box {
+.duration-box {
     border-left: 10px solid #d08df1;
 }
 
