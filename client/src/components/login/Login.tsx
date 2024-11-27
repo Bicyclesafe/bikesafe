@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom"
 import { useAuth } from "../../hooks/useAuth"
 import stylesLogin from "../login/Login.module.css"
 import image from "../../assets/polkupyora_kuva.jpg"
-import icon from "../../assets/google_icon.png"
+import googleIcon from "../../assets/google.svg"
 
 const Login = () => {
   const [email, setEmail] = useState<string>("")
@@ -77,6 +77,7 @@ const Login = () => {
         <div className={stylesLogin['column-left']}>
           <div className={stylesLogin.form}>
             <header>Login</header>
+            {errors.invalid && <div className={stylesLogin.errorGeneral}>{errors.invalid}</div>}
             <form onSubmit={loginUser}>
               <div className={stylesLogin.inputGroup}>
                 <label htmlFor="email">Email</label>
@@ -103,7 +104,7 @@ const Login = () => {
             </form>
             <div className={stylesLogin['divider']}>Or</div>
             <button className={stylesLogin['google-button']}onClick={googlePopupLogin}>
-              <img src={icon}/>
+              <img src={googleIcon}/>
               Login with Google
             </button>
             <div className={stylesLogin.signup}>

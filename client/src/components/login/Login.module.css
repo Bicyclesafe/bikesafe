@@ -1,5 +1,5 @@
 .login-container {
-  background-color: lightblue;
+  background-color: #f4f7fc;
   display: flex;
   justify-content: center;
 }
@@ -39,19 +39,18 @@
 
 /* FORM */
 
-
-
 .form header {
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: bold;
   text-align: center;
+  margin-bottom: 1.25rem;
 }
 
 .form input {
   margin-top: 0.5rem;
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid #c6c4c4;
   border-radius: 4px;
 }
 
@@ -64,10 +63,6 @@
   margin-bottom: 1.5rem;
   position: relative;
   min-height: 3.5rem;
-}
-
-.form input:focus {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .form a {
@@ -106,13 +101,10 @@
   transition: 0.4s;
 }
 
-.form input.button:hover {
-  background: #006653;
-}
-
 .signup {
   text-align: center;
   color: grey;
+  padding-top: 1rem;
 }
 
 .signup a {
@@ -135,19 +127,20 @@
   margin-top: 0.5rem;
   padding: 0.75rem;
   color: #232836;
-  font-weight: 600;
-  border: 1px solid grey;
+  border: 1px solid #747775;
   border-radius: 4px;
   cursor: pointer;
   background: none;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .divider {
   align-items: center;
   display: flex;
-  margin-top: 1.7rem;
+  margin: 1.25rem 0;
   color: grey;
 }
 
@@ -175,4 +168,20 @@ img {
 
 .errorInput {
   border: 1px solid var(--color-red) !important;
+}
+
+input:focus {
+  border: 1px solid grey;
+  outline: none;
+}
+
+.errorGeneral {
+  color: var(--color-red);
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .column-right {
+    display: none;
+  }
 }
