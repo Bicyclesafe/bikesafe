@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../services/google_authentication'
 import { useState } from 'react'
+import logout from "../../assets/logout-svgrepo-com.svg"
 
 const NavBar = () => {
     const { user } = useAuth()
@@ -37,7 +38,12 @@ const NavBar = () => {
                         <li><a href="/">Home</a></li>
                         <li><a href="/">About</a></li>
                         {user
-                            ? <li><button id="logout-button" onClick={logOut}>Log out</button></li>
+                            ? <li>
+																<button className={styles['logout-button']} id="logout-button" onClick={logOut}>
+																	<img src={logout}/>
+                                	Log out
+                              	</button>
+															</li>
                             : <li><a href="/login">Log In</a></li>
                         }
                         
