@@ -1,56 +1,71 @@
 import bicycleIcon from "../../assets/bicycle.svg"
 import timerIcon from "../../assets/timer.svg"
 import leafIcon from "../../assets/leaf.png"
-import { Duration } from "date-fns"
+import { Statistic, StatsDataProps } from "../../types"
 
-interface StatsDataProps {
-  yearlyTotalDistance: number;
-  yearlyTotalDuration: Duration
-  longestTripDuration: Duration
-  co2EmissionsSaved: number;
+export const typeToIcon: Record<string, string> = {
+  distance: bicycleIcon,
+  duration: timerIcon,
+  impact: leafIcon,
 }
 
-interface Statistic {
-  title: React.ReactNode;
-  value: number | Duration
-  unit: string;
-  icon: string;
-  type: "distance" | "duration" | "emission";
-}
+const statistics = (data: StatsDataProps | null): Statistic[] | null => {
+  if (!data) return null
 
-const statistics = (data: StatsDataProps): Statistic[] => [
-  {
-    title: "Cycled This Year",
-    value: data.yearlyTotalDistance,
-    unit: "km",
-    icon: bicycleIcon,
-    type: "distance",
-  },
-  {
-    title: "Longest Ride by Time",
-    value: data.longestTripDuration,
-    unit: "",
-    icon: timerIcon,
-    type: "duration",
-  },
-  {
-    title: "Hours Cycled",
-    value: data.yearlyTotalDuration,
-    unit: "h",
-    icon: timerIcon,
-    type: "duration",
-  },
-  {
-    title: (
-      <>
-        CO<sub>2</sub> Emissions Saved
-      </>
-    ),
-    value: data.co2EmissionsSaved,
-    unit: "kg",
-    icon: leafIcon,
-    type: "emission",
-  }
-]
+  return [
+    {
+      title: "Cycled This Year",
+      value: data.yearlyTotalDistance,
+      unit: "km",
+      type: "distance",
+    },
+    {
+      title: "Longest Ride by Distance",
+      value: data.longestTripDistance,
+      unit: "km",
+      type: "distance",
+    },
+    {
+      title: "Average Speed",
+      value: data.yearlyAverageSpeed,
+      unit: "km/h",
+      type: "duration",
+    },
+    {
+      title: "Longest Ride by Time",
+      value: data.longestTripDuration,
+      unit: "",
+      type: "duration",
+    },
+    {
+      title: "Hours Cycled",
+      value: data.yearlyTotalDuration,
+      unit: "h",
+      type: "duration",
+    },
+    {
+      title: "Average Ride Duration",
+      value: data.yearlyAverageDuration,
+      unit: "",
+      type: "duration",
+    },
+    {
+      title: (
+        <>
+          CO<sub>2</sub> Emissions Saved
+        </>
+      ),
+      value: data.co2EmissionsSaved,
+      unit: "kg",
+      type: "impact",
+    },
+    {
+      title: "Calories Burned",
+      value: data.yearlyCaloriesBurned,
+      unit: "kcal",
+      type: "impact",
+    },
+  ]
+}
 
 export default statistics

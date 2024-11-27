@@ -1,3 +1,4 @@
+import { Duration } from "date-fns"
 import { LatLng } from "leaflet"
 
 export interface Coordinate {
@@ -94,8 +95,25 @@ export interface BaseTrip {
   endTime: Date
 }
 
-
 export interface SeasonalDistanceProps {
   distance: number;
-  setDistance: React.Dispatch<React.SetStateAction<number>>;
+  setDistance: React.Dispatch<React.SetStateAction<number>>
+}
+
+export interface StatsDataProps {
+  yearlyTotalDistance: number
+  longestTripDistance: number
+  yearlyTotalDuration: Duration
+  longestTripDuration: Duration
+  yearlyAverageDuration: Duration
+  co2EmissionsSaved: number
+  yearlyAverageSpeed: number
+  yearlyCaloriesBurned: number
+}
+
+export interface Statistic {
+  title: React.ReactNode
+  value: number | Duration
+  unit: string
+  type: "distance" | "duration" | "impact"
 }
