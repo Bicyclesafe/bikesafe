@@ -1,27 +1,33 @@
-import { FC, useEffect, useState } from "react"
+import { FC } from "react"
 import { Trip } from "../../types"
 import stylesSummary from "./SummaryStatistics.module.css"
-import bicycleIcon from "../../assets/bicycle.svg"
-import timerIcon from "../../assets/timer.svg"
-import leafIcon from "../../assets/leaf.png"
-import { differenceInMilliseconds, millisecondsToHours } from "date-fns"
 import { StyledDuration } from "./LatestTrips"
+import useSummaryStatistics from "./hooks/useSummaryStatistics"
+import { Duration } from "date-fns"
+import statistics from "./statistics"
 
 interface StatisticProps {
   title: React.ReactNode
-  value: React.ReactNode
+  value: number | Duration
   unit: string
   icon: string
-  type: string
+  type: "distance" | "duration" | "emission"
 }
 
-const Statistic: FC<StatisticProps> = ({
-  title,
-  value,
-  unit,
-  icon,
-  type,
-}) => {
+const Statistic: FC<StatisticProps> = ({ title, value, unit, icon, type }) => {
+  const renderValue = () => {
+    if (type === "duration") {
+      return <StyledDuration duration={value as Duration} />
+    }
+
+    return (
+      <>
+        <span className={stylesSummary["value"]}>{value as number}</span>
+        <span className={stylesSummary["unit"]}>{unit}</span>
+      </>
+    )
+  }
+
   return (
     <div className={stylesSummary[`${type}-box`]}>
       <div> 
@@ -31,99 +37,20 @@ const Statistic: FC<StatisticProps> = ({
         <span className={stylesSummary['title']}>{title}</span>
       </div>
       <div>
-        <span className={stylesSummary['value']}>{value}</span>
-        <span className={stylesSummary['unit']}>{unit}</span>
+        {renderValue()}
       </div>
     </div>
   )
 }
 
 const SummaryStatistics: FC<{ rawData: Trip[], year: string }> = ({ rawData, year })=> {
-  const [yearlyData, setYearlyData] = useState<Trip[]>([])
+  const statsData = useSummaryStatistics(rawData, year)
+  const stats = statistics(statsData)
 
-  const getYearlyTotalDistance = () => {
-    const sumOfDistance = yearlyData.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.tripDistance
-    }, 0)
-
-    return sumOfDistance
-  }
-
-  const getYearlyTotalDuration = () => {
-    const sumOfDuration = yearlyData.reduce((accumulator, currentValue) => {
-      return accumulator + differenceInMilliseconds(currentValue.endTime, currentValue.startTime)
-    }, 0)
-
-    return millisecondsToHours(sumOfDuration)
-  }
-
-  const getLongestTripDuration = () => {
-    let longestTrip = 0
-
-    yearlyData.forEach((trip) => {
-      const difference = differenceInMilliseconds(trip.endTime, trip.startTime)
-      if (difference > longestTrip) {
-        longestTrip = difference
-      }
-    })
-
-    const totalMinutes = Math.floor(longestTrip / (1000 * 60))
-    const hours = Math.floor(totalMinutes / 60)
-    const minutes = totalMinutes % 60
-
-    return { hours, minutes }
-  }
-
-
-  const yearlyTotalDistance = Number(getYearlyTotalDistance().toFixed(1))
-  const yearlyTotalDuration = getYearlyTotalDuration()
-  const longestTripDuration = getLongestTripDuration()
-
-  useEffect(() => {
-      const filteredTrips = rawData.filter(
-        (trip) => new Date(trip.startTime).getFullYear() === Number(year)
-      )
-      setYearlyData(filteredTrips)
-  }, [rawData, year])
-
-  const statistics = [
-    {
-      title: "Cycled This Year",
-      value: yearlyTotalDistance,
-      unit: "km",
-      icon: bicycleIcon,
-      type: "distance",
-    },
-    {
-      title: "Longest Ride by Time",
-      value: <StyledDuration duration={longestTripDuration} />,
-      unit: "",
-      icon: timerIcon,
-      type: "time",
-    },
-    {
-      title: "Hours Cycled",
-      value: yearlyTotalDuration,
-      unit: "h",
-      icon: timerIcon,
-      type: "time",
-    },
-    {
-      title: (
-        <>
-          CO<sub>2</sub> Emissions Saved
-        </>
-      ),
-      value: Number((258 * yearlyTotalDistance / 1000).toFixed(1)),
-      unit: "kg",
-      icon: leafIcon,
-      type: "emission",
-    }
-  ]
 
   return (
     <div className={stylesSummary["summary-box"]}>
-      {statistics.map((stat, index) => (
+      {stats.map((stat, index) => (
         <Statistic key={index} {...stat} />
       ))}
     </div>
