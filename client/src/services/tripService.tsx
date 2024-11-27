@@ -85,6 +85,28 @@ export const getAllTrips = async (token: string, year: string, month?: string | 
   }
 }
 
+export const getTripsForAllUsers = async (token: string, startTime: Date, endTime: Date) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+
+    const response = await axios.get(`${apiUrl}/api/trips/all-users`, {
+      ...authHeader,
+      params: {
+        startTime,
+        endTime
+      },
+    })
+    console.log("response")
+    return response.data
+  } catch(err) {
+    console.error("", err)
+  }
+
+
+}
+
 export default {
   getTotalDistanceForUser,
   getTripsBetweenDates,
