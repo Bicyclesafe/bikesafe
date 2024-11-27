@@ -74,6 +74,7 @@ const SummaryStatistics: FC<{ rawData: Trip[], year: string }> = ({ rawData, yea
     return { hours, minutes }
   }
 
+
   const yearlyTotalDistance = Number(getYearlyTotalDistance().toFixed(1))
   const yearlyTotalDuration = getYearlyTotalDuration()
   const longestTripDuration = getLongestTripDuration()
@@ -85,40 +86,46 @@ const SummaryStatistics: FC<{ rawData: Trip[], year: string }> = ({ rawData, yea
       setYearlyData(filteredTrips)
   }, [rawData, year])
 
+  const statistics = [
+    {
+      title: "Cycled This Year",
+      value: yearlyTotalDistance,
+      unit: "km",
+      icon: bicycleIcon,
+      type: "distance",
+    },
+    {
+      title: "Longest Ride by Time",
+      value: <StyledDuration duration={longestTripDuration} />,
+      unit: "",
+      icon: timerIcon,
+      type: "time",
+    },
+    {
+      title: "Hours Cycled",
+      value: yearlyTotalDuration,
+      unit: "h",
+      icon: timerIcon,
+      type: "time",
+    },
+    {
+      title: (
+        <>
+          CO<sub>2</sub> Emissions Saved
+        </>
+      ),
+      value: Number((258 * yearlyTotalDistance / 1000).toFixed(1)),
+      unit: "kg",
+      icon: leafIcon,
+      type: "emission",
+    }
+  ]
+
   return (
-    <div className={stylesSummary['summary-box']}>
-      <Statistic
-        title="Cycled This Year"
-        value={yearlyTotalDistance}
-        unit="km"
-        icon={bicycleIcon}
-        type="distance"
-      />
-      <Statistic
-        title="Longest Ride by Time"
-        value={<StyledDuration duration={longestTripDuration} />}
-        unit=""
-        icon={timerIcon}
-        type="time"
-      />
-      <Statistic
-        title="Hours Cycled"
-        value={yearlyTotalDuration}
-        unit="h"
-        icon={timerIcon}
-        type="time"
-      />
-      <Statistic
-        title={
-          <>
-            CO<sub>2</sub> Emissions Saved
-          </>
-        }
-        value={Number((258 * yearlyTotalDistance / 1000).toFixed(1))}
-        unit="kg"
-        icon={leafIcon}
-        type="emission"
-      />
+    <div className={stylesSummary["summary-box"]}>
+      {statistics.map((stat, index) => (
+        <Statistic key={index} {...stat} />
+      ))}
     </div>
   )
 }
