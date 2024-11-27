@@ -5,7 +5,7 @@ import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
 import LatestTrips from "./LatestTrips"
-import GeneralStatistics from "./GeneralStatistics"
+import SummaryStatistics from "./SummaryStatistics"
 
 const StatisticsPage = () => {
   const { user } = useAuth()
@@ -38,11 +38,11 @@ const StatisticsPage = () => {
         <div className={stylesStatistics['chart']}>
             <DistanceBarChart rawData={rawData} year={year} />
         </div>
-        <div className={stylesStatistics['general-container']}>
-          <div className={stylesStatistics['general-container-title']}>
-            General
+        <div className={stylesStatistics['summary-container']}>
+          <div className={stylesStatistics['summary-container-title']}>
+            Summary
           </div>
-          <GeneralStatistics rawData={rawData} year={year} />
+          <SummaryStatistics rawData={rawData} year={year} />
         </div>
         <div className={stylesStatistics['trip-container']}>
           <div className={stylesStatistics['trip-container-title']}>
