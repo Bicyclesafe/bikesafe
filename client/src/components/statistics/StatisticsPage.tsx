@@ -5,6 +5,7 @@ import { Trip } from "../../types"
 import tripService from "../../services/tripService"
 import stylesStatistics from "./StatisticsPage.module.css"
 import LatestTrips from "./LatestTrips"
+import SummaryStatistics from "./SummaryStatistics"
 
 const StatisticsPage = () => {
   const { user } = useAuth()
@@ -37,10 +38,10 @@ const StatisticsPage = () => {
             <DistanceBarChart rawData={rawData} year={year} />
         </div>
         <div className={stylesStatistics['latest-trips']}>
-          <div className={stylesStatistics['latest-trips-title']}>
-            Latest trips
-          </div>
           <LatestTrips rawData={rawData} />
+        </div>
+        <div className={stylesStatistics['summary']}>
+          <SummaryStatistics rawData={rawData} year={year} />
         </div>
       </div>
     </div>
