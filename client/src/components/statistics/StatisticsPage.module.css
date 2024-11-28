@@ -1,0 +1,58 @@
+.statistics-container {
+  max-width: 1300px;
+  min-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.statistics-content {
+  display: grid;
+  grid-template-areas:
+    "chart"
+    "trips";
+  gap: 20px;
+}
+
+@media only screen and (min-width: 1200px)  {
+  .statistics-content {
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      "chart    trips";
+  }
+}
+
+.chart {
+  grid-area: chart;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding: 20px 20px 40px 20px;
+  gap: 20px;
+  position: relative;
+  min-height: 500px;
+}
+
+.latest-trips {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid lightgrey;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.latest-trips {
+  grid-area: trips;
+  background-color: #2c9c7b;
+}
+
+.latest-trips-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.latest-trips-title {
+  color: white;
+}

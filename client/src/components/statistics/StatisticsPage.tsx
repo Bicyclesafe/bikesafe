@@ -3,6 +3,8 @@ import DistanceBarChart from "./DistanceBarChart"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
 import tripService from "../../services/tripService"
+import stylesStatistics from "./StatisticsPage.module.css"
+import LatestTrips from "./LatestTrips"
 
 const StatisticsPage = () => {
   const { user } = useAuth()
@@ -25,13 +27,23 @@ const StatisticsPage = () => {
   }, [user])
 
   return (
-      <div>
-        <select onChange={(e) => setYear(e.target.value)}>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-        </select>
-        <DistanceBarChart rawData={rawData} year={year} />
+    <div className={stylesStatistics['statistics-container']}>
+      <select onChange={(e) => setYear(e.target.value)}>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+      </select>
+      <div className={stylesStatistics['statistics-content']}>
+        <div className={stylesStatistics['chart']}>
+            <DistanceBarChart rawData={rawData} year={year} />
+        </div>
+        <div className={stylesStatistics['latest-trips']}>
+          <div className={stylesStatistics['latest-trips-title']}>
+            Latest trips
+          </div>
+          <LatestTrips rawData={rawData} />
+        </div>
       </div>
+    </div>
   )
 }
 
