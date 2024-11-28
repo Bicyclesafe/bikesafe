@@ -79,7 +79,7 @@ export const addTrip = async (token: string, trip: TripProps) => {
   }
 }
 
-export const getAllTrips = async (token: string, year: string, month?: string | null) => {
+export const getAllTrips = async (token: string, year?: string, month?: string | null) => {
   try {
     const authHeader = {"headers": {
       "Authorization": "Bearer " + token
