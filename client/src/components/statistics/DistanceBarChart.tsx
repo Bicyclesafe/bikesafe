@@ -1,7 +1,5 @@
 import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
 import { useCallback, useEffect, useState, FC } from "react"
-import tripService from "../../services/tripService"
-import { useAuth } from "../../hooks/useAuth"
 import { ChartData, LineLayerInfo, Trip } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
 import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "./constants"
@@ -19,7 +17,6 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
   const [viewMode, setViewMode] = useState<"day" | "year">("year")
   const [month, setMonth] = useState<string | null>(null)
   const [highestValue, setHighestValue] = useState<number>(500)
-  const { user } = useAuth()
 
   const getNivoBarSettings = (mode: "day" | "year") => {
     if (mode === "year") {
@@ -53,20 +50,16 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
     })
               
     monthlyData.forEach((data) => {
-      data.distance = parseFloat(data.distance.toFixed(1))
+      data.value = parseFloat(data.value.toFixed(1))
     })
 
     return monthlyData
-  }, [year])
+  }, [])
   
   const transformDataToDaily = useCallback((data: ChartData[]) => {
     if (!month) {
       return []
     }
-
-    const filteredTrips = trips.filter(
-      (trip) => new Date(trip.startTime).getFullYear() === Number(year)
-    )
     
     const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month) - 1))
     const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
@@ -82,7 +75,7 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
     })
 
     dailyData.forEach((data) => {
-      data.distance = parseFloat(data.distance.toFixed(1))
+      data.value = parseFloat(data.value.toFixed(1))
     })
     
     return dailyData
