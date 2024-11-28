@@ -1,6 +1,6 @@
 import axios from "axios"
 import { apiUrl } from "../util/config"
-import { BaseTrip } from "../types"
+import { BaseTrip, TripProps } from "../types"
 
 export const getTotalDistanceForUser = async (token: string) => {
   try {
@@ -53,7 +53,20 @@ export const getTripsBetweenDates = async (token: string, startTime: Date, endTi
   }
 }
 
-export const addTrip = async (token: string, trip: BaseTrip) => {
+export const addWorkTrip = async (token: string, trip: BaseTrip) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+
+    const response = await axios.post(`${apiUrl}/api/trips/work-trip`, trip, authHeader)
+    return response.data
+  } catch(err) {
+    console.error("", err)
+  }
+}
+
+export const addTrip = async (token: string, trip: TripProps) => {
   try {
     const authHeader = {"headers": {
       "Authorization": "Bearer " + token
@@ -98,7 +111,6 @@ export const getTripsForAllUsers = async (token: string, startTime: Date, endTim
         endTime
       },
     })
-    console.log("response")
     return response.data
   } catch(err) {
     console.error("", err)
@@ -111,5 +123,7 @@ export default {
   getTotalDistanceForUser,
   getTripsBetweenDates,
   getAllTrips,
-  getSumOfTripsBetweenDates
+  getSumOfTripsBetweenDates,
+  addWorkTrip,
+  addTrip,
 }

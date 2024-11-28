@@ -3,6 +3,7 @@ import supertest from "supertest"
 import { migrator, sequelize } from "../src/util/db"
 import { User } from "../src/models/user"
 import { Trip } from "../src/models/trip"
+import { Commute } from "../src/models/commute"
 import admin from "firebase-admin"
 
 jest.mock("firebase-admin", () => {
@@ -54,6 +55,13 @@ const initialTrips = [
   },
 ]
 
+const initialCommutes = [
+  {
+    userId: 1,
+    distance: 50
+  }
+]
+
 let mockVerifyIdToken: jest.Mock
 let validToken: string
 const mockDecodedToken = {
@@ -68,6 +76,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   await User.bulkCreate(initialUsers)
   await Trip.bulkCreate(initialTrips)
+  await Commute.bulkCreate(initialCommutes)
   mockVerifyIdToken = admin.auth().verifyIdToken as jest.Mock
   mockVerifyIdToken.mockResolvedValue(mockDecodedToken)
 })
@@ -75,6 +84,7 @@ beforeEach(async () => {
 afterEach(async () => {
   await User.truncate({ cascade: true, restartIdentity: true })
   await Trip.truncate({ cascade: true, restartIdentity: true })
+  await Commute.truncate({ cascade: true, restartIdentity: true })
 })
 
 describe("GET /api/trips", () => {
@@ -240,7 +250,93 @@ describe("GET /api/trips/all-users", () => {
   })
 })
 
+describe("POST /api/trips", () => {
+  test("returns 201 when a new trip is created", async () => {
+    const response = await api
+      .post("/api/trips")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00", tripDistance: 100 })
+      .expect(201)
+    expect(response.body).toBe(100)
+  })
 
+  test("returns 500 when trip is missing required fields", async () => {
+    await api
+      .post("/api/trips")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", tripDistance: 100 })
+      .expect(500)
+  })
+
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
+    await api
+    .post("/api/trips")
+      .set("Authorization", `Bearer invalidToken`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00", tripDistance: 100 })
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+    .post("/api/trips")
+    .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00", tripDistance: 100 })
+      .expect(401)
+  })
+})
+
+describe("POST /api/trips/work-trip", () => {
+  test("returns 201 when a new trip is created", async () => {
+    const response = await api
+      .post("/api/trips/work-trip")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00" })
+      .expect(201)
+    expect(response.body).toBe(50)
+  })
+
+  test("returns 500 when commute doesn't exist", async () => {
+    const mockDecodedToken = {
+      uid: "456"
+    }
+    mockVerifyIdToken.mockResolvedValue(mockDecodedToken)
+    await api
+      .post("/api/trips/work-trip")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00" })
+      .expect(500)
+  })
+
+  test("returns 500 when trip is missing required fields", async () => {
+    await api
+      .post("/api/trips/work-trip")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00" })
+      .expect(500)
+  })
+
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
+    await api
+    .post("/api/trips/work-trip")
+      .set("Authorization", `Bearer invalidToken`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00" })
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+    .post("/api/trips/work-trip")
+    .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00"})
+      .expect(401)
+  })
+})
 
 afterAll(async () => {
   await sequelize.close()

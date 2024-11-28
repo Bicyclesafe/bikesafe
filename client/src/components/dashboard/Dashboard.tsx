@@ -4,11 +4,12 @@ import PersonalGoal from "./PersonalGoal"
 import TotalCommute from "./TotalCommute" 
 import PersonalGoalTracker from "./PersonalGoalTracker"
 import { BaseTrip } from "../../types"
-import { addTrip } from "../../services/tripService"
+import { addWorkTrip } from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { useState } from "react"
 import DistanceOverview from "./DistanceOverview"
 import { NavLink } from "react-router-dom"
+import ManualTrips from "./ManualTrips"
 
 const Dashboard = () => {
   const [distance, setDistance] = useState<number>(0)
@@ -25,7 +26,7 @@ const Dashboard = () => {
       startTime: new Date(),
       endTime: new Date()
     }
-    const distance = await addTrip(token as string, trip)
+    const distance = await addWorkTrip(token as string, trip)
     setDistance(prevDistance => (prevDistance) + distance)  
   }
 
@@ -74,14 +75,13 @@ const Dashboard = () => {
             <DistanceOverview distance={distance} />
           </div>
           </NavLink>
-          <NavLink to="/">
-          <div className={stylesDashboard['item']}>
-            <PersonalGoal/>
+          <div id={stylesDashboard['manual']} className={stylesDashboard['item']}>
+            <ManualTrips distance={distance} setDistance={setDistance}/>
           </div>
-          </NavLink>
           <NavLink to="/commute">
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
+            
           </div>
           </NavLink>
         </div>
