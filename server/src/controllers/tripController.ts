@@ -93,7 +93,7 @@ export const getTripsBetweenDates = async (req: Request<null, null, {uid: string
   }
 }
 
-export const addTrip = async (req: Request<null, null, {uid: string, startTime: Date, endTime: Date}>, res: Response, next: NextFunction) => {
+export const addWorkTrip = async (req: Request<null, null, {uid: string, startTime: Date, endTime: Date}>, res: Response, next: NextFunction) => {
   try {
     const { startTime, endTime, uid } = req.body
     const user: User | null = await User.findOne({ where: { uid }})
@@ -106,6 +106,23 @@ export const addTrip = async (req: Request<null, null, {uid: string, startTime: 
     })
     
     res.status(201).json(commute?.distance)
+  } catch(err) {
+    next(err)
+  }
+}
+
+export const addTrip = async (req: Request<null, null, {uid: string, tripDistance: number, startTime: Date, endTime: Date}>, res: Response, next: NextFunction) => {
+  try {
+    const { tripDistance, startTime, endTime, uid } = req.body
+    const user: User | null = await User.findOne({ where: { uid }})
+    await Trip.create({ 
+      userId: user?.id,
+      startTime,
+      endTime,
+      tripDistance: tripDistance
+    })
+    
+    res.status(201).json(tripDistance)
   } catch(err) {
     next(err)
   }
@@ -135,6 +152,7 @@ export default {
   getTotalDistanceForUser,
   getTripsBetweenDates,
   addTrip,
+  addWorkTrip,
   getSumOfTripsBetweenDates,
   getTripsForAllUsers
 }
