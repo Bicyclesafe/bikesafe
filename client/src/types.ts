@@ -102,3 +102,8 @@ export interface SeasonalDistanceProps {
   distance: number;
   setDistance: React.Dispatch<React.SetStateAction<number>>;
 }
+
+export interface ManualTripsProps {
+  distance: number;
+  setDistance: React.Dispatch<React.SetStateAction<number>>;
+}

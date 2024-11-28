@@ -93,7 +93,7 @@ export const getTripsBetweenDates = async (req: Request<null, null, {uid: string
   }
 }
 
-export const addCommute = async (req: Request<null, null, {uid: string, startTime: Date, endTime: Date}>, res: Response, next: NextFunction) => {
+export const addWorkTrip = async (req: Request<null, null, {uid: string, startTime: Date, endTime: Date}>, res: Response, next: NextFunction) => {
   try {
     const { startTime, endTime, uid } = req.body
     const user: User | null = await User.findOne({ where: { uid }})
@@ -152,7 +152,7 @@ export default {
   getTotalDistanceForUser,
   getTripsBetweenDates,
   addTrip,
-  addCommute,
+  addWorkTrip,
   getSumOfTripsBetweenDates,
   getTripsForAllUsers
 }

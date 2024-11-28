@@ -59,7 +59,7 @@ export const addWorkTrip = async (token: string, trip: BaseTrip) => {
       "Authorization": "Bearer " + token
     }}
 
-    const response = await axios.post(`${apiUrl}/api/trips/commute`, trip, authHeader)
+    const response = await axios.post(`${apiUrl}/api/trips/work-trip`, trip, authHeader)
     return response.data
   } catch(err) {
     console.error("", err)
