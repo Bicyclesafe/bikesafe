@@ -8,7 +8,7 @@ import stylesPersonalGoal from './PersonalGoalTracker.module.css'
 import { linearGradientDef } from "@nivo/core"
 import { FC } from "react"
 
-const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => {
+const PersonalGoalTracker:FC<{ yearlyDistance: number }> = ({ yearlyDistance = [] }) => {
   const [currentGoals, setCurrentGoals] = useState<PersonalGoal[]>([])
   const [currentProgress, setCurrentProgress] = useState<number | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
@@ -51,7 +51,7 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
       }
     }
     fetchProgress()
-  }, [currentGoals, user, yearly_distance])
+  }, [currentGoals, user, yearlyDistance])
 
 
   const handlePersonalGoalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +92,11 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
     sunday.setHours(23, 59, 59, 59)
 
     return [monday, sunday]
- }
+  }
+
+  const completedPieColor = (currentProgress ?? 0) >= (currentGoals?.[0]?.goalDistance ?? 0)
+    ? "gradientFull"
+    : "gradientCompleted"
 
   if (loading) return <div>Loading...</div>
   if (currentGoals.length === 0) return (
@@ -108,8 +112,8 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
   )
 
   const data = currentProgress !== null ? [
-    { id: 'completed', value: currentProgress, color: 'hsl(150, 60%, 40%)' },
-    { id: 'remaining', value: Math.max(currentGoals[0].goalDistance - currentProgress, 0), color: 'hsl(0, 0%, 80%)' },
+    { id: 'completed', value: currentProgress.toFixed(1), color: 'hsl(150, 60%, 40%)' },
+    { id: 'remaining', value: Math.max(currentGoals[0].goalDistance - currentProgress, 0).toFixed(1), color: 'hsl(0, 0%, 80%)' },
   ] : []
   
   return (
@@ -136,9 +140,13 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
               { offset: 0, color: '#ffc821', opacity: 0.6 },
               { offset: 100, color: '#ff4545', opacity: 0.6 },
             ]),
+            linearGradientDef('gradientFull', [
+              { offset: 0, color: '#ad8de3' },
+              { offset: 100, color: '#4ea8ed' },
+            ]),
           ]}
           fill={[
-            { match: { id: 'completed' }, id: 'gradientCompleted' },
+            { match: { id: 'completed' }, id: completedPieColor },
             { match: { id: 'remaining' }, id: 'gradientRemaining' },
           ]}
           layers={[
@@ -151,7 +159,7 @@ const PersonalGoalTracker:FC<{yearly_distance:number}> = ({yearly_distance}) => 
                 dominantBaseline="central"
                 className={stylesPersonalGoal['progress-text']} data-testid="progress-text"
               >
-                {currentProgress || 0} / {currentGoals[0].goalDistance}
+                {currentProgress?.toFixed(1) || 0} / {currentGoals[0].goalDistance}
               </text>
             ),
           ]}

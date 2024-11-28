@@ -13,11 +13,13 @@ describe('Frontpage-tests:', () => {
 
   it('Cycle to work button increments seasonal distance', () => {
     cy.get("#total-distance").then(($distanceDiv) => {
-      const distance = $distanceDiv.text()
+      const currentDistance = parseFloat($distanceDiv.text())
+      const updatedDistance = (currentDistance + 20).toFixed(1)
+
       cy.contains("Cycle to work").click()
       cy.log(distance)
       cy.log(parseInt(distance))
-      cy.contains(`${parseInt(distance) + 20}km`)
+      cy.contains(`${updatedDistance}km`)
     })
   })
 })

@@ -1,101 +1,168 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import DistanceBarChart from "../components/statistics/DistanceBarChart"
-import tripService from "../services/tripService"
+import { ReactNode } from "react"
 
-jest.mock("../services/tripService", () => ({
-  getAllTrips: jest.fn(),
+jest.mock('@nivo/core', () => ({
+  ...jest.requireActual('@nivo/core'),
+  ResponsiveWrapper: ({ children }: { children: ({ width, height }: { width: number; height: number }) => ReactNode }) => 
+    children({ width: 400, height: 400 }),
 }))
 
-jest.mock("../hooks/useAuth", () => ({
-  useAuth: () => ({ user: { getIdToken: jest.fn(() => Promise.resolve("mockToken")) } }),
-}))
+beforeEach(() => {
+  jest.clearAllMocks()
+})
 
-jest.mock("@nivo/bar", () => ({
-    ResponsiveBar: jest.fn(() => <div data-testid="nivo-bar-chart">Mock Chart</div>),
-  }))
+describe('DistanceBarChart Component', () => {
+  const trips = [
+    {
+      id: 1,
+      userId: 1,
+      startTime: new Date('2024-01-15 06:00:00'),
+      endTime: new Date('2024-01-15 07:45:00'),
+      tripDistance: 10
+    },
+    {
+      id: 2,
+      userId: 1,
+      startTime: new Date('2024-02-20 15:00:00'),
+      endTime: new Date('2024-02-20 17:00:00'),
+      tripDistance: 15
+    },
+    {
+      id: 3,
+      userId: 1,
+      startTime: new Date('2024-07-01 13:00:00'),
+      endTime: new Date('2024-07-01 14:30:00'),
+      tripDistance: 30
+    },
+    {
+      id: 4,
+      userId: 1,
+      startTime: new Date('2023-05-01 13:00:00'),
+      endTime: new Date('2024-05-01 14:30:00'),
+      tripDistance: 22
+    },
+  ]
+
+  it('renders the chart when data is passed', () => {
+    const { container } = render(<DistanceBarChart rawData={trips} year="2024" />)
+
+    const bars = container.querySelectorAll('svg rect')
+    expect(bars.length).toBeGreaterThan(0)
+  })
+
+  it('renders nothing when no data is passed', () => {
+    const { container } = render(<DistanceBarChart rawData={[]} year="2024" />)
   
+    const bars = container.querySelectorAll('svg rect')
+    expect(bars.length).toBe(0)
+  })
 
-describe("DistanceBarChart component", () => {
-  it("renders the chart with initial yearly data", async () => {
-    const mockGetAllTrips = tripService.getAllTrips as jest.Mock
-    mockGetAllTrips.mockResolvedValue([
-      { startTime: new Date(2024, 0, 1), tripDistance: 100 },
-      { startTime: new Date(2024, 1, 1), tripDistance: 200 },
-    ])
 
-    render(<DistanceBarChart />)
+  it('renders correct month label', () => {
+    render(<DistanceBarChart rawData={trips} year="2024" />)
+
+    expect(screen.getByText("Month")).toBeInTheDocument()
+  })
+  
+  it('renders correct distance label', () => {
+    render(<DistanceBarChart rawData={trips} year="2024" />)
+  
+    expect(screen.getByText("Distance (km)")).toBeInTheDocument()
+  })
+
+  it('renders the correct number of bars in year view', () => {
+    const { container } = render(<DistanceBarChart rawData={trips} year="2024" />)
+    const bars = container.querySelectorAll('svg rect[focusable="false"]')
+
+    expect(bars.length).toBe(12)
+  })
+
+  it('renders only the bars for the selected year\'s', () => {
+    const { container } = render(<DistanceBarChart rawData={trips} year="2023" />)
+    const bars = Array.from(container.querySelectorAll('svg rect[focusable="false"]'))
+    .filter(bar => {
+      const heightString = bar.getAttribute('height')
+      const height = heightString !== null ? parseFloat(heightString) : 0
+      return height > 0
+    })
+
+    expect(bars.length).toBe(1)
+  })
+
+  it('year view displays the correct height for each bar', async () => {
+    const { container } = render(<DistanceBarChart rawData={trips} year="2024" />)
+
+    await waitFor(() => container.querySelectorAll('svg rect[focusable="false"]'))
+
+    const bars = Array.from(container.querySelectorAll('svg rect[focusable="false"]'))
+    .filter(bar => {
+      const heightString = bar.getAttribute('height')
+      const height = heightString !== null ? parseFloat(heightString) : 0
+      return height > 0
+    })
+
+    expect(bars[0].getAttribute('height')).toBe("100")
+    expect(bars[1].getAttribute('height')).toBe("150")
+    expect(bars[2].getAttribute('height')).toBe("300")
+  })
+
+  it('switches to month view when month bar is clicked', async () => {
+    const { container } = render(<DistanceBarChart rawData={trips} year="2024" />)
+
+    await waitFor(() => container.querySelectorAll('svg rect[focusable="false"]'))
+
+    const bars = Array.from(container.querySelectorAll('svg rect[focusable="false"]'))
+    .filter(bar => {
+      const heightString = bar.getAttribute('height')
+      const height = heightString !== null ? parseFloat(heightString) : 0
+      return height > 0
+    })
+
+    fireEvent.click(bars[0])
+
+    expect(screen.getByText('Day')).toBeInTheDocument()
+    expect(screen.getByText('Return to yearly view')).toBeInTheDocument()
+  })
+
+  it('month view displays the correct number of bars', async () => {
+    const { container } = render(<DistanceBarChart rawData={trips} year="2024" />)
+
+    await waitFor(() => container.querySelectorAll('svg rect[focusable="false"]'))
+
+    const yearBars = Array.from(container.querySelectorAll('svg rect[focusable="false"]'))
+      .filter(bar => {
+        const heightString = bar.getAttribute('height')
+        const height = heightString !== null ? parseFloat(heightString) : 0
+        return height > 0
+    })
+
+    fireEvent.click(yearBars[0])
 
     await waitFor(() => {
-      expect(mockGetAllTrips).toHaveBeenCalledWith("mockToken", "2024", null)
-      expect(screen.getByTestId("nivo-bar-chart")).toBeInTheDocument()
-
+      const dayBars = container.querySelectorAll('svg rect[focusable="false"]')
+      expect(dayBars.length).toBe(31)
     })
   })
 
-  it.skip("updates the chart when a year is selected", async () => {
-    const mockGetAllTrips = tripService.getAllTrips as jest.Mock
-    mockGetAllTrips.mockResolvedValueOnce([
-      { startTime: new Date(2024, 0, 1), tripDistance: 150 },
-    ])
+  it('month view displays the correct height for each bar', async () => {
+    const { container } = render(<DistanceBarChart rawData={trips} year="2024" />)
 
-    render(<DistanceBarChart />)
+    await waitFor(() => container.querySelectorAll('svg rect[focusable="false"]'))
 
-    fireEvent.change(screen.getByRole("combobox"), { target: { value: "2024" } })
+    const yearBars = container.querySelectorAll('svg rect[focusable="false"]')
 
-    await waitFor(() => {
-      expect(mockGetAllTrips).toHaveBeenCalledWith("mockToken", "2024", null)
-      expect(screen.getByText(/January/)).toBeInTheDocument()
-    })
-  })
-
-  it.skip("switches to daily view when a bar is clicked", async () => {
-    const mockGetAllTrips = tripService.getAllTrips as jest.Mock
-    mockGetAllTrips.mockResolvedValue([
-      { startTime: new Date(2023, 0, 1), tripDistance: 100 },
-    ])
-
-    render(<DistanceBarChart />)
+    fireEvent.click(yearBars[0])
 
     await waitFor(() => {
-      const barElement = screen.getByText(/January/)
-      fireEvent.click(barElement)
-    })
+      const dayBars = Array.from(container.querySelectorAll('svg rect[focusable="false"]'))
+        .filter(bar => {
+          const heightString = bar.getAttribute('height')
+          const height = heightString !== null ? parseFloat(heightString) : 0
+          return height > 0
+      })
 
-    await waitFor(() => {
-      expect(mockGetAllTrips).toHaveBeenCalledWith("mockToken", "2023", "1")
-      expect(screen.getByText(/Day/)).toBeInTheDocument()
-    })
-  })
-
-  it.skip("returns to yearly view when the back button is clicked", async () => {
-    const mockGetAllTrips = tripService.getAllTrips as jest.Mock
-    mockGetAllTrips.mockResolvedValue([
-      { startTime: new Date(2023, 0, 1), tripDistance: 100 },
-    ])
-
-    render(<DistanceBarChart />)
-
-    await waitFor(() => {
-      const barElement = screen.getByText(/January/)
-      fireEvent.click(barElement)
-    })
-
-    await waitFor(() => {
-      fireEvent.click(screen.getByText(/Return to yearly view/))
-      expect(mockGetAllTrips).toHaveBeenCalledWith("mockToken", "2023", null)
-      expect(screen.getByText(/January/)).toBeInTheDocument()
-    })
-  })
-
-  it.skip("handles errors from the trip service gracefully", async () => {
-    const mockGetAllTrips = tripService.getAllTrips as jest.Mock
-    mockGetAllTrips.mockRejectedValue(new Error("Failed to fetch"))
-
-    render(<DistanceBarChart />)
-
-    await waitFor(() => {
-      expect(mockGetAllTrips).toHaveBeenCalled()
-      expect(screen.queryByText(/January/)).not.toBeInTheDocument()
+      expect(dayBars[0].getAttribute('height')).toBe("100")
     })
   })
 })

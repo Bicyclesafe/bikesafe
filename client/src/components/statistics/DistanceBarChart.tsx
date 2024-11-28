@@ -1,5 +1,5 @@
 import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, FC } from "react"
 import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { ChartData, LineLayerInfo, Trip } from "../../types"
@@ -8,7 +8,7 @@ import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "./consta
 import LineLayer from "./LineLayer"
 import { createBarData, createPerDateData, createTotalData } from "./barChartHelper"
 
-const DistanceBarChart = () => {
+const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year }) => {
   const [barData, setBarData] = useState<BarDatum[]>([])
   const [emissionCarPerDate, setEmissionCarPerDate] = useState<BarDatum[]>([])
   const [emissionCarTotal, setEmissionCarTotal] = useState<BarDatum[]>([])
@@ -18,10 +18,9 @@ const DistanceBarChart = () => {
   const [fuelCostCarTotal, setFuelCostCarTotal] = useState<BarDatum[]>([])
   const [viewMode, setViewMode] = useState<"day" | "year">("year")
   const [month, setMonth] = useState<string | null>(null)
-  const [year, setYear] = useState<string>(new Date().getFullYear().toString())
   const [highestValue, setHighestValue] = useState<number>(500)
   const { user } = useAuth()
-  
+
   const getNivoBarSettings = (mode: "day" | "year") => {
     if (mode === "year") {
       return {
@@ -41,7 +40,7 @@ const DistanceBarChart = () => {
     }
   }
   
-  const transformDataToMonthly = (data: ChartData[]) => {
+  const transformDataToMonthly = useCallback((data: ChartData[]) => {
     const monthlyData = Array.from({ length: 12 }, (_, month) => ({
       monthName: new Date(0, month).toLocaleString('default', { month: 'short' }),
       value: 0,
@@ -50,18 +49,26 @@ const DistanceBarChart = () => {
     
     data.forEach(({time, value}) => {
       const month = new Date(time).getMonth()
-      monthlyData[month].value += Number(value.toFixed(0))
+      monthlyData[month].value += value
+    })
+              
+    monthlyData.forEach((data) => {
+      data.distance = parseFloat(data.distance.toFixed(1))
     })
 
     return monthlyData
-  }
+  }, [year])
   
   const transformDataToDaily = useCallback((data: ChartData[]) => {
     if (!month) {
       return []
     }
+
+    const filteredTrips = trips.filter(
+      (trip) => new Date(trip.startTime).getFullYear() === Number(year)
+    )
     
-    const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month)))
+    const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month) - 1))
     const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
       day: (day + 1).toString(),
       value: 0,
@@ -70,8 +77,12 @@ const DistanceBarChart = () => {
     data.forEach(({time, value}) => {
       if (getMonth(time) + 1 === Number(month)) {
         const day = getDate(time) - 1
-        dailyData[day].value += Number(value.toFixed(0))
+        dailyData[day].value += value
       }
+    })
+
+    dailyData.forEach((data) => {
+      data.distance = parseFloat(data.distance.toFixed(1))
     })
     
     return dailyData
@@ -88,24 +99,15 @@ const DistanceBarChart = () => {
   }, [])
   
   useEffect(() => {
-    const fetchData = async () => {
-      if (!user) return
-
-      try {
-        const token = await user.getIdToken(true)
-        const trips = await tripService.getAllTrips(token as string, year, month)
-
-        if (viewMode === "year") {
-          setData(trips, transformDataToMonthly)
-        } else if (viewMode === "day") {
-          setData(trips, transformDataToDaily)
-        }
-      } catch (error) {
-        console.error('Error fetching trip data:', error)
-      }
+    const filteredTrips = rawData.filter(
+      (trip) => new Date(trip.startTime).getFullYear() === Number(year)
+    )
+    if (viewMode === "year") {
+      setData(filteredTrips, transformDataToMonthly)
+    } else if (viewMode === "day" && month) {
+      setData(filteredTrips, transformDataToDaily)
     }
-    fetchData()
-  }, [month, transformDataToDaily, user, viewMode, year, setData])
+  }, [month, transformDataToDaily, transformDataToMonthly, viewMode, year, setData, rawData])
 
   useEffect(() => {
     if (barData.length === 0 || emissionCarTotal.length === 0) return
@@ -126,13 +128,13 @@ const DistanceBarChart = () => {
         highestValue={highestValue} />
     )
   }
+    
+  if (!rawData || rawData.length === 0) {
+    return <div>No data available for {year}</div>
+  }
 
   return (
     <div style={{ position: "relative", height: '600px' }}>
-      <select onChange={(e) => setYear(e.target.value)}>
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-      </select>
       <ResponsiveBar
         data={barData}
         keys={['value']}

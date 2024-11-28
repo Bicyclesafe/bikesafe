@@ -1,15 +1,14 @@
 import { BarDatum, ResponsiveBar } from "@nivo/bar"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
 import { linearGradientDef } from "@nivo/core"
 import { startOfWeek, endOfWeek } from "date-fns"
 
-const DistanceOverview = () => {
-  const [data, setData] = useState<BarDatum[] | []>([])
+const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
+  const [data, setData] = useState<BarDatum[]>([])
   const { user } = useAuth()
-  console.log(data)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +18,7 @@ const DistanceOverview = () => {
         const token = await user.getIdToken(true)
         const startTime = startOfWeek(new Date(), {weekStartsOn:1})
         const endTime = endOfWeek(new Date(), {weekStartsOn: 1})
-        const trips = await tripService.getTripsBetweenDates(token as string, startTime, endTime)
+        const trips = await tripService.getTripsBetweenDates(token as string, startTime, endTime) || []
         if (trips.length !== 0 ) {
           setData(transformDataToWeekly(trips))
         }
@@ -28,7 +27,7 @@ const DistanceOverview = () => {
       }
     }
     fetchData()
-  }, [user])
+  }, [user, distance])
 
 
   const transformDataToWeekly = (trips: Trip[]) => {
@@ -40,13 +39,17 @@ const DistanceOverview = () => {
     trips.forEach((trip: Trip) => {
       let day = new Date(trip.startTime).getDay() - 1// Sunday is 0, Monday is 1, ..., Saturday is 6
       if (day < 0) day = 6
-      weeklyData[day].distance += Number(trip.tripDistance.toFixed(0))
+      weeklyData[day].distance += trip.tripDistance
+    })
+
+    weeklyData.forEach((data) => {
+      data.distance = parseFloat(data.distance.toFixed(1))
     })
   
     return weeklyData
   }
 
-  if (data.length == 0) {
+  if (!Array.isArray(data) || data.length === 0) {
     return <div>No weekly data available</div>
   }
 

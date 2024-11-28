@@ -1,6 +1,7 @@
 import SeasonalDistance from "./SeasonalDistance"
 import stylesDashboard from "./Dashboard.module.css"
 import PersonalGoal from "./PersonalGoal"
+import TotalCommute from "./TotalCommute" 
 import PersonalGoalTracker from "./PersonalGoalTracker"
 import { BaseTrip } from "../../types"
 import { addTrip } from "../../services/tripService"
@@ -52,10 +53,17 @@ const Dashboard = () => {
             <div className={stylesDashboard['row']}>Row 3</div>
           </div>
           <div className={stylesDashboard['center-area']}>
-            <PersonalGoalTracker yearly_distance={distance}/>
+            <PersonalGoalTracker yearlyDistance={distance}/>
           </div>
           <div className={stylesDashboard['side-area']}>
-            <div className={stylesDashboard['row']}>Row 1</div>
+            <div className={stylesDashboard['row']}>
+            <div className={stylesDashboard['row-item']}>
+                <div className={stylesDashboard['row-title']}>Daily cyclists</div>
+                <div className={stylesDashboard['row-content']}>
+                  <TotalCommute/>
+                </div>
+              </div>
+            </div>
             <div className={stylesDashboard['row']}>Row 2</div>
             <div className={stylesDashboard['row']}>Row 3</div>
           </div>
@@ -63,7 +71,7 @@ const Dashboard = () => {
         <div className={stylesDashboard['item-container']}>
           <NavLink to="/statistics">
           <div className={stylesDashboard['item']}>
-            <DistanceOverview />
+            <DistanceOverview distance={distance} />
           </div>
           </NavLink>
           <NavLink to="/">
