@@ -94,8 +94,16 @@ export interface BaseTrip {
   endTime: Date
 }
 
+export interface TripProps extends BaseTrip {
+  tripDistance: number
+}
 
 export interface SeasonalDistanceProps {
+  distance: number;
+  setDistance: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface ManualTripsProps {
   distance: number;
   setDistance: React.Dispatch<React.SetStateAction<number>>;
 }
