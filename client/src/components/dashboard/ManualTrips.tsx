@@ -6,6 +6,7 @@ import { ManualTripsProps, TripProps } from '../../types'
 import { useAuth } from '../../hooks/useAuth'
 import styles from './ManualTrips.module.css'
 import { TextField} from '@mui/material'
+import { getHours, getMinutes, setHours, setMinutes } from 'date-fns'
 
 
 const ManualTrips = ({ distance, setDistance }: ManualTripsProps) => {
@@ -23,10 +24,16 @@ const ManualTrips = ({ distance, setDistance }: ManualTripsProps) => {
         event.preventDefault()
         if (user && formDistance && date && startTime && endTime) {
             const token = await user.getIdToken(true)
+            let trueStartTime = date
+            trueStartTime = setHours(trueStartTime, getHours(startTime))
+            trueStartTime = setMinutes(trueStartTime, getMinutes(startTime))
+            let trueEndTime = date
+            trueEndTime = setHours(trueEndTime, getHours(endTime))
+            trueEndTime = setMinutes(trueEndTime, getMinutes(endTime))
             const trip: TripProps = {
                 tripDistance: Number(formDistance),
-                startTime: startTime,
-                endTime: endTime
+                startTime: trueStartTime,
+                endTime: trueEndTime
             }
             await addTrip(token as string, trip)
             setDistance(Number(formDistance) + distance)
@@ -35,8 +42,8 @@ const ManualTrips = ({ distance, setDistance }: ManualTripsProps) => {
 
     return (
         <div>
-            <form className={styles['form']} onSubmit={manualAddTrip}>
-                <header>Add trip</header>
+            <form data-testid="form" className={styles['form']} onSubmit={manualAddTrip}>
+                <header data-testid="header">Add trip</header>
                 <TextField 
                     label={"Distance"}
                     value={formDistance}
@@ -64,7 +71,7 @@ const ManualTrips = ({ distance, setDistance }: ManualTripsProps) => {
                 onChange={(newValue) => setEndTime(newValue)}
                 />
             </LocalizationProvider>
-            <button className={styles['button']} type="submit">Add trip</button>
+            <button className={styles['button']} type="submit" data-testid="submit_button">Add trip</button>
             </form>
         </div>
     )   
