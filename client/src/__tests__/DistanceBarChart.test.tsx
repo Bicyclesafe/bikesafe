@@ -1,10 +1,11 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import DistanceBarChart from "../components/statistics/DistanceBarChart"
+import { ReactNode } from "react"
 
 jest.mock('@nivo/core', () => ({
   ...jest.requireActual('@nivo/core'),
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ResponsiveWrapper: ({ children }: any) => children({ width: 400, height: 400 }),
+  ResponsiveWrapper: ({ children }: { children: ({ width, height }: { width: number; height: number }) => ReactNode }) => 
+    children({ width: 400, height: 400 }),
 }))
 
 beforeEach(() => {
@@ -33,6 +34,13 @@ describe('DistanceBarChart Component', () => {
       startTime: new Date('2024-07-01 13:00:00'),
       endTime: new Date('2024-07-01 14:30:00'),
       tripDistance: 30
+    },
+    {
+      id: 4,
+      userId: 1,
+      startTime: new Date('2023-05-01 13:00:00'),
+      endTime: new Date('2024-05-01 14:30:00'),
+      tripDistance: 22
     },
   ]
 
@@ -68,6 +76,18 @@ describe('DistanceBarChart Component', () => {
     const bars = container.querySelectorAll('svg rect[focusable="false"]')
 
     expect(bars.length).toBe(12)
+  })
+
+  it('renders only the bars for the selected year\'s', () => {
+    const { container } = render(<DistanceBarChart rawData={trips} year="2023" />)
+    const bars = Array.from(container.querySelectorAll('svg rect[focusable="false"]'))
+    .filter(bar => {
+      const heightString = bar.getAttribute('height')
+      const height = heightString !== null ? parseFloat(heightString) : 0
+      return height > 0
+    })
+
+    expect(bars.length).toBe(1)
   })
 
   it('year view displays the correct height for each bar', async () => {
