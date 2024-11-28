@@ -2,9 +2,11 @@ import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
 import { useCallback, useEffect, useState } from "react"
 import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
-import { ChartData, LineLayer, Trip } from "../../types"
+import { ChartData, LineLayerInfo, Trip } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
 import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "./constants"
+import LineLayer from "./LineLayer"
+import { createBarData, createPerDateData, createTotalData } from "./barChartHelper"
 
 const DistanceBarChart = () => {
   const [barData, setBarData] = useState<BarDatum[]>([])
@@ -113,45 +115,16 @@ const DistanceBarChart = () => {
     setHighestValue(Math.max(highestBar, highestLinePoint))
   }, [barData, emissionCarTotal])
 
-  const lineLayer = ({innerHeight, bars, data, color}: LineLayer) => {
-    if (data.length === 0 || bars.length === 0) return
-    if ((viewMode === "day" && !data[0].day) || (viewMode === "year" && !data[0].monthNumber)) return
-
-    const positionsAsStrings = data.map(d => {
-      const barIndex = (viewMode === "year" ? Number(d.monthNumber) : Number(d.day)) - 1
-      const xPosition = bars[barIndex].width / 2 + bars[barIndex].x
-      const yPosition = innerHeight - Number(d.value) * innerHeight / highestValue
-      return `${xPosition},${yPosition}`
-    })
-
+  const lineLayer = ({innerHeight, bars, data, color}: LineLayerInfo) => {
     return (
-      <path
-        d={
-          `M 0,${innerHeight} L ` + positionsAsStrings.join(" L ")
-        }
-        fill="none"
-        stroke={color}
-        strokeWidth={2.2}
-      />
+      <LineLayer
+        innerHeight={innerHeight}
+        bars={bars.map(barData => ({width: barData.width, x: barData.x}))}
+        data={data}
+        color={color}
+        viewMode={viewMode}
+        highestValue={highestValue} />
     )
-  }
-
-  const createBarData = (trips: Trip[]) => {
-    return trips.map(trip => ({time: trip.startTime, value: trip.tripDistance}))
-  }
-
-  const createPerDateData = (trips: Trip[], valuePerKM: number) => {
-    return trips.map(trip => ({time: trip.startTime, value: trip.tripDistance * valuePerKM}))
-  }
-
-  const createTotalData = (data: BarDatum[]) => {
-    const totalData = []
-    let sum = 0
-    for (let i = 0; i < data.length; i++) {
-      sum += Number(data[i].value)
-      totalData.push({...data[i], value: sum})
-    }
-    return totalData
   }
 
   return (

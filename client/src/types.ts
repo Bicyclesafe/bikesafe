@@ -101,7 +101,16 @@ export interface SeasonalDistanceProps {
   setDistance: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export interface LineLayer {
+export interface LineLayerProps {
+  innerHeight: number
+  bars: BarInfo[]
+  data: BarDatum[]
+  color: string
+  viewMode: string
+  highestValue: number
+}
+
+export interface LineLayerInfo {
   innerHeight: number
   bars: readonly ComputedBarDatum<BarDatum>[]
   data: BarDatum[]
@@ -111,4 +120,9 @@ export interface LineLayer {
 export interface ChartData {
   time: Date
   value: number
+}
+
+export interface BarInfo {
+  width: number
+  x: number
 }
