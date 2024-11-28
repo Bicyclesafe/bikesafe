@@ -4,16 +4,19 @@ import { DatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-picker
 import { addTrip } from '../../services/tripService'
 import { TripProps } from '../../types'
 import { useAuth } from '../../hooks/useAuth'
+import styles from './ManualTrips.module.css'
+import { TextField} from '@mui/material'
+
 
 const ManualTrips = () => {
-    const [distance, setDistance] = useState<number>(0)
-    const [date, setDate] = useState<Date | null>(new Date())
-    const [startTime, setStartTime] = useState<Date | null>(new Date())
-    const [endTime, setEndTime] = useState<Date | null>(new Date())
+    const [distance, setDistance] = useState<string>("")
+    const [date, setDate] = useState<Date | null>(null)
+    const [startTime, setStartTime] = useState<Date | null>(null)
+    const [endTime, setEndTime] = useState<Date | null>(null)
     const { user } = useAuth()
 
     const handleDistanceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDistance(Number(event.currentTarget.value))
+        setDistance(event.currentTarget.value)
       }
 
     const manualAddTrip = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -21,7 +24,7 @@ const ManualTrips = () => {
         if (user && distance && date && startTime && endTime) {
             const token = await user.getIdToken(true)
             const trip: TripProps = {
-                tripDistance: distance,
+                tripDistance: Number(distance),
                 startTime: startTime,
                 endTime: endTime
             }
@@ -32,22 +35,36 @@ const ManualTrips = () => {
 
     return (
         <div>
-            <form onSubmit={manualAddTrip}>
-                <input type="number" min="0" value={distance} onChange={handleDistanceChange} />
+            <form className={styles['form']} onSubmit={manualAddTrip}>
+                <header>Add trip</header>
+                <TextField 
+                    label={"Distance"}
+                    value={distance}
+                    onChange={handleDistanceChange}
+                    type='number'
+                    slotProps={{
+                      htmlInput: {
+                        min: 0,
+                      }
+                    }}
+                />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker 
+                label={"Date"}
                 value={date}
                 onChange={(newValue) => setDate(newValue)}/>
                 <TimePicker
+                label={"Start time"}
                 value={startTime}
                 onChange={(newValue) => setStartTime(newValue)}
                 />
                 <TimePicker
+                label={"End time"}
                 value={endTime}
                 onChange={(newValue) => setEndTime(newValue)}
                 />
             </LocalizationProvider>
-            <button type="submit">Add trip</button>
+            <button className={styles['button']} type="submit">Add trip</button>
             </form>
         </div>
     )   

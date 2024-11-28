@@ -75,12 +75,13 @@ const Dashboard = () => {
             <DistanceOverview distance={distance} />
           </div>
           </NavLink>
-          <div className={stylesDashboard['item']}>
+          <div id={stylesDashboard['manual']} className={stylesDashboard['item']}>
             <ManualTrips/>
           </div>
           <NavLink to="/commute">
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
+            
           </div>
           </NavLink>
         </div>
