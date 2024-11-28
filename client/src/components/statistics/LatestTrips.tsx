@@ -37,34 +37,34 @@ export const StyledDuration: FC<{ duration: Duration }> = ({ duration }) => {
 
 const LatestTrips : FC<{ rawData: Trip[]}> = ({ rawData })=> {
   const latestTrips = useMemo(() => {
-      return rawData
-        .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
-        .slice(0, 5)
-    }, [rawData])
+    return rawData
+      .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
+      .slice(0, 5)
+  }, [rawData])
   
   const showLatestTrips = latestTrips.map((trip) => {
-  const startTime = new Date(trip.startTime)
-  const duration = intervalToDuration({ start: trip.startTime, end: trip.endTime })
+    const startTime = new Date(trip.startTime)
+    const duration = intervalToDuration({ start: trip.startTime, end: trip.endTime })
 
-  return (
-    <div className={stylesLatestTrips['trip-box']} key={trip.id}>
-    <div className={stylesLatestTrips['date']}>{format(startTime, 'dd MMM yyyy')}</div>
-    <div className={stylesLatestTrips['start-time']}>{format(startTime, 'HH:mm')}</div>
-    <div className={stylesLatestTrips['details']}>
-      <div>
-        <StyledDuration duration={duration} />
+    return (
+      <div className={stylesLatestTrips['trip']} key={trip.id} data-testid="trip">
+        <div className={stylesLatestTrips['date']}>{format(startTime, 'dd MMM yyyy')}</div>
+        <div className={stylesLatestTrips['start-time']}>{format(startTime, 'HH:mm')}</div>
+        <div className={stylesLatestTrips['details']}>
+          <div>
+            <StyledDuration duration={duration} />
+          </div>
+          <div>
+            <span className={stylesLatestTrips['distance']}>{Number(trip.tripDistance.toFixed(1))}</span>
+            <span className={stylesLatestTrips['unit']}>km</span>
+          </div>
+          <div>
+            <span className={stylesLatestTrips['co2']}>{((258 * trip.tripDistance) / 1000).toFixed(0)}</span>
+            <span className={stylesLatestTrips['unit']}>CO<sub>2</sub> kg</span>
+          </div>
+        </div>
       </div>
-      <div>
-        <span className={stylesLatestTrips['distance']}>{Number(trip.tripDistance.toFixed(1))}</span>
-        <span className={stylesLatestTrips['unit']}>km</span>
-      </div>
-      <div>
-        <span className={stylesLatestTrips['co2']}>{((258 * trip.tripDistance) / 1000).toFixed(0)}</span>
-        <span className={stylesLatestTrips['unit']}>CO<sub>2</sub> (kg)</span>
-      </div>
-    </div>
-    </div>
-  )
+    )
   })
 
   return(
