@@ -1,6 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { addTrip } from "../services/tripService"
 import ManualTrips from "../components/dashboard/ManualTrips"
+import timezoneMock from 'timezone-mock'
+
+timezoneMock.register('UTC')
 
 jest.mock("../services/tripService", () => ({
     addTrip: jest.fn()
@@ -66,8 +69,8 @@ describe("ManualTrips component", () => {
             expect(mockAddTrip).toHaveBeenCalledTimes(1)
             expect(mockAddTrip).toHaveBeenCalledWith("testToken", {
                 tripDistance: 100,
-                startTime: new Date("2022-12-11T22:00:00.000Z"),
-                endTime: new Date("2022-12-11T22:05:00.000Z")
+                startTime: new Date("2022-12-12T00:00:00.000Z"),
+                endTime: new Date("2022-12-12T00:05:00.000Z")
             })
         })
     })
@@ -100,3 +103,7 @@ describe("ManualTrips component", () => {
         })
     })
 })
+
+afterAll(() => {
+    timezoneMock.unregister()
+  })
