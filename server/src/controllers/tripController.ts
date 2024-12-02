@@ -51,7 +51,10 @@ export const getTripsForUser = async (req: Request<null, null, {uid: string, yea
   }
 }
 
-export const getTotalDistanceForUser = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
+export const getTotalDistanceForUser = async (req: Request<null, null, {uid: string}>, 
+  res: Response, 
+  next: NextFunction
+) => {
   const uid = req.body.uid
   
   try {
