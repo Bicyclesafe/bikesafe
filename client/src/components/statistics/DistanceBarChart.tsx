@@ -62,10 +62,6 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
     if (!month) {
       return []
     }
-
-    const filteredTrips = trips.filter(
-      (trip) => new Date(trip.startTime).getFullYear() === Number(year)
-    )
     
     const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month) - 1))
     const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
