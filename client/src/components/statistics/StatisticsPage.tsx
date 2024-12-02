@@ -1,16 +1,45 @@
 import { useEffect, useState } from "react"
 import DistanceBarChart from "./DistanceBarChart"
 import { useAuth } from "../../hooks/useAuth"
-import { Trip } from "../../types"
+import { Trip, Filters } from "../../types"
 import tripService from "../../services/tripService"
 import stylesStatistics from "./StatisticsPage.module.css"
 import LatestTrips from "./LatestTrips"
 import SummaryStatistics from "./SummaryStatistics"
+import StatisticFilters from "./StatisticsFilters"
+
+const initialFilters: Filters = {
+    emissionCarPerDate: {
+      label: 'Emissions saved compared to a Car',
+      isChecked: true,
+    },
+    emissionCarTotal: {
+      label: 'Total emissions saved in a year compared to a Car',
+      isChecked: true,
+    },
+    emissionBusPerDate: {
+        label: 'Emissions saved compared to a Bus',
+        isChecked: true,
+    },
+    emissionsBusTotal: {
+        label: 'Total emissions saved in a year compared to a Bus',
+        isChecked: true,
+    },
+    fuelCostCarPerDate: {
+        label: 'Money saved on fuel',
+        isChecked: true,
+    },
+    fuelCostCarTotal: {
+        label: 'Total money saved on fuel in a year',
+        isChecked: true,
+    }
+  }
 
 const StatisticsPage = () => {
   const { user } = useAuth()
   const [rawData, setRawData] = useState<Trip[]>([])
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
+  const [filters, setFilters] = useState<Filters>(initialFilters)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,19 +64,20 @@ const StatisticsPage = () => {
       </select>
       <div className={stylesStatistics['statistics-content']}>
         <div className={stylesStatistics['chart']}>
-            <DistanceBarChart rawData={rawData} year={year} />
+            <DistanceBarChart rawData={rawData} year={year} filters={filters}/>
         </div>
-        <div className={stylesStatistics['trip-container']}>
-          <div className={stylesStatistics['trip-container-title']}>
-            Latest trips
+        <div className={stylesStatistics['filter-containers']}>
+          <div className={stylesStatistics['filter-box']}>
+            <StatisticFilters filters={filters} setFilters={setFilters} />
           </div>
+        <div className={stylesStatistics['trip-container']}>
           <LatestTrips rawData={rawData} />
         </div>
-        <div className={stylesStatistics['summary-container']}>
-          <div className={stylesStatistics['summary-container-title']}>
-            Summary
+        </div>
+        <div>
+          <div className={stylesStatistics['summary-container']}>
+            <SummaryStatistics rawData={rawData} year={year} />
           </div>
-          <SummaryStatistics rawData={rawData} year={year} />
         </div>
       </div>
     </div>

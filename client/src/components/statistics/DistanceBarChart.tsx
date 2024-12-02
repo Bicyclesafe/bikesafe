@@ -1,12 +1,12 @@
-import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
+import { BarDatum, BarLayer, ComputedDatum, ResponsiveBar } from "@nivo/bar"
 import { useCallback, useEffect, useState, FC } from "react"
-import { ChartData, LineLayerInfo, Trip } from "../../types"
+import { ChartData, LineLayerInfo, Trip, Filters, LayersInfo } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
 import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "./constants"
 import LineLayer from "./LineLayer"
 import { createBarData, createPerDateData, createTotalData } from "./barChartHelper"
 
-const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year }) => {
+const DistanceBarChart: FC<{ rawData: Trip[], year: string, filters: Filters }> = ({ rawData, year, filters }) => {
   const [barData, setBarData] = useState<BarDatum[]>([])
   const [emissionCarPerDate, setEmissionCarPerDate] = useState<BarDatum[]>([])
   const [emissionCarTotal, setEmissionCarTotal] = useState<BarDatum[]>([])
@@ -123,6 +123,24 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
         highestValue={highestValue} />
     )
   }
+
+  const filterLayers = ({ innerHeight, bars }: LayersInfo): Array<string | BarLayer<BarDatum>> => {
+    const baseLayers = ["grid", "axes", "bars"]
+    const dynamicLayers = [
+      { key: "emissionCarPerDate", layer: ({ innerHeight, bars }) => lineLayer({ innerHeight, bars, data: emissionCarPerDate, color: "#55f" }) },
+      { key: "emissionCarTotal", layer: ({ innerHeight, bars }) => lineLayer({ innerHeight, bars, data: emissionCarTotal, color: "#00f" }) },
+      { key: "emissionBusPerDate", layer: ({ innerHeight, bars }) => lineLayer({ innerHeight, bars, data: emissionBusPerDate, color: "#f00" }) },
+      { key: "emissionsBusTotal", layer: ({ innerHeight, bars }) => lineLayer({ innerHeight, bars, data: emissionBusTotal, color: "#800" }) },
+      { key: "fuelCostCarPerDate", layer: ({ innerHeight, bars }) => lineLayer({ innerHeight, bars, data: fuelCostCarPerDate, color: "#ae00ff" }) },
+      { key: "fuelCostCarTotal", layer: ({ innerHeight, bars }) => lineLayer({ innerHeight, bars, data: fuelCostCarTotal, color: "#62008f" }) }
+    ]
+
+    const filteredLayers = dynamicLayers
+    .filter(({ key }) => filters[key]?.isChecked)
+    .map(({ layer }) => layer)
+
+  return [...baseLayers, ...filteredLayers]
+  }
     
   if (!rawData || rawData.length === 0) {
     return <div>No data available for {year}</div>
@@ -196,7 +214,8 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
         animate={true}
         motionConfig="stiff"
         onClick={getNivoBarSettings(viewMode).onClick}
-        layers={[
+        layers={(bars, innerHeight) => filterLayers({ innerHeight, bars })}
+          /*[
           "grid",
           "axes",
           "bars",
@@ -206,7 +225,7 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
           ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionBusTotal, color: "#800"}),
           ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: fuelCostCarPerDate, color: "#ae00ff"}),
           ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: fuelCostCarTotal, color: "#62008f"}),
-        ]}
+        ]}*/
       />
       
       {month &&
