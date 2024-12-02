@@ -1,4 +1,3 @@
-
 import { Duration } from "date-fns"
 import { BarDatum, ComputedBarDatum } from "@nivo/bar"
 import { LatLng } from "leaflet"

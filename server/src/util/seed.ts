@@ -26,11 +26,16 @@ async function seedTrips() {
       const day = Math.floor(Math.random() * 28) + 1 // Ensure valid day range (1-28)
       const year = 2024 - Math.floor(Math.random() * 2)
       const startHour = Math.floor(Math.random() * 24) // Random hour of the day
-      const duration = Math.floor(Math.random() * 3) + 1 // Random duration between 1 and 3 hours
+
+      const durationHours = Math.floor(Math.random() * 3) + 1 // Random hours (1 to 3 hours)
+      const durationMinutes = Math.floor(Math.random() * 60) // Random minutes (0 to 59)
 
       const startTime = new Date(year, month, day, startHour)
       const endTime = new Date(startTime)
-      endTime.setHours(startTime.getHours() + duration)
+
+      // Add both the random hours and minutes to the start time
+      endTime.setHours(startTime.getHours() + durationHours)
+      endTime.setMinutes(startTime.getMinutes() + durationMinutes)
 
       // Random trip distance between 5 and 50 km
       const tripDistance = Math.round(Math.random() * 45 + 5)

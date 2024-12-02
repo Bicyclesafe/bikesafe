@@ -51,6 +51,7 @@ describe('DistanceBarChart Component', () => {
     expect(bars.length).toBeGreaterThan(0)
   })
 
+
   it('renders nothing when no data is passed', () => {
     const { container } = render(<DistanceBarChart rawData={[]} year="2024" />)
   

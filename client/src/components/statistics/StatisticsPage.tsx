@@ -37,10 +37,16 @@ const StatisticsPage = () => {
         <div className={stylesStatistics['chart']}>
             <DistanceBarChart rawData={rawData} year={year} />
         </div>
-        <div className={stylesStatistics['latest-trips']}>
+        <div className={stylesStatistics['trip-container']}>
+          <div className={stylesStatistics['trip-container-title']}>
+            Latest trips
+          </div>
           <LatestTrips rawData={rawData} />
         </div>
-        <div className={stylesStatistics['summary']}>
+        <div className={stylesStatistics['summary-container']}>
+          <div className={stylesStatistics['summary-container-title']}>
+            Summary
+          </div>
           <SummaryStatistics rawData={rawData} year={year} />
         </div>
       </div>
