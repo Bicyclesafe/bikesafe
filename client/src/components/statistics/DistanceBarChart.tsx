@@ -1,12 +1,22 @@
 import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
-import { FC, useCallback, useEffect, useState } from "react"
-import { Trip } from "../../types"
+import { useCallback, useEffect, useState, FC } from "react"
+import { ChartData, LineLayerInfo, Trip } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
+import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "./constants"
+import LineLayer from "./LineLayer"
+import { createBarData, createPerDateData, createTotalData } from "./barChartHelper"
 
 const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year }) => {
-  const [transformedData, setTransformedData] = useState<BarDatum[]>([])
+  const [barData, setBarData] = useState<BarDatum[]>([])
+  const [emissionCarPerDate, setEmissionCarPerDate] = useState<BarDatum[]>([])
+  const [emissionCarTotal, setEmissionCarTotal] = useState<BarDatum[]>([])
+  const [emissionBusPerDate, setEmissionBusPerDate] = useState<BarDatum[]>([])
+  const [emissionBusTotal, setEmissionBusTotal] = useState<BarDatum[]>([])
+  const [fuelCostCarPerDate, setFuelCostCarPerDate] = useState<BarDatum[]>([])
+  const [fuelCostCarTotal, setFuelCostCarTotal] = useState<BarDatum[]>([])
   const [viewMode, setViewMode] = useState<"day" | "year">("year")
   const [month, setMonth] = useState<string | null>(null)
+  const [highestValue, setHighestValue] = useState<number>(500)
 
   const getNivoBarSettings = (mode: "day" | "year") => {
     if (mode === "year") {
@@ -27,76 +37,101 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
     }
   }
   
-  const transformDataToMonthly = useCallback((trips: Trip[]) => {
-    const filteredTrips = trips.filter(
-      (trip) => new Date(trip.startTime).getFullYear() === Number(year)
-    )
-    
+  const transformDataToMonthly = useCallback((data: ChartData[]) => {
     const monthlyData = Array.from({ length: 12 }, (_, month) => ({
       monthName: new Date(0, month).toLocaleString('default', { month: 'short' }),
-      distance: 0,
+      value: 0,
       monthNumber: month + 1
     }))
     
-    filteredTrips.forEach((trip: Trip) => {
-      const month = new Date(trip.startTime).getMonth()
-      monthlyData[month].distance += trip.tripDistance
+    data.forEach(({time, value}) => {
+      const month = new Date(time).getMonth()
+      monthlyData[month].value += value
+    })
+              
+    monthlyData.forEach((data) => {
+      data.value = parseFloat(data.value.toFixed(1))
     })
 
-    monthlyData.forEach((data) => {
-      data.distance = parseFloat(data.distance.toFixed(1))
-    })
-    
     return monthlyData
-  }, [year])
+  }, [])
   
-  const transformDataToDaily = useCallback((trips: Trip[]) => {
+  const transformDataToDaily = useCallback((data: ChartData[]) => {
     if (!month) {
       return []
     }
-
-    const filteredTrips = trips.filter(
-      (trip) => new Date(trip.startTime).getFullYear() === Number(year)
-    )
     
     const daysInMonth = getDaysInMonth(new Date(parseInt(year), parseInt(month) - 1))
     const dailyData = Array.from({ length: daysInMonth }, (_, day) => ({
       day: (day + 1).toString(),
-      distance: 0,
+      value: 0,
     }))
     
-    filteredTrips.forEach((trip: Trip) => {
-      const tripDate = trip.startTime
-      if (getMonth(tripDate) + 1 === Number(month)) {
-        const day = getDate(tripDate) - 1
-        dailyData[day].distance += trip.tripDistance
+    data.forEach(({time, value}) => {
+      if (getMonth(time) + 1 === Number(month)) {
+        const day = getDate(time) - 1
+        dailyData[day].value += value
       }
     })
 
     dailyData.forEach((data) => {
-      data.distance = parseFloat(data.distance.toFixed(1))
+      data.value = parseFloat(data.value.toFixed(1))
     })
     
     return dailyData
   }, [month, year])
+
+  const setData = useCallback((trips: Trip[], transformFunction: CallableFunction) => {
+    setBarData(transformFunction(createBarData(trips)))
+    setEmissionCarPerDate(transformFunction(createPerDateData(trips, emissionsCarPerKM)))
+    setEmissionCarTotal(createTotalData(transformFunction(createPerDateData(trips, emissionsCarPerKM))))
+    setEmissionBusPerDate(transformFunction(createPerDateData(trips, emissionsBusPerKM)))
+    setEmissionBusTotal(createTotalData(transformFunction(createPerDateData(trips, emissionsBusPerKM))))
+    setFuelCostCarPerDate(transformFunction(createPerDateData(trips, fuelCostCarPerKM)))
+    setFuelCostCarTotal(createTotalData(transformFunction(createPerDateData(trips, fuelCostCarPerKM))))
+  }, [])
   
   useEffect(() => {
+    const filteredTrips = rawData.filter(
+      (trip) => new Date(trip.startTime).getFullYear() === Number(year)
+    )
     if (viewMode === "year") {
-      setTransformedData(transformDataToMonthly(rawData))
+      setData(filteredTrips, transformDataToMonthly)
     } else if (viewMode === "day" && month) {
-      setTransformedData(transformDataToDaily(rawData))
+      setData(filteredTrips, transformDataToDaily)
     }
-  }, [rawData, viewMode, month, year, transformDataToDaily, transformDataToMonthly])
+  }, [month, transformDataToDaily, transformDataToMonthly, viewMode, year, setData, rawData])
 
+  useEffect(() => {
+    if (barData.length === 0 || emissionCarTotal.length === 0) return
+
+    const highestBar = Math.max(...barData.map(bar => Number(bar.value)))
+    const highestLinePoint = Number(emissionCarTotal[emissionCarTotal.length - 1].value)
+    setHighestValue(Math.max(highestBar, highestLinePoint))
+  }, [barData, emissionCarTotal])
+
+  const lineLayer = ({innerHeight, bars, data, color}: LineLayerInfo) => {
+    return (
+      <LineLayer
+        innerHeight={innerHeight}
+        bars={bars.map(barData => ({width: barData.width, x: barData.x}))}
+        data={data}
+        color={color}
+        viewMode={viewMode}
+        highestValue={highestValue} />
+    )
+  }
+    
   if (!rawData || rawData.length === 0) {
     return <div>No data available for {year}</div>
   }
 
   return (
+
     <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
       <ResponsiveBar
-        data={transformedData}
-        keys={['distance']}
+        data={barData}
+        keys={['value']}
         indexBy={getNivoBarSettings(viewMode).index}
         enableLabel={false}
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
@@ -104,7 +139,15 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
         colors={{ scheme: 'dark2' }}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisTop={null}
-        axisRight={null}
+        maxValue={highestValue}
+        axisRight={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: "Emissions (kg)",
+          legendPosition: 'middle',
+          legendOffset: 45,
+        }}
         axisBottom={{
           tickSize: 5,
           tickPadding: 5,
@@ -151,7 +194,19 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
         animate={true}
         motionConfig="stiff"
         onClick={getNivoBarSettings(viewMode).onClick}
+        layers={[
+          "grid",
+          "axes",
+          "bars",
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionCarPerDate, color: "#55f"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionCarTotal, color: "#00f"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionBusPerDate, color: "#f00"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionBusTotal, color: "#800"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: fuelCostCarPerDate, color: "#ae00ff"}),
+          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: fuelCostCarTotal, color: "#62008f"}),
+        ]}
       />
+      
       {month &&
         <button onClick={() => { setMonth(null); setViewMode("year") }}>
           Return to yearly view
