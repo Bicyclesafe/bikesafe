@@ -114,12 +114,9 @@ export interface LineLayerProps {
   highestValue: number
 }
 
-export interface LineLayerInfo extends LayersInfo {
+export interface LineLayerInfo{
   data: BarDatum[]
   color: string
-}
-
-export interface LayersInfo {
   innerHeight: number
   bars: readonly ComputedBarDatum<BarDatum>[]
 }
