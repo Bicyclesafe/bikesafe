@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import DistanceBarChart from "./DistanceBarChart"
-import stylesStatistics from "./StatisticsPage.module.css"
-import tripService from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
+import tripService from "../../services/tripService"
+import stylesStatistics from "./StatisticsPage.module.css"
 import LatestTrips from "./LatestTrips"
 import SummaryStatistics from "./SummaryStatistics"
 
@@ -11,7 +11,6 @@ const StatisticsPage = () => {
   const { user } = useAuth()
   const [rawData, setRawData] = useState<Trip[]>([])
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
-
 
   useEffect(() => {
     const fetchData = async () => {

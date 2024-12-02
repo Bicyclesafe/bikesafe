@@ -1,13 +1,15 @@
 import SeasonalDistance from "./SeasonalDistance"
 import stylesDashboard from "./Dashboard.module.css"
 import PersonalGoal from "./PersonalGoal"
+import TotalCommute from "./TotalCommute" 
 import PersonalGoalTracker from "./PersonalGoalTracker"
 import { BaseTrip } from "../../types"
-import { addTrip } from "../../services/tripService"
+import { addWorkTrip } from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
 import { useState } from "react"
 import DistanceOverview from "./DistanceOverview"
 import { NavLink } from "react-router-dom"
+import ManualTrips from "./ManualTrips"
 
 const Dashboard = () => {
   const [distance, setDistance] = useState<number>(0)
@@ -24,7 +26,7 @@ const Dashboard = () => {
       startTime: new Date(),
       endTime: new Date()
     }
-    const distance = await addTrip(token as string, trip)
+    const distance = await addWorkTrip(token as string, trip)
     setDistance(prevDistance => (prevDistance) + distance)  
   }
 
@@ -55,7 +57,14 @@ const Dashboard = () => {
             <PersonalGoalTracker yearlyDistance={distance}/>
           </div>
           <div className={stylesDashboard['side-area']}>
-            <div className={stylesDashboard['row']}>Row 1</div>
+            <div className={stylesDashboard['row']}>
+            <div className={stylesDashboard['row-item']}>
+                <div className={stylesDashboard['row-title']}>Daily cyclists</div>
+                <div className={stylesDashboard['row-content']}>
+                  <TotalCommute/>
+                </div>
+              </div>
+            </div>
             <div className={stylesDashboard['row']}>Row 2</div>
             <div className={stylesDashboard['row']}>Row 3</div>
           </div>
@@ -66,14 +75,13 @@ const Dashboard = () => {
             <DistanceOverview distance={distance} />
           </div>
           </NavLink>
-          <NavLink to="/">
-          <div className={stylesDashboard['item']}>
-            <PersonalGoal/>
+          <div id={stylesDashboard['manual']} className={stylesDashboard['item']}>
+            <ManualTrips distance={distance} setDistance={setDistance}/>
           </div>
-          </NavLink>
           <NavLink to="/commute">
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
+            
           </div>
           </NavLink>
         </div>

@@ -1,8 +1,7 @@
 .login-container {
-  background-color: lightblue;
+  background-color: #f4f7fc;
   display: flex;
   justify-content: center;
-  padding: 0 1.5rem;
 }
 
 .content-container {
@@ -40,28 +39,30 @@
 
 /* FORM */
 
-
-
 .form header {
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: bold;
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 1.25rem;
 }
 
 .form input {
-  height: 60px;
+  margin-top: 0.5rem;
   width: 100%;
-  padding: 0 15px;
-  font-size: 17px;
-  margin-bottom: 1.3rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  outline: none;
+  padding: 0.75rem;
+  border: 1px solid #c6c4c4;
+  border-radius: 4px;
 }
 
-.form input:focus {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+.form {
+  max-width: 25rem;
+  width: 100%;
+  margin: 0 auto;
+}
+.inputGroup {
+  margin-bottom: 1.5rem;
+  position: relative;
+  min-height: 3.5rem;
 }
 
 .form a {
@@ -75,25 +76,18 @@
 }
 
 .button {
-  height: 60px;
   width: 100%;
-  padding: 0 15px;
-  font-size: 17px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: var(--color-blue);
-  color: #fff;
-  font-weight: 500;
-  letter-spacing: 1px;
-  margin-top: 1.7rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  transition: 0.4s;
-  outline: none;
 }
 
 .button:hover {
-  background: #006653;
-  /* Hover background color */
+  background-color: #0056b3;
 }
 
 .form input.button {
@@ -107,86 +101,87 @@
   transition: 0.4s;
 }
 
-.form input.button:hover {
-  background: #006653;
+.signup {
+  text-align: center;
+  color: grey;
+  padding-top: 1rem;
 }
 
-.signup {
-  font-size: 17px;
-  text-align: center;
+.signup a {
+  font-weight: 500;
+  padding-left: 0.25rem;
 }
 
 .signup label {
   color: var(--color-blue);
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .signup label:hover {
   text-decoration: underline;
 }
 
-.error-notification {
-  position: absolute;
-  top: -60px;
-  color: red;
-  font-size: 20px;
-  background-color: rgb(252, 233, 237);
-  border: solid 1px red;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-  width: 100%;
-}
-
-.error-wrapper {
-  position: relative;
-  /* Allows .error-notification to be positioned within this container */
-  height: 0;
-  /* Prevents extra space from being added */
-  overflow: visible;
-  /* Allows the error message to extend out if needed */
-}
-
 .google-button {
   width: 100%;
-  margin: 1rem 0;
-  padding: 0 15px;
-  height: 60px;
-  font-size: 17px;
-  border: 2px solid blue;
-  border-radius: 6px;
-  background: white;
-  color: blue;
-  font-weight: 500;
-  letter-spacing: 1px;
-  margin-top: 1.7rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  color: #232836;
+  border: 1px solid #747775;
+  border-radius: 4px;
   cursor: pointer;
-  transition: 0.4s;
-  outline: none;
-}
-
-.google-button:hover {
-  background: darkblue;
-  color: white;
-  /* Hover background color */
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .divider {
-  font-size: 17px;
   align-items: center;
   display: flex;
-  margin-top: 1.7rem;
+  margin: 1.25rem 0;
+  color: grey;
 }
 
 .divider::before,
 .divider::after {
   flex: 1;
   content: "";
-  padding: 1px;
-  background-color: black;
+  padding: 0.25px;
+  background-color: grey;
   margin: 5px;
 }
 
 img {
   height: 100%;
+}
+
+.errorMessage {
+  font-size: 0.875rem;
+  color: var(--color-red);
+  margin-top: 0.5rem;
+  position: absolute;
+  left: 0;
+  bottom: -1.25rem; 
+}
+
+.errorInput {
+  border: 1px solid var(--color-red) !important;
+}
+
+input:focus {
+  border: 1px solid grey;
+  outline: none;
+}
+
+.errorGeneral {
+  color: var(--color-red);
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .column-right {
+    display: none;
+  }
 }

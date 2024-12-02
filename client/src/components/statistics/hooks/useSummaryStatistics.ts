@@ -52,7 +52,13 @@ const useSummaryStatistics = ( rawData: Trip[], year: string ): StatsDataProps |
     return { hours, minutes }
   })()
   
-  const yearlyAverageSpeed = yearlyTotalDistance / yearlyTotalDuration.hours
+  const yearlyAverageSpeed = (() => {
+    const totalHours = yearlyTotalDuration.hours + yearlyTotalDuration.minutes / 60
+
+    return totalHours === 0 
+    ? 0
+    : yearlyTotalDistance / totalHours
+  })()
 
   const longestTripDuration = (() => {
     let maxDuration = 0

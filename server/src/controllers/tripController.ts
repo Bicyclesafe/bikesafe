@@ -93,7 +93,7 @@ export const getTripsBetweenDates = async (req: Request<null, null, {uid: string
   }
 }
 
-export const addTrip = async (req: Request<null, null, {uid: string, startTime: Date, endTime: Date}>, res: Response, next: NextFunction) => {
+export const addWorkTrip = async (req: Request<null, null, {uid: string, startTime: Date, endTime: Date}>, res: Response, next: NextFunction) => {
   try {
     const { startTime, endTime, uid } = req.body
     const user: User | null = await User.findOne({ where: { uid }})
@@ -111,10 +111,48 @@ export const addTrip = async (req: Request<null, null, {uid: string, startTime: 
   }
 }
 
+export const addTrip = async (req: Request<null, null, {uid: string, tripDistance: number, startTime: Date, endTime: Date}>, res: Response, next: NextFunction) => {
+  try {
+    const { tripDistance, startTime, endTime, uid } = req.body
+    const user: User | null = await User.findOne({ where: { uid }})
+    await Trip.create({ 
+      userId: user?.id,
+      startTime,
+      endTime,
+      tripDistance: tripDistance
+    })
+    
+    res.status(201).json(tripDistance)
+  } catch(err) {
+    next(err)
+  }
+}
+
+export const getTripsForAllUsers = async (req: Request<null, null, null>, res: Response, next: NextFunction) => {
+  try {
+    const { startTime, endTime } = req.query
+
+    const trips = await Trip.count({
+      distinct: true,
+      col: 'userId',
+      where: {
+        startTime: {
+          [Op.between]: [startTime, endTime]
+        }
+      }
+    })
+    res.status(200).json(trips)
+  } catch(err) {
+    next(err)
+  }
+}
+
 export default {
   getTripsForUser,
   getTotalDistanceForUser,
   getTripsBetweenDates,
   addTrip,
-  getSumOfTripsBetweenDates
+  addWorkTrip,
+  getSumOfTripsBetweenDates,
+  getTripsForAllUsers
 }

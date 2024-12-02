@@ -37,6 +37,7 @@ const Statistic: FC<StatisticType> = ({ title, value, unit, type }) => {
 }
 
 const SummaryStatistics: FC<{ rawData: Trip[], year: string }> = ({ rawData, year })=> {
+
   const statsData: StatsDataProps | null = useSummaryStatistics(rawData, year)
   const stats: StatisticType[] | null = statistics(statsData)
 
@@ -45,10 +46,17 @@ const SummaryStatistics: FC<{ rawData: Trip[], year: string }> = ({ rawData, yea
   }
 
   return (
-    <div className={stylesSummary["summary-box"]}>
-      {stats.map((stat, index) => (
-        <Statistic key={index} {...stat} />
-      ))}
+    <div className={stylesSummary["summary-container"]}>
+      <div className={stylesSummary["summary-title-container"]}>
+        <div className={stylesSummary["summary-title"]}>
+          Summary
+        </div>
+      </div>
+      <div className={stylesSummary["summary"]}>
+        {stats.map((stat, index) => (
+          <Statistic key={index} {...stat} />
+        ))}
+      </div>
     </div>
   )
 }
