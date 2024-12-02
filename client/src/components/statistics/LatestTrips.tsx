@@ -68,11 +68,14 @@ const LatestTrips : FC<{ rawData: Trip[]}> = ({ rawData })=> {
   })
 
   return(
-      <>
-        <div className={stylesLatestTrips['latest-trips-container']}>
+    <div className={stylesLatestTrips['latest-trips-container']}>
+        <div className={stylesLatestTrips['latest-trips-title']}>
+          Latest trips
+        </div>
+        <div className={stylesLatestTrips['latest-trips']}>
           {showLatestTrips}
         </div>
-      </>
+      </div>
   )
 }
 

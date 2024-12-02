@@ -1,4 +1,10 @@
 .latest-trips-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.latest-trips {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 20px;
@@ -48,4 +54,11 @@
   font-weight: bold;
   color: rgb(119, 119, 119);
   margin-left: 3px;
+}
+
+.latest-trips-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 10px;
 }
