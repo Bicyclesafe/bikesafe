@@ -4,6 +4,7 @@ import { LatLng } from "leaflet"
 import { sendTheftReport } from "../../services/theftService"
 import styles from './ReportModal.module.css'
 import appStyles from '../../App.module.css'
+import { useAuth } from "../../hooks/useAuth"
 
 const ReportModal: FC<ReportModalProps> = ({
   theftPosition,
@@ -13,9 +14,11 @@ const ReportModal: FC<ReportModalProps> = ({
 }) => {
   const [bikeModel, setBikeModel] = useState("")
   const [description, setDescription] = useState("")
+  const {user} = useAuth()
 
   const handleReportConfirm = async (position: LatLng) => {
-    const newMarker = await sendTheftReport(position)
+    const token = await user?.getIdToken()
+    const newMarker = await sendTheftReport(token as string, position)
     setBikeThefts(bikeThefts.concat(newMarker))
     setTheftPosition(null)
   }
