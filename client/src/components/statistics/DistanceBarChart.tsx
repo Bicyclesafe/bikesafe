@@ -127,7 +127,8 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
   }
 
   return (
-    <div style={{ position: "relative", height: '600px' }}>
+
+    <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
       <ResponsiveBar
         data={barData}
         keys={['value']}
