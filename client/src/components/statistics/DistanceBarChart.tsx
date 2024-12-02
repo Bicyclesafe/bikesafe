@@ -37,6 +37,7 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
     }
   }
   
+
   const transformDataToMonthly = useCallback((data: ChartData[]) => {
     const monthlyData = Array.from({ length: 12 }, (_, month) => ({
       monthName: new Date(0, month).toLocaleString('default', { month: 'short' }),
@@ -55,6 +56,7 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
 
     return monthlyData
   }, [])
+
   
   const transformDataToDaily = useCallback((data: ChartData[]) => {
     if (!month) {

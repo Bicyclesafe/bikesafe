@@ -37,7 +37,7 @@ const Statistic: FC<StatisticType> = ({ title, value, unit, type }) => {
 }
 
 const SummaryStatistics: FC<{ rawData: Trip[], year: string }> = ({ rawData, year })=> {
-  
+
   const statsData: StatsDataProps | null = useSummaryStatistics(rawData, year)
   const stats: StatisticType[] | null = statistics(statsData)
 
