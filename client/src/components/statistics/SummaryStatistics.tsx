@@ -25,7 +25,7 @@ const Statistic: FC<StatisticType> = ({ title, value, unit, type }) => {
       {/* Contribution text for the icons. Not in use yet. */}
       {/* <a href="https://iconscout.com/icons/bicycle" class="text-underline font-size-sm" target="_blank">Bicycle</a> by <a href="https://iconscout.com/contributors/font-awesome" class="text-underline font-size-sm" target="_blank">Font Awesome</a> */}
       {/* <a href="https://iconscout.com/icons/timer" class="text-underline font-size-sm" target="_blank">Timer</a> by <a href="https://iconscout.com/contributors/taras-shypka" class="text-underline font-size-sm" target="_blank">Taras Shypka</a> */}
-      <img src={typeToIcon[type]}/>
+      <img className={stylesSummary['img']} src={typeToIcon[type]}/>
       <div className={stylesSummary['statistic-content']}>
         <div className={stylesSummary['title']}>{title}</div>
         <div className={stylesSummary['value-wrapper']}>

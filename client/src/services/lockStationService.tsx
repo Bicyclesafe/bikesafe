@@ -2,9 +2,12 @@ import axios from "axios"
 import { apiUrl } from "../util/config"
 import { LatLng } from "leaflet"
 
-export const getAllLockStations = async () => {
+export const getAllLockStations = async (token: string) => {
   try {
-    const response = await axios.get(`${apiUrl}/api/lock_stations`)
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+    const response = await axios.get(`${apiUrl}/api/lock_stations`, authHeader)
     return response.data
   } catch(err) {
     console.error("Error in adding lock station", err) 

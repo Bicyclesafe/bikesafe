@@ -10,6 +10,11 @@ jest.mock("../services/theftService", () => ({
 jest.mock("../components/report/ReportModal.module.css", () => ({}))
 jest.mock("../App.module.css", () => ({}))
 
+jest.mock("../hooks/useAuth", () => ({
+  useAuth: () => ({ user: { uid: "testUserId", getIdToken: jest.fn() } }),
+}))
+
+
 describe("ReportModal component", () => {
   test("handleReportConfirm is called when confirm button clicked", async () => {
     const setTheftPositionMock = jest.fn()

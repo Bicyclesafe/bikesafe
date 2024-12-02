@@ -7,7 +7,6 @@ import styles from '../../App.module.css'
 import stylesHome from './HomePage.module.css'
 import { LatLng } from "leaflet"
 import ReportModal from "../report/ReportModal"
-import { useAuth } from "../../hooks/useAuth"
 
 const initialFilters: Filters = {
   bikeTheft: {
@@ -25,7 +24,6 @@ const HomePage = () => {
   const [filters, setFilters] = useState<Filters>(initialFilters)
   const [theftPosition, setTheftPosition] = useState<LatLng | null>(null)
   const [bikeThefts, setBikeThefts] = useState<BikeTheft[]>([])
-  const { user } = useAuth()
   
   const reportHandler = () => {
     setReportMode(!reportMode)
@@ -54,7 +52,6 @@ const HomePage = () => {
           <button className={`${styles['base-button']}`} id={styles['theft-button']} onClick={reportHandler}>{reportMode ? "Cancel" : "Report theft"}</button>
           <Notification message={"Place the pin on the map where the theft happened"} visible={reportMode}/>
           <ReportModal theftPosition={theftPosition} setTheftPosition={setTheftPosition} bikeThefts={bikeThefts} setBikeThefts={setBikeThefts} />
-          {user && <p>You are logged in as {user.email}</p>}
       </div>
       <MapComponent
           reportMode={reportMode}
