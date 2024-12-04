@@ -77,5 +77,13 @@
 .activity-change {
   font-family: 'Nunito', sans-serif;
   font-size: 1.1rem;
+  color: inherit;
+}
+
+.activity-change.positive {
   color: green;
+}
+
+.activity-change.negative {
+  color: red;
 }
