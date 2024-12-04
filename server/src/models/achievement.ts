@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, DataType } from 'sequelize-typescript'
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique } from 'sequelize-typescript'
 
 @Table({
   tableName: 'achievements',
@@ -15,6 +15,15 @@ export class Achievement extends Model {
   @Column
   name!: string
 
-  @Column(DataType.ARRAY(DataType.INTEGER))
-  requirements!: number[]
+  @Column
+  description!: string
+
+  @Column
+  requirement!: number
+
+  @Column
+  groupId!: number
+
+  @Column
+  level!: number
 }

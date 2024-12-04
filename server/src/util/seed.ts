@@ -2,8 +2,11 @@
 import { Trip } from '../models/trip' // Adjust the path as needed
 import { User } from '../models/user'
 // import { User } from '../models/user'; // Ensure this is correctly imported if needed
+import * as fs from "fs"
+import * as path from "path"
+import { AchievementType } from '../types'
 
-async function seedTrips() {
+export async function seedTrips() {
   const userId = 1 // Setting userId to 1 for all trips
   const user: User | null = await User.findOne({ where: { id: userId }})
   if (!user) {
@@ -55,4 +58,14 @@ async function seedTrips() {
   console.log('Seeding completed!')
 }
 
-export default seedTrips
+export const createAchievements =  () => {
+  const achievementPath = path.join(__dirname, "../../data/achievements.json")
+  const achievementData = JSON.parse(fs.readFileSync(achievementPath, "utf8")) as AchievementType[]
+  console.log(achievementData)
+
+  /*await Achievement.bulkCreate(achievementData, {
+    updateOnDuplicate: ["name", "description", "level", "requirement", "groupId"]
+  })*/
+}
+
+export default { seedTrips, createAchievements }
