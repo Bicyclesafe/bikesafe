@@ -1,8 +1,8 @@
 import { FC } from "react"
-import { PinFilterOptionProps } from "../../types"
+import { FilterOptionProps } from "../../types"
 //import styles from './PinFilter.module.css'
 
-export const PinFilterOption: FC<PinFilterOptionProps> = ({
+export const PinFilterOption: FC<FilterOptionProps> = ({
   name,
   isChecked,
   onChange,

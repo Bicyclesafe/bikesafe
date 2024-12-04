@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import DistanceBarChart from "./DistanceBarChart"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip, Filters } from "../../types"
@@ -11,7 +11,7 @@ import StatisticFilters from "./StatisticsFilters"
 const initialFilters: Filters = {
     emissionCarPerDate: {
       label: 'Car emissions saved (Daily)',
-      isChecked: false,
+      isChecked: true,
     },
     emissionCarTotal: {
       label: 'Car emissions saved (Yearly)',
@@ -19,7 +19,7 @@ const initialFilters: Filters = {
     },
     emissionBusPerDate: {
         label: 'Bus emissions saved (Daily)',
-        isChecked: false,
+        isChecked: true,
     },
     emissionsBusTotal: {
         label: 'Bus emissions saved (Yearly)',
@@ -27,7 +27,7 @@ const initialFilters: Filters = {
     },
     fuelCostCarPerDate: {
         label: 'Fuel cost saved (Daily)',
-        isChecked: false,
+        isChecked: true,
     },
     fuelCostCarTotal: {
         label: 'Fuel cost saved (Yearly)',
@@ -40,7 +40,7 @@ const StatisticsPage = () => {
   const [rawData, setRawData] = useState<Trip[]>([])
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
   const [filters, setFilters] = useState<Filters>(initialFilters)
-  const [showFilters, setShowFilters] = useState<boolean>(false)
+  const [showFilters, setShowFilters] = useState<boolean>(true)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -48,6 +48,17 @@ const StatisticsPage = () => {
       setShowFilters(false)
     }
   }
+
+  useEffect(() => {
+    if (showFilters) {
+      document.addEventListener("mousedown", handleClickOutside)
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [showFilters])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,31 +96,18 @@ const StatisticsPage = () => {
       <div className={stylesStatistics['statistics-content']}>
         <div className={stylesStatistics['chart']}>
           <DistanceBarChart rawData={rawData} year={year} filters={filters} />
-          <button
-            className={stylesStatistics['filter-button']}
-            onClick={() => setShowFilters(!showFilters)}
-          >
-            <svg
-              className={stylesStatistics['filter-icon']}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M3 5h18v2H3V5zm3 6h12v2H6v-2zm3 6h6v2H9v-2z" />
-            </svg>
-          </button>
-          {showFilters && (
-            <div ref={dropdownRef} className={stylesStatistics['dropdown-menu']}>
-              <StatisticFilters filters={filters} setFilters={setFilters} />
-            </div>
-          )}
         </div>
+        <div className={stylesStatistics['filter-and-trips-containers']}>
+          <div>
+            <StatisticFilters filters={filters} setFilters={setFilters} showFilters={showFilters} setShowFilters={setShowFilters}/>
+          </div>
         <div className={stylesStatistics['trip-container']}>
-          <LatestTrips rawData={rawData} />
+          <LatestTrips rawData={rawData} showFilters={showFilters}/>
         </div>
-        <div className={stylesStatistics['summary-container']}>
-          <SummaryStatistics rawData={rawData} year={year} />
         </div>
+          <div className={stylesStatistics['summary-container']}>
+            <SummaryStatistics rawData={rawData} year={year} />
+          </div>
       </div>
     </div>
   )
