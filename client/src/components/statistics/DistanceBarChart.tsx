@@ -106,11 +106,23 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string, filters: Filters }> 
 
   useEffect(() => {
     if (barData.length === 0 || emissionCarTotal.length === 0) return
-
-    const highestBar = Math.max(...barData.map(bar => Number(bar.value)))
-    const highestLinePoint = Number(emissionCarTotal[emissionCarTotal.length - 1].value)
+  
+    const activeDataTypes = [
+      emissionCarPerDate, emissionCarTotal, emissionBusPerDate,
+      emissionBusTotal, fuelCostCarPerDate, fuelCostCarTotal
+    ].filter((_, i) =>
+      filters[Object.keys(filters)[i]]?.isChecked
+    )
+  
+    const flattenedData = activeDataTypes.reduce<BarDatum[]>((acc, dataset) => acc.concat(dataset), [])
+  
+    const highestBar = Math.max(...barData.map((bar) => Number(bar.value)))
+    const highestLinePoint = Math.max(...flattenedData.map((data) => Number(data.value)))
+  
     setHighestValue(Math.max(highestBar, highestLinePoint))
-  }, [barData, emissionCarTotal])
+  }, [barData, emissionCarTotal, emissionBusTotal, fuelCostCarTotal, filters, emissionCarPerDate, emissionBusPerDate, fuelCostCarPerDate])
+  
+  
 
   const lineLayer = ({innerHeight, bars, data, color}: LineLayerInfo) => {
     return (
