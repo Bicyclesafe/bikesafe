@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { Filters } from '../../types'
 import { PinFilter as Filter } from "../filter/PinFilter"
+import styles from './StatisticsFilters.module.css'
 
 const StatisticFilters: FC<{ filters: Filters, setFilters:  React.Dispatch<React.SetStateAction<Filters>> }> = ({ filters, setFilters })=> {
 
@@ -16,7 +17,7 @@ const StatisticFilters: FC<{ filters: Filters, setFilters:  React.Dispatch<React
       }
 
     return (
-        <>
+        <div className={styles['filter-box']}>
         <div>
             <h2>Filters</h2>
         </div>
@@ -24,7 +25,7 @@ const StatisticFilters: FC<{ filters: Filters, setFilters:  React.Dispatch<React
           filters={filters}
           handleFilterChange={handleFilterChange}
           />
-        </>
+        </div>
     )
 }
 
