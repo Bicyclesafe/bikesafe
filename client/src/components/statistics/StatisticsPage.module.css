@@ -80,14 +80,43 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-  }
-  
-  .filter-box {
+}
+
+.filter-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #007bff;
+    color: white;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-button:hover {
+    background-color: #0056b3;
+}
+
+.filter-icon {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+  
+.dropdown-menu {
+    position: absolute;
+    top: 40px;
+    right: 10px;
     background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 10px;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
-  }
+    z-index: 100;
+}
