@@ -153,3 +153,8 @@ export interface Statistic {
   unit: string
   type: "distance" | "duration" | "impact"
 }
+
+export interface Company {
+  id: number
+  name: string
+}
