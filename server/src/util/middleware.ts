@@ -8,7 +8,7 @@ export const errorHandler = (err: Error, _req: Request, res: Response, _next: Ne
   res.status(500).send({ errors: [{ message: "Something went wrong" }] })
 }
 
-export const tokenVerification = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
+export const tokenVerification = async (req: Request<{ year: string }, null, {uid: string}>, res: Response, next: NextFunction) => {
   try {
     const token = req.get("Authorization")?.split(" ")[1]
     if (!token) {

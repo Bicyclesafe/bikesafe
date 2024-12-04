@@ -21,9 +21,6 @@ export const getCompanyStatistics = async (year: string, token: string) => {
 
     const response = await axios.get(`${apiUrl}/api/companies/${year}`, {
       ...authHeader,
-      params: {
-        year,
-      },
     })
 
     return response.data

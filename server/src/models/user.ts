@@ -1,5 +1,6 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, ForeignKey, BelongsTo } from 'sequelize-typescript'
+import { Table, Column, Model, PrimaryKey, AutoIncrement, Unique, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript'
 import { Company } from './company'
+import { Trip } from './trip'
 
 @Table({
   tableName: 'users',
@@ -25,4 +26,7 @@ export class User extends Model {
 
   @BelongsTo(() => Company)
   company!: Company
+
+  @HasMany(() => Trip)
+  trips!: Trip[]
 }

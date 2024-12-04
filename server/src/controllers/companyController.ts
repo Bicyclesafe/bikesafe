@@ -28,14 +28,18 @@ export const getCompanyStatistics = async (req: Request<{ year: string }, null, 
     include: [{ model: User, attributes: ['id'] }],
   })
 
+  if (!year) {
+    return res.status(400).json({ error: "Year is required (controller: companyController, getCompanyStatistics" })
+  }
+
   if (!company) {
-    throw new Error("Company not found (controller: companyController, getCompanyStatistics")
+    return res.status(400).json({ error: "Company not found (controller: companyController, getCompanyStatistics" })
   }
 
   const plainCompany = company.get({ plain: true }) as CompanyType
   const employeeIds = plainCompany.users.map((user) => user.id)
 
-  const { current, previous, changes } = await getStatisticsForYear(employeeIds, year)
+  const { current, changes } = await getStatisticsForYear(employeeIds, year)
 
   const statistics = {
     company: {
@@ -43,11 +47,10 @@ export const getCompanyStatistics = async (req: Request<{ year: string }, null, 
       name: company.name,
     },
     current,
-    previous,
     changes,
   }
 
-  res.status(200).json(statistics)
+  return res.status(200).json(statistics)
 }
 
 export default {

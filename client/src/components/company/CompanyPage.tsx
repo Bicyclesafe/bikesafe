@@ -13,9 +13,12 @@ interface CompanyStatistics {
   }
   current: {
     totalDistance: number
+    activeCyclists: number
+    inactiveCyclists: number
   }
   changes: {
     distanceChange: number
+    activeCyclistsChange: number
   }
 }
 
@@ -32,7 +35,7 @@ const CompanyPage = () => {
         try {
           const token = await user.getIdToken(true)
           const statisticsResponse = await companyService.getCompanyStatistics(year, token as string)
-          console.log(statisticsResponse)
+          console.log("statisticsResponse: ", statisticsResponse)
           setStatistics(statisticsResponse)
         } catch (error) {
           console.error('Error fetching company (Component: CompanyPage)', error)
@@ -51,14 +54,34 @@ const CompanyPage = () => {
       return <></>
     }
     const isPositive = value >= 0
+
+    if (isPositive) {
+      return (
+        <span className={`${stylesCompany['activity-change']} ${stylesCompany['positive']}`}>
+          +{value.toFixed(1)}%
+        </span>
+      )
+    }
   
     return (
-      <span className={
-        `${stylesCompany['activity-change']} ${isPositive
-          ? stylesCompany['positive']
-          : stylesCompany['negative']}`
-      }>
-        {value.toFixed(1)}%
+      <span className={`${stylesCompany['activity-change']} ${stylesCompany['negative']}`}>
+        -{Math.abs(Number(value.toFixed(1)))}%
+      </span>
+    )
+  }
+
+  const renderActiveCyclists = () => {
+    if (!statistics) {
+      return <span>0</span>
+    }
+
+    const totalCyclists = statistics.current.activeCyclists + statistics.current.inactiveCyclists
+    const activePercentage = (statistics.current.activeCyclists / totalCyclists) * 100
+    
+    return (
+      <span className={stylesCompany['activity-value']}>
+        {statistics.current.activeCyclists}
+        <span className={stylesCompany['unit']}>({activePercentage.toFixed(1)}%)</span>
       </span>
     )
   }
@@ -77,17 +100,23 @@ const CompanyPage = () => {
         <div className={stylesCompany['company-statistics']}>
           <div className={stylesCompany['activity-left']}>
             <div className={stylesCompany['activity-title']}>Total Distance Cycled</div>
-            <div className={stylesCompany['activity-value']}>{statistics.current.totalDistance}km</div>
+            <div className={stylesCompany['activity-value']}>
+              {statistics.current.totalDistance}
+              <span className={stylesCompany['unit']}>km</span>
+            </div>
             <div className={stylesCompany['activity-change']}>{renderChange(statistics.changes.distanceChange)}</div>
           </div>
           <div className={stylesCompany['activity-middle']}>
             <div className={stylesCompany['activity-title']}>Active cyclists</div>
-            <div className={stylesCompany['activity-value']}>69%</div>
-            <div className={stylesCompany['activity-change']}>+2%</div>
+            <div className={stylesCompany['activity-value']}>{renderActiveCyclists()}</div>
+            <div className={stylesCompany['activity-change']}>{renderChange(statistics.changes.activeCyclistsChange)}</div>
           </div>
           <div className={stylesCompany['activity-right']}>
             <div className={stylesCompany['activity-title']}>Total CO2 saved</div>
-            <div className={stylesCompany['activity-value']}>900kg</div>
+            <div className={stylesCompany['activity-value']}>
+              900
+              <span className={stylesCompany['unit']}>kg</span>
+            </div>
             <div className={stylesCompany['activity-change']}>+15%</div>
           </div>
           <div className={stylesCompany['pie-chart']}>

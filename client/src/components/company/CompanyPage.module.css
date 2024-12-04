@@ -60,7 +60,18 @@
   border-radius: 10px;
   min-height: 200px;
   gap: 5px;
-  border-top: 10px solid rgb(63, 150, 124);
+}
+
+.activity-left {
+  border-top: 10px solid #E09F1F;
+}
+
+.activity-middle {
+  border-top: 10px solid #d08df1;
+}
+
+.activity-right {
+  border-top: 10px solid #1FE09F;
 }
 
 .activity-title {
@@ -86,4 +97,12 @@
 
 .activity-change.negative {
   color: red;
+}
+
+.unit {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(119, 119, 119);
+  margin-left: 3px;
 }

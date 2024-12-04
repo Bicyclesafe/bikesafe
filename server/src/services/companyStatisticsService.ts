@@ -1,7 +1,8 @@
 import { Op } from 'sequelize'
 import { Trip } from '../models/trip'
+import { User } from '../models/user'
 
-export const getTotalDistance = async (employeeIds: number[], startTime: string, endTime: string) => {
+const getTotalDistance = async (employeeIds: number[], startTime: string, endTime: string) => {
   return await Trip.sum('trip_distance', {
     where: {
       user_id: employeeIds,
@@ -11,18 +12,45 @@ export const getTotalDistance = async (employeeIds: number[], startTime: string,
   })
 }
 
-export const getTotalTrips = async (employeeIds: number[], year: string) => {
-  return await Trip.count({
-    where: {
-      user_id: employeeIds,
-      startTime: { [Op.gte]: `${year}-01-01T00:00:00.000Z` },
-      endTime: { [Op.lte]: `${year}-12-31T23:59:59.999Z` },
-    },
-  })
+const getActiveCyclistsInRange = async (employeeIds: number[], startTime: string, endTime: string) => {
+  const [activeCyclists, inactiveCyclists] = await Promise.all([
+    User.findAll({
+      include: [{
+        model: Trip,
+        where: {
+          userId: employeeIds,
+          startTime: { [Op.gte]: startTime },
+          endTime: { [Op.lte]: endTime },
+        },
+        attributes: [],
+      }]
+    }),
+    User.findAll({
+      include: [{
+        model: Trip,
+        required: false,
+        attributes: [],
+        where: {
+          userId: employeeIds,
+          startTime: { [Op.gte]: startTime },
+          endTime: { [Op.lte]: endTime },
+        }
+      }],
+      where: {
+        id: employeeIds,
+        '$trips.id$': null,
+      },
+    })
+  ])
+
+  const activeCyclistCount = activeCyclists.length
+  const inactiveCyclistCount = inactiveCyclists.length
+
+  return { activeCyclistCount, inactiveCyclistCount }
 }
 
-export const calculatePercentageChange = (current: number, previous: number) => {
-  if (previous === 0) return current > 0 ? 100 : 0
+const calculatePercentageChange = (current: number, previous: number) => {
+  if (previous === 0) return 0
   return ((current - previous) / previous) * 100
 }
 
@@ -44,29 +72,41 @@ const getDateRangeForYear = (year: string, isCurrentYear: boolean) => {
 }
 
 export const getStatisticsForYear = async (employeeIds: number[], year: string) => {
+  if (employeeIds.length === 0) {
+    return {
+      current: { totalDistance: 0, activeCyclists: 0, inactiveCyclists: 0 },
+      changes: { distanceChange: 0, activeCyclistsChange: 0 }
+    }
+  }
+
   const currentDate = new Date()
   const currentYear = currentDate.getFullYear().toString()
-  
   const isCurrentYear = year === currentYear
 
-  const { startTime: currentStartDate, endTime: currentEndDate } = getDateRangeForYear(year, isCurrentYear)
-  const previousYear = (Number(currentYear) - 1).toString()
-  const { startTime: previousStartDate, endTime: previousEndDate } = getDateRangeForYear(previousYear, isCurrentYear)
+  const { current, previous } = {
+    current: getDateRangeForYear(year, isCurrentYear),
+    previous: getDateRangeForYear((parseInt(year, 10) - 1).toString(), false)
+  }
   
-  const currentTotalDistance = await getTotalDistance(employeeIds, currentStartDate, currentEndDate)
-  const previousTotalDistance = await getTotalDistance(employeeIds, previousStartDate, previousEndDate)
+  const [currentDistances, previousDistances, currentStats, previousStats] = await Promise.all([
+    getTotalDistance(employeeIds, current.startTime, current.endTime),
+    getTotalDistance(employeeIds, previous.startTime, previous.endTime),
+    getActiveCyclistsInRange(employeeIds, current.startTime, current.endTime),
+    getActiveCyclistsInRange(employeeIds, previous.startTime, previous.endTime),
+  ])
 
-  const distanceChange = calculatePercentageChange(currentTotalDistance, previousTotalDistance)
+  const distanceChange = calculatePercentageChange(currentDistances, previousDistances)
+  const activeCyclistsChange = calculatePercentageChange(currentStats.activeCyclistCount, previousStats.activeCyclistCount)
 
   return {
     current: {
-      totalDistance: currentTotalDistance,
-    },
-    previous: {
-      totalDistance: previousTotalDistance,
+      totalDistance: currentDistances,
+      activeCyclists: currentStats.activeCyclistCount,
+      inactiveCyclists: currentStats.inactiveCyclistCount,
     },
     changes: {
       distanceChange,
+      activeCyclistsChange,
     }
   }
 }
