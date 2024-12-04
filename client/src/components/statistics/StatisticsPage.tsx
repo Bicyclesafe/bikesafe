@@ -75,6 +75,18 @@ const StatisticsPage = () => {
     fetchData()
   }, [user])
 
+  useEffect(() => {
+    if (showFilters) {
+      document.addEventListener("mousedown", handleClickOutside)
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [showFilters])
+
   return (
     <div className={stylesStatistics['statistics-container']}>
       <select onChange={(e) => setYear(e.target.value)}>
@@ -83,7 +95,7 @@ const StatisticsPage = () => {
       </select>
       <div className={stylesStatistics['statistics-content']}>
         <div className={stylesStatistics['chart']}>
-            <DistanceBarChart rawData={rawData} year={year} filters={filters}/>
+          <DistanceBarChart rawData={rawData} year={year} filters={filters} />
         </div>
         <div className={stylesStatistics['filter-and-trips-containers']}>
           <div>

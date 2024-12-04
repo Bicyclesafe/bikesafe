@@ -10,7 +10,7 @@
     grid-template-areas:
         "chart"
         "summary"
-        "filter-trips";
+        "trips";
     gap: 20px;
 }
 
@@ -19,7 +19,7 @@
       grid-template-columns: 2fr 1fr;
       grid-template-areas:
         "chart    chart"
-        "summary  filter-trips";
+        "summary  trips";
     }
 }
 
@@ -27,7 +27,7 @@
     .statistics-content {
       grid-template-columns: 2fr 1fr;
       grid-template-areas:
-        "chart    filter-trips"
+        "chart    trips"
         "summary  summary";
     }
 }
@@ -61,6 +61,7 @@
 }
 
 .trip-container {
+    grid-area: trips;
     background-color: #2c9c7b;
 }
 
