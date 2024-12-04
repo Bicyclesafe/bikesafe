@@ -10,27 +10,27 @@ import StatisticFilters from "./StatisticsFilters"
 
 const initialFilters: Filters = {
     emissionCarPerDate: {
-      label: 'Emissions saved compared to a Car',
+      label: ' Emissions saved compared to a Car',
       isChecked: true,
     },
     emissionCarTotal: {
-      label: 'Total emissions saved in a year compared to a Car',
+      label: ' Total emissions saved in a year compared to a Car',
       isChecked: true,
     },
     emissionBusPerDate: {
-        label: 'Emissions saved compared to a Bus',
+        label: ' Emissions saved compared to a Bus',
         isChecked: true,
     },
     emissionsBusTotal: {
-        label: 'Total emissions saved in a year compared to a Bus',
+        label: ' Total emissions saved in a year compared to a Bus',
         isChecked: true,
     },
     fuelCostCarPerDate: {
-        label: 'Money saved on fuel',
+        label: ' Money saved on fuel',
         isChecked: true,
     },
     fuelCostCarTotal: {
-        label: 'Total money saved on fuel in a year',
+        label: ' Total money saved on fuel in a year',
         isChecked: true,
     }
   }
@@ -67,7 +67,7 @@ const StatisticsPage = () => {
             <DistanceBarChart rawData={rawData} year={year} filters={filters}/>
         </div>
         <div className={stylesStatistics['filter-containers']}>
-          <div className={stylesStatistics['filter-box']}>
+          <div>
             <StatisticFilters filters={filters} setFilters={setFilters} />
           </div>
         <div className={stylesStatistics['trip-container']}>

@@ -10,7 +10,7 @@
     grid-template-areas:
         "chart"
         "summary"
-        "trips";
+        "filter-trips";
     gap: 20px;
 }
 
@@ -19,7 +19,7 @@
       grid-template-columns: 2fr 1fr;
       grid-template-areas:
         "chart    chart"
-        "summary  trips";
+        "summary  filter-trips";
     }
 }
 
@@ -27,7 +27,7 @@
     .statistics-content {
       grid-template-columns: 2fr 1fr;
       grid-template-areas:
-        "chart    trips"
+        "chart    filter-trips"
         "summary  summary";
     }
 }
@@ -61,7 +61,6 @@
 }
 
 .trip-container {
-    grid-area: trips;
     background-color: #2c9c7b;
 }
 
@@ -75,19 +74,6 @@
     color: white;
 }
 
-.filter-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .filter-box {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: white;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
-  }
+.filter-and-trips-container {
+    grid-area: filter-trips;
+}
