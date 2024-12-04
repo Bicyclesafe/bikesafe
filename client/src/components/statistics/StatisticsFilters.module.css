@@ -9,3 +9,43 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
+
+.filter-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+/*.emissionCarPerDate-filter, .emissionCarTotal-filter, .emissionBusPerDate-filter, .emissionsBusTotal-filter, .fuelCostCarPerDate-filter, .fuelCostCarTotal-filter {
+    text-decoration-thickness: 3px;
+    text-decoration-line: underline;
+}*/
+
+.emissionCarPerDate-filter .checkbox:checked {
+    accent-color: #03befc;
+}
+
+.emissionCarTotal-filter .checkbox:checked {
+    accent-color: #00f;
+}
+
+.emissionBusPerDate-filter .checkbox:checked {
+    accent-color: #f00;
+}
+
+.emissionsBusTotal-filter .checkbox:checked {
+    accent-color: #800;
+}
+
+.fuelCostCarPerDate-filter .checkbox:checked {
+    accent-color: #ae00ff;
+}
+
+.fuelCostCarTotal-filter .checkbox:checked {
+    accent-color:  #62008f;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    
+}

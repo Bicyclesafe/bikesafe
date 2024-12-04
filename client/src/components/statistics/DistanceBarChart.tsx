@@ -139,7 +139,7 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string, filters: Filters }> 
   const filterLayers = (): BarCustomLayer<BarDatum>[] => {
     const layers: BarCustomLayer<BarDatum>[] = []
     const dataTypes = [emissionCarPerDate, emissionCarTotal, emissionBusPerDate, emissionBusTotal, fuelCostCarPerDate, fuelCostCarTotal] 
-    const lineColors = ["#55f", "#00f", "#f00", "#800", "#ae00ff", "#62008f"]
+    const lineColors = ["#03befc", "#00f", "#f00", "#800", "#ae00ff", "#62008f"]
 
     for (const key in filters) {
       if (filters[key]?.isChecked) {

@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Filters } from '../../types'
-import { PinFilter as Filter } from "../filter/PinFilter"
+import { StatisticsFilter as Filter } from "./StatisticsFilter"
 import styles from './StatisticsFilters.module.css'
 
 const StatisticFilters: FC<{ filters: Filters, setFilters:  React.Dispatch<React.SetStateAction<Filters>> }> = ({ filters, setFilters })=> {
@@ -18,13 +18,15 @@ const StatisticFilters: FC<{ filters: Filters, setFilters:  React.Dispatch<React
 
     return (
         <div className={styles['filter-box']}>
-        <div>
-            <h2>Filters</h2>
-        </div>
-        <Filter
-          filters={filters}
-          handleFilterChange={handleFilterChange}
-          />
+          <div className={styles['filter-title']}>
+              Filters
+          </div>
+          <div>
+            <Filter
+              filters={filters}
+              handleFilterChange={handleFilterChange}
+              />
+          </div>
         </div>
     )
 }

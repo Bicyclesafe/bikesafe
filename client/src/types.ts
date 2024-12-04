@@ -53,12 +53,12 @@ export interface Filters {
   [key: string]: Filter
 }
 
-export interface PinFilterProps {
+export interface FilterProps {
   filters: Filters,
   handleFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export interface PinFilterOptionProps {
+export interface FilterOptionProps {
   name: string
   isChecked: boolean
   label: string

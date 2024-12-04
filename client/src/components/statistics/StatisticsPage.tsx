@@ -10,27 +10,27 @@ import StatisticFilters from "./StatisticsFilters"
 
 const initialFilters: Filters = {
     emissionCarPerDate: {
-      label: ' Emissions saved compared to a Car',
+      label: 'Emissions saved compared to a Car',
       isChecked: true,
     },
     emissionCarTotal: {
-      label: ' Total emissions saved in a year compared to a Car',
+      label: 'Total emissions saved in a year compared to a Car',
       isChecked: true,
     },
     emissionBusPerDate: {
-        label: ' Emissions saved compared to a Bus',
+        label: 'Emissions saved compared to a Bus',
         isChecked: true,
     },
     emissionsBusTotal: {
-        label: ' Total emissions saved in a year compared to a Bus',
+        label: 'Total emissions saved in a year compared to a Bus',
         isChecked: true,
     },
     fuelCostCarPerDate: {
-        label: ' Money saved on fuel',
+        label: 'Money saved on fuel',
         isChecked: true,
     },
     fuelCostCarTotal: {
-        label: ' Total money saved on fuel in a year',
+        label: 'Total money saved on fuel in a year',
         isChecked: true,
     }
   }
@@ -66,7 +66,7 @@ const StatisticsPage = () => {
         <div className={stylesStatistics['chart']}>
             <DistanceBarChart rawData={rawData} year={year} filters={filters}/>
         </div>
-        <div className={stylesStatistics['filter-containers']}>
+        <div className={stylesStatistics['filter-and-trips-containers']}>
           <div>
             <StatisticFilters filters={filters} setFilters={setFilters} />
           </div>
@@ -74,11 +74,9 @@ const StatisticsPage = () => {
           <LatestTrips rawData={rawData} />
         </div>
         </div>
-        <div>
           <div className={stylesStatistics['summary-container']}>
             <SummaryStatistics rawData={rawData} year={year} />
           </div>
-        </div>
       </div>
     </div>
   )
