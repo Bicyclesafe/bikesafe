@@ -22,7 +22,6 @@ export const getCompany = async (req: Request<{ year: string }, null, {uid: stri
 export const getCompanyStatistics = async (req: Request<{ year: string }, null, {uid: string}>, res: Response, _next: NextFunction) => {
   const companyId = req.companyId
   const { year } = req.params
-  const previousYear = (Number(year) - 1).toString()
 
   const company = await Company.findOne({
     where: { id: companyId },
@@ -36,7 +35,7 @@ export const getCompanyStatistics = async (req: Request<{ year: string }, null, 
   const plainCompany = company.get({ plain: true }) as CompanyType
   const employeeIds = plainCompany.users.map((user) => user.id)
 
-  const { current, previous, changes } = await getStatisticsForYear(employeeIds, year, previousYear)
+  const { current, previous, changes } = await getStatisticsForYear(employeeIds, year)
 
   const statistics = {
     company: {
