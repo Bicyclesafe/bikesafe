@@ -9,6 +9,8 @@ import AuthWrapper from "./components/context/AuthWrapper"
 import stylesApp from "./App.module.css"
 import StatisticsPage from "./components/statistics/StatisticsPage"
 import Commute from "./components/commute/Commute"
+import EmployerWrapper from "./components/context/EmployerWrapper"
+import CompanyPage from "./components/company/CompanyPage"
 
 const Layout = () => {
   return (
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <Dashboard /> },
       { path: "commute", element: <Commute /> },
       { path: "statistics", element: <StatisticsPage />},
+    ],
+  },
+  {
+    path: "/",
+    element: <EmployerWrapper><Layout /></EmployerWrapper>,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "company", element: <CompanyPage /> },
     ],
   },
   { path: "/login", element: <Login /> },

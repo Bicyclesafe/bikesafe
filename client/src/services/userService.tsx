@@ -14,4 +14,16 @@ export const addUser = async (token: string) => {
   }
 }
 
-export default { addUser }
+export const getUserRole = async (token: string) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+  }}
+    const response = await axios.get(`${apiUrl}/api/users/role`, authHeader)
+    return response.data
+  } catch(err) {
+    console.error("Error fetcing user role", err)
+  }
+}
+
+export default { addUser, getUserRole }
