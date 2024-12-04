@@ -16,6 +16,7 @@ export const PinFilterOption: FC<PinFilterOptionProps> = ({
           name={name}
           checked={isChecked}
           onChange={onChange}
+          style={{ marginRight: '6px' }}
         />
         {label}
       </label>
