@@ -8,17 +8,6 @@ export const up: Migration = async ({ context: queryInterface }) => {
       primaryKey: true,
       autoIncrement: true
     },
-    user_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: {
-          tableName: 'users',
-        },
-        key: 'id',
-      },
-      allowNull: false,
-      onDelete: 'CASCADE',
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false

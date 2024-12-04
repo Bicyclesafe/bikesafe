@@ -1,4 +1,4 @@
-import { Table, Column, Model, PrimaryKey, AutoIncrement, ForeignKey, BelongsTo } from 'sequelize-typescript'
+import { Table, Column, Model, PrimaryKey, AutoIncrement, HasMany } from 'sequelize-typescript'
 import { User } from './user'
 
 @Table({
@@ -15,10 +15,6 @@ export class Company extends Model {
   @Column
   name!: string
 
-  @ForeignKey(() => User)
-  @Column
-  userId!: number
-
-  @BelongsTo(() => User, { onDelete: 'CASCADE' })
-  user!: User
+  @HasMany(() => User)
+  users!: User[]
 }
