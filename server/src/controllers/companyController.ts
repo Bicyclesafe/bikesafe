@@ -1,7 +1,10 @@
 import { Request, Response, NextFunction } from "express"
 import { Company } from "../models/company"
+import { User } from "../models/user"
+import { Company as CompanyType } from "../types"
+import { getStatisticsForYear } from "../services/companyStatisticsService"
 
-export const getCompany = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
+export const getCompany = async (req: Request<{ year: string }, null, {uid: string}>, res: Response, next: NextFunction) => {
   const companyId = req.companyId
 
   try {
@@ -10,13 +13,45 @@ export const getCompany = async (req: Request<null, null, {uid: string}>, res: R
       return res.status(404).json({ message: "Company not found" })
     }
 
-
     res.status(200).json(company)
   } catch (err) {
     return next(err)
   }
 }
 
+export const getCompanyStatistics = async (req: Request<{ year: string }, null, {uid: string}>, res: Response, _next: NextFunction) => {
+  const companyId = req.companyId
+  const { year } = req.params
+  const previousYear = (Number(year) - 1).toString()
+
+  const company = await Company.findOne({
+    where: { id: companyId },
+    include: [{ model: User, attributes: ['id'] }],
+  })
+
+  if (!company) {
+    throw new Error("Company not found (controller: companyController, getCompanyStatistics")
+  }
+
+  const plainCompany = company.get({ plain: true }) as CompanyType
+  const employeeIds = plainCompany.users.map((user) => user.id)
+
+  const { current, previous, changes } = await getStatisticsForYear(employeeIds, year, previousYear)
+
+  const statistics = {
+    company: {
+      id: company.id,
+      name: company.name,
+    },
+    current,
+    previous,
+    changes,
+  }
+
+  res.status(200).json(statistics)
+}
+
 export default {
   getCompany,
+  getCompanyStatistics
 }

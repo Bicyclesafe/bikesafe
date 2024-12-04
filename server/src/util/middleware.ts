@@ -23,7 +23,7 @@ export const tokenVerification = async (req: Request<null, null, {uid: string}>,
   }
 }
 
-export const getEmployerCompanyId = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
+export const getEmployerCompanyId = async (req: Request<{ year: string }, null, {uid: string}>, res: Response, next: NextFunction) => {
   const { uid } = req.body
 
   try {
@@ -32,7 +32,7 @@ export const getEmployerCompanyId = async (req: Request<null, null, {uid: string
       return res.status(403).json({ error: 'Forbidden: You are not an employer' })
     }
 
-    const company = await Company.findOne({ where: { userId: user.id } })
+    const company = await Company.findOne({ where: { id: user.companyId } })
     if (!company) {
       return res.status(404).json({ error: 'No company associated with this employer' })
     }
