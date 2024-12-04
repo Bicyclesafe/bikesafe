@@ -2,11 +2,11 @@ import { FC } from "react"
 import { AchievementType } from "../../types"
 import Achievement from "./Achievement"
 
-const AchievementGroup: FC<{achievement: AchievementType}> = ({ achievement }) => {
+const AchievementGroup: FC<{achievements: AchievementType[]}> = ({ achievements }) => {
   return (
-      achievement.requirements.map((requirement, index) => (
-        <Achievement name={achievement.name} requirement={requirement} level={index} key={index}/>
-      ))
+    achievements.map(achievement => (
+      <Achievement achievement={achievement} key={achievement.level}/>
+    ))
   )
 }
 

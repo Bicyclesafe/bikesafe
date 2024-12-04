@@ -12,10 +12,13 @@ export interface LockStationLines {
 }
 
 export interface AchievementType {
-  id: number
   name: string
   description: string
   requirement: number
   groupId: number
   level: number
+}
+
+export interface AchievementJson {
+  achievements: AchievementType[]
 }

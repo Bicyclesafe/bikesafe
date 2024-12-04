@@ -156,7 +156,10 @@ export interface Statistic {
 
 export interface AchievementType {
   name: string
-  requirements: number[]
+  description: string
+  requirement: number
+  groupId: number
+  level: number
 }
 
 export interface AchievementProps {

@@ -4,7 +4,8 @@ import { User } from '../models/user'
 // import { User } from '../models/user'; // Ensure this is correctly imported if needed
 import * as fs from "fs"
 import * as path from "path"
-import { AchievementType } from '../types'
+import { AchievementJson } from '../types'
+import { Achievement } from '../models/achievement'
 
 export async function seedTrips() {
   const userId = 1 // Setting userId to 1 for all trips
@@ -58,14 +59,31 @@ export async function seedTrips() {
   console.log('Seeding completed!')
 }
 
-export const createAchievements =  () => {
-  const achievementPath = path.join(__dirname, "../../data/achievements.json")
-  const achievementData = JSON.parse(fs.readFileSync(achievementPath, "utf8")) as AchievementType[]
-  console.log(achievementData)
+export const createAchievements = async () => {
+  const existingAchievements = await Achievement.findOne()
 
-  /*await Achievement.bulkCreate(achievementData, {
-    updateOnDuplicate: ["name", "description", "level", "requirement", "groupId"]
-  })*/
+  if (existingAchievements) {
+    console.log('Achievements have already been created. Skipping creating process.')
+    return
+  }
+
+  const achievementPath = path.join(__dirname, "../../data/achievements.json")
+  const achievementData = JSON.parse(fs.readFileSync(achievementPath, "utf8")) as AchievementJson
+  const achievements = achievementData.achievements
+
+  for (let i = 0; i < achievements.length; i++) {
+    await Achievement.create({
+      name: achievements[i].name,
+      description: achievements[i].description,
+      level: achievements[i].level,
+      requirement: achievements[i].requirement,
+      groupId: achievements[i].groupId
+    })
+
+    console.log(`Created achievement ${achievements[i].name}`)
+  }
+
+  console.log('Creating achievements completed!')
 }
 
 export default { seedTrips, createAchievements }

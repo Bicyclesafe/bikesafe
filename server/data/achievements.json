@@ -1,7 +1,6 @@
 {
   "achievements": [
     {
-      "id": 1,
       "name": "Miles to go",
       "description": "Cycle 50 km",
       "requirement": 50,
@@ -9,7 +8,6 @@
       "level": 1
     },
     {
-      "id": 2,
       "name": "Pedal Pro",
       "description": "Cycle 200 km",
       "requirement": 200,
@@ -17,7 +15,6 @@
       "level": 2
     },
     {
-      "id": 3,
       "name": "Distance Master",
       "description": "Cycle 500 km",
       "requirement": 500,
@@ -25,7 +22,6 @@
       "level": 3
     },
     {
-      "id": 4,
       "name": "The Warmup",
       "description": "Ride 10 km in a single trip",
       "requirement": 10,
@@ -33,7 +29,6 @@
       "level": 1
     },
     {
-      "id": 5,
       "name": "Tour de Snack",
       "description": "Ride 20 km in a single trip",
       "requirement": 20,
@@ -41,7 +36,6 @@
       "level": 2
     },
     {
-      "id": 6,
       "name": "Pedal Pusher",
       "description": "Ride 30 km in a single trip",
       "requirement": 30,
