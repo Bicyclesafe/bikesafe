@@ -10,7 +10,6 @@ export const StatisticsFilterOption: FC<FilterOptionProps> = ({
 }) => {
   return (
     <div className={styles[`${name}-filter`]}>
-      <label>
         <input
           type="checkbox"
           name={name}
@@ -18,8 +17,9 @@ export const StatisticsFilterOption: FC<FilterOptionProps> = ({
           onChange={onChange}
           className={styles['checkbox']}
         />
-        {label}
-      </label>
+        <label className={styles["label"]}>
+            {label}
+        </label>
     </div>
   )
 }

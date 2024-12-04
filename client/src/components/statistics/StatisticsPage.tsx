@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import DistanceBarChart from "./DistanceBarChart"
 import { useAuth } from "../../hooks/useAuth"
 import { Trip, Filters } from "../../types"
@@ -40,6 +40,25 @@ const StatisticsPage = () => {
   const [rawData, setRawData] = useState<Trip[]>([])
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
   const [filters, setFilters] = useState<Filters>(initialFilters)
+  const [showFilters, setShowFilters] = useState<boolean>(true)
+  const dropdownRef = useRef<HTMLDivElement | null>(null)
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      setShowFilters(false)
+    }
+  }
+
+  useEffect(() => {
+    if (showFilters) {
+      document.addEventListener("mousedown", handleClickOutside)
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [showFilters])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,10 +87,10 @@ const StatisticsPage = () => {
         </div>
         <div className={stylesStatistics['filter-and-trips-containers']}>
           <div>
-            <StatisticFilters filters={filters} setFilters={setFilters} />
+            <StatisticFilters filters={filters} setFilters={setFilters} showFilters={showFilters} setShowFilters={setShowFilters}/>
           </div>
         <div className={stylesStatistics['trip-container']}>
-          <LatestTrips rawData={rawData} />
+          <LatestTrips rawData={rawData} showFilters={showFilters}/>
         </div>
         </div>
           <div className={stylesStatistics['summary-container']}>

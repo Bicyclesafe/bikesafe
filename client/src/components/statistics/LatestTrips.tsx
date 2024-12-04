@@ -35,12 +35,14 @@ export const StyledDuration: FC<{ duration: Duration }> = ({ duration }) => {
   )
 }
 
-const LatestTrips : FC<{ rawData: Trip[]}> = ({ rawData })=> {
+const LatestTrips : FC<{ rawData: Trip[], showFilters: boolean}> = ({ rawData, showFilters })=> {
+  const trip_number = showFilters ? 4 : 5
+
   const latestTrips = useMemo(() => {
     return rawData
       .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
-      .slice(0, 5)
-  }, [rawData])
+      .slice(0, trip_number)
+  }, [rawData, trip_number])
   
   const showLatestTrips = latestTrips.map((trip) => {
     const startTime = new Date(trip.startTime)
