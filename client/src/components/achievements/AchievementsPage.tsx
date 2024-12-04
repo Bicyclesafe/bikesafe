@@ -3,6 +3,7 @@ import { useAuth } from "../../hooks/useAuth"
 import { getAchievements } from "../../services/achievementService"
 import { AchievementType } from "../../types"
 import AchievementGroup from "./AchievementGroup"
+import styles from "./Achievement.module.css"
 
 const AchievementsPage = () => {
   const { user } = useAuth()
@@ -18,7 +19,7 @@ const AchievementsPage = () => {
   }, [user])
 
   return (
-    <div>
+    <div className={styles['grid-container']}>
       {achievements.map(achievement => (
         <AchievementGroup achievement={achievement} key={achievement.name} />
       ))}
