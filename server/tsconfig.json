@@ -13,6 +13,6 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "typeRoots": ["./types"],
+    "typeRoots": ["./types", "./node_modules/@types"]
   }
 }
