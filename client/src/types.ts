@@ -153,3 +153,14 @@ export interface Statistic {
   unit: string
   type: "distance" | "duration" | "impact"
 }
+
+export interface AchievementType {
+  name: string
+  requirements: number[]
+}
+
+export interface AchievementProps {
+  name: string
+  requirement: number
+  level: number
+}

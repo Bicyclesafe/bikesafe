@@ -9,6 +9,7 @@ import AuthWrapper from "./components/context/AuthWrapper"
 import stylesApp from "./App.module.css"
 import StatisticsPage from "./components/statistics/StatisticsPage"
 import Commute from "./components/commute/Commute"
+import Achievements from "./components/achievements/AchievementsPage"
 
 const Layout = () => {
   return (
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <Dashboard /> },
       { path: "commute", element: <Commute /> },
       { path: "statistics", element: <StatisticsPage />},
+      { path: "achievements", element: <Achievements />},
     ],
   },
   { path: "/login", element: <Login /> },
