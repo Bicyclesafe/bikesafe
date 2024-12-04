@@ -175,7 +175,7 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string, filters: Filters }> 
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "Emissions (kg)",
+          legend: "Emissions (kg) / Fuel cost (€)",
           legendPosition: 'middle',
           legendOffset: 45,
         }}

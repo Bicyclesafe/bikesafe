@@ -10,27 +10,27 @@ import StatisticFilters from "./StatisticsFilters"
 
 const initialFilters: Filters = {
     emissionCarPerDate: {
-      label: 'Emissions saved compared to a Car',
+      label: 'Car emissions saved (Daily)',
       isChecked: true,
     },
     emissionCarTotal: {
-      label: 'Total emissions saved in a year compared to a Car',
+      label: 'Car emissions saved (Yearly)',
       isChecked: true,
     },
     emissionBusPerDate: {
-        label: 'Emissions saved compared to a Bus',
+        label: 'Bus emissions saved (Daily)',
         isChecked: true,
     },
     emissionsBusTotal: {
-        label: 'Total emissions saved in a year compared to a Bus',
+        label: 'Bus emissions saved (Yearly)',
         isChecked: true,
     },
     fuelCostCarPerDate: {
-        label: 'Money saved on fuel',
+        label: 'Fuel cost saved (Daily)',
         isChecked: true,
     },
     fuelCostCarTotal: {
-        label: 'Total money saved on fuel in a year',
+        label: 'Fuel cost saved (Yearly)',
         isChecked: true,
     }
   }
