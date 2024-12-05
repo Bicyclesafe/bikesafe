@@ -5,7 +5,7 @@ import bronze from "../../assets/Bronze.svg"
 import silver from "../../assets/Silver.svg"
 import gold from "../../assets/Gold.svg"
 
-const Achievement: FC<{achievement: AchievementType}> = ({ achievement }) => {
+const Achievement: FC<{achievement: AchievementType, value: number}> = ({ achievement, value }) => {
   const renderImage = (level: number) => {
     switch(level) {
       case 1:
@@ -18,12 +18,16 @@ const Achievement: FC<{achievement: AchievementType}> = ({ achievement }) => {
         throw new Error
     }
   }
+  
+  const newValue = achievement.requirement < value ? achievement.requirement : value.toFixed(1)
 
   return (
     <div className={styles["achievement"]}>
       {renderImage(achievement.level)}
       <header className={styles["achievement-title"]}>{achievement.name}</header>
-      {achievement.description}
+      <p>{achievement.description}</p>
+      <progress value={value} max={achievement.requirement} color="#555555"/>
+      <p id={styles["progress-data"]}>{newValue}/{achievement.requirement}km</p>
     </div>
   )
 }

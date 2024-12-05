@@ -162,8 +162,12 @@ export interface AchievementType {
   level: number
 }
 
-export interface AchievementProps {
-  name: string
-  requirement: number
-  level: number
+export interface AchievementData {
+  sumOfTrips: number
+  longestTrip: number
+}
+
+export interface AchievementGroupProps {
+  achievements: AchievementType[]
+  achievementData: AchievementData
 }
