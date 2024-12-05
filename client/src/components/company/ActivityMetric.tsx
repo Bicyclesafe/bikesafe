@@ -1,4 +1,12 @@
+import { FC } from "react"
 import stylesCompany from "./CompanyPage.module.css"
+
+interface ActivityMetricProps {
+  title: string
+  currentValue: number
+  previousValue: number
+  unit: string
+}
 
 const renderChange = (currentValue: number, previousValue: number) => {
   if (previousValue === 0) {
@@ -15,16 +23,11 @@ const renderChange = (currentValue: number, previousValue: number) => {
   )
 }
 
-const ActivityMetric = ({
+const ActivityMetric: FC<ActivityMetricProps> = ({
   title,
   currentValue,
   previousValue,
   unit,
-}: {
-  title: string;
-  currentValue: number;
-  previousValue: number;
-  unit: string;
 }) => (
   <>
     <div className={stylesCompany['activity-title']}>{title}</div>
