@@ -23,6 +23,8 @@ const StatisticFilters: FC<{ filters: Filters, setFilters:  React.Dispatch<React
       setIsRotated(!isRotated)
     }
 
+    const dropdown_class = [styles.filterIcon, isRotated ? styles.rotated : ''].join(' ')
+
     return (
         <div className={styles['filter-box']}>
           <div className={styles['filter-title-container']}>
@@ -35,7 +37,8 @@ const StatisticFilters: FC<{ filters: Filters, setFilters:  React.Dispatch<React
                 onClick={handleButtonClick}
                 >
                   <img
-                  className={`${styles.filterIcon} ${isRotated ? styles.rotated : ''}`}
+                  alt="dropdown icon"
+                  className={dropdown_class}
                   src={dropdown_icon}
                   ></img>
                 </button>

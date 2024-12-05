@@ -16,8 +16,9 @@ export const StatisticsFilterOption: FC<FilterOptionProps> = ({
           checked={isChecked}
           onChange={onChange}
           className={styles['checkbox']}
+          aria-label={label}
         />
-        <label className={styles["label"]}>
+        <label htmlFor={name} className={styles["label"]}>
             {label}
         </label>
     </div>

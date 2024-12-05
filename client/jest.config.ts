@@ -29,6 +29,8 @@ module.exports = {
   moduleNameMapper: {
       "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js",
       '^d3-(.+)$': '<rootDir>/node_modules/d3-$1/dist/d3-$1.js',
+      '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/src/__mocks__/fileMock.js',
+      "\\.module\\.css$": "identity-obj-proxy",
   },
 
 setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],

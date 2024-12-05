@@ -42,21 +42,21 @@ describe("LatestTrips component", () => {
   ]
 
   it("renders the correct number of trips", () => {
-    render(<LatestTrips rawData={rawData} />)
+    render(<LatestTrips rawData={rawData} showFilters={false} />)
     const trips = screen.getAllByTestId("trip")
 
     expect(trips).toHaveLength(5)
   })
 
   it("no trips are rendered if rawData is empty", () => {
-    render(<LatestTrips rawData={[]} />)
+    render(<LatestTrips rawData={[]} showFilters={false}/>)
     const trips = screen.queryAllByTestId("trip")
 
     expect(trips).toHaveLength(0)
   })
 
   it("renders all trips with correct data", () => {
-    render(<LatestTrips rawData={rawData} />)
+    render(<LatestTrips rawData={rawData} showFilters={false}/>)
     const trips = screen.getAllByTestId("trip")
 
     trips.forEach((trip, index) => {
@@ -81,7 +81,7 @@ describe("LatestTrips component", () => {
   })
 
   it("trips are sorted correctly", () => {
-    render(<LatestTrips rawData={rawData} />)
+    render(<LatestTrips rawData={rawData} showFilters={false}/>)
     const sortedTrips = [...rawData].sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
     const trips = screen.getAllByTestId("trip")
 
