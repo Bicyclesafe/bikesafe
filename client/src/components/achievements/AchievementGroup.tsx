@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import { AchievementGroupProps } from "../../types"
 import Achievement from "./Achievement"
+import { emissionsCarPerKM, fuelCostCarPerKM } from '../statistics/constants'
 
 const AchievementGroup: FC<AchievementGroupProps> = ({ achievements, achievementData }) => {
   const [value, setValue] = useState<number>(0)
@@ -11,13 +12,23 @@ const AchievementGroup: FC<AchievementGroupProps> = ({ achievements, achievement
         setValue(achievementData.sumOfTrips !== null ? achievementData.sumOfTrips : 0)
         break
       case 2:
-        setValue(achievementData.longestTrip !== null ? achievementData.longestTrip : 0)
+        if (achievementData.sumOfTrips !== null ) {
+          setValue(achievementData.sumOfTrips * emissionsCarPerKM)
+        }
+        break
+      case 3:
+        if (achievementData.sumOfTrips !== null ) {
+          setValue(achievementData.sumOfTrips * fuelCostCarPerKM)
+        }
+        break
+      case 4:
+        setValue(achievementData.tripCount !== null ? achievementData.tripCount : 0)
         break
       default:
         throw new Error
     }
   }, [achievementData, achievements])
-  console.log(value)
+  
   return (
     achievements.map(achievement => (
       <Achievement achievement={achievement} value={value} key={achievement.level}/>

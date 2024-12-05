@@ -6,6 +6,8 @@ import silver from "../../assets/Silver.svg"
 import gold from "../../assets/Gold.svg"
 
 const Achievement: FC<{achievement: AchievementType, value: number}> = ({ achievement, value }) => {
+  const regex = /^\d+\.0$/
+
   const renderImage = (level: number) => {
     switch(level) {
       case 1:
@@ -19,7 +21,11 @@ const Achievement: FC<{achievement: AchievementType, value: number}> = ({ achiev
     }
   }
   
-  const newValue = achievement.requirement < value ? achievement.requirement : value.toFixed(1)
+  let newValue = achievement.requirement < value ? achievement.requirement : Number(value.toFixed(1))
+
+  if (regex.test(newValue.toString())) {
+    newValue = Math.round(newValue)
+  }
 
   return (
     <div className={styles["achievement"]}>
@@ -27,7 +33,7 @@ const Achievement: FC<{achievement: AchievementType, value: number}> = ({ achiev
       <header className={styles["achievement-title"]}>{achievement.name}</header>
       <p>{achievement.description}</p>
       <progress value={value} max={achievement.requirement} color="#555555"/>
-      <p id={styles["progress-data"]}>{newValue}/{achievement.requirement}km</p>
+      <p id={styles["progress-data"]}>{newValue}/{achievement.requirement}</p>
     </div>
   )
 }

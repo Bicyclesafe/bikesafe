@@ -164,7 +164,8 @@ export interface AchievementType {
 
 export interface AchievementData {
   sumOfTrips: number
-  longestTrip: number
+  emissionsSaved?: number
+  tripCount: number
 }
 
 export interface AchievementGroupProps {

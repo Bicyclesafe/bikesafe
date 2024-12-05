@@ -22,25 +22,68 @@
       "level": 3
     },
     {
-      "name": "The Warmup",
-      "description": "Ride 10 km in a single trip",
-      "requirement": 10,
+      "name": "Eco Beginner",
+      "description": "Save 100 kg of CO2 emissions",
+      "requirement": 100,
       "groupId": 2,
       "level": 1
     },
     {
-      "name": "Tour de Snack",
-      "description": "Ride 20 km in a single trip",
-      "requirement": 20,
+      "name": "Eco Champion",
+      "description": "Save 300 kg of CO2 emissions",
+      "requirement": 300,
       "groupId": 2,
       "level": 2
     },
     {
-      "name": "Pedal Pusher",
-      "description": "Ride 30 km in a single trip",
-      "requirement": 30,
+      "name": "Eco Warrior",
+      "description": "Save 1000 kg of CO2 emissions",
+      "requirement": 1000,
       "groupId": 2,
       "level": 3
+    },
+    {
+      "name": "Frugal Cyclist",
+      "description": "Save 25€ in fuel costs",
+      "requirement": 25,
+      "groupId": 3,
+      "level": 1
+    },
+    {
+      "name": "Smart Commuter",
+      "description": "Save 100€ in fuel costs",
+      "requirement": 100,
+      "groupId": 3,
+      "level": 2
+    },
+    {
+      "name": "Financially Savvy",
+      "description": "Save 300€ in fuel costs",
+      "requirement": 300,
+      "groupId": 3,
+      "level": 3
+    },
+    {
+      "name": "Pedal Pusher",
+      "description": "Complete 10 rides",
+      "requirement": 10,
+      "groupId": 4,
+      "level": 1
+    },
+    {
+      "name": "Gear Grinder",
+      "description": "Complete 50 rides",
+      "requirement": 50,
+      "groupId": 4,
+      "level": 2
+    },
+    {
+      "name": "Cycle Maniac",
+      "description": "Complete 100 rides",
+      "requirement": 100,
+      "groupId": 4,
+      "level": 3
     }
+
   ]
 }
