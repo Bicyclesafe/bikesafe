@@ -91,11 +91,11 @@
   color: inherit;
 }
 
-.activity-change.positive {
+.green {
   color: green;
 }
 
-.activity-change.negative {
+.red {
   color: red;
 }
 

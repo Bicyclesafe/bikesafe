@@ -153,3 +153,32 @@ export interface Statistic {
   unit: string
   type: "distance" | "duration" | "impact"
 }
+
+export interface CompanyStatistics {
+  company: {
+    id: number
+    name: string
+  }
+  distancesByMonth: {
+    month: number
+    distance: number
+  }[]
+  activeCyclistsByMonth: {
+    month: number
+    activeCyclists: number
+  }[]
+  yearlyTotalDistance: number
+}
+
+export interface MonthlyStatisticsProps {
+  statistics: CompanyStatistics;
+  selectedDate: Date;
+}
+
+export interface StatisticSectionProps {
+  label: string;
+  currentValue: number;
+  previousValue: number;
+  renderChange: (currentValue: number, previousValue: number) => JSX.Element;
+  unit: string;
+}

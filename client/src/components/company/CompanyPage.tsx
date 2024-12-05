@@ -5,33 +5,50 @@ import stylesCompany from "./CompanyPage.module.css"
 import ActivityPieChart from "./ActivityPieChart"
 import EmissionsLineChart from "./EmissionsLineChart"
 import EngagementBarChart from "./EngagementBarChart"
+import YearMonthPicker from "./util/YearMonthPicker"
+import useStatisticsData from "./hooks/useStatisticsData"
+import ActivityMetric from "./ActivityMetric"
 
 interface CompanyStatistics {
   company: {
     id: number
     name: string
   }
-  current: {
-    totalDistance: number
+  distancesByMonth: {
+    month: number
+    distance: number
+  }[]
+  activeCyclistsByMonth: {
+    month: number
     activeCyclists: number
-    inactiveCyclists: number
-  }
-  changes: {
-    distanceChange: number
-    activeCyclistsChange: number
-  }
+  }[]
+  yearlyTotalDistance: number
 }
 
 const CompanyPage = () => {
+  const currentDate = new Date()
+  const defaultDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+
   const [statistics, setStatistics] = useState<CompanyStatistics | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(defaultDate)
   const [year, setYear] = useState<string>(new Date().getFullYear().toString())
 
   const { user } = useAuth()
 
+  const {
+    currentMonthDistance,
+    previousMonthDistance,
+    currentMonthCyclists,
+    previousMonthCyclists,
+    currentCO2,
+    previousCO2,
+  } = useStatisticsData(statistics, selectedDate)
+
   useEffect(() => {
-    const fetchCompany = async () => {
+    const fetchCompanyStatistics = async () => {
       if (user) {
+        setLoading(true)
         try {
           const token = await user.getIdToken(true)
           const statisticsResponse = await companyService.getCompanyStatistics(year, token as string)
@@ -46,44 +63,17 @@ const CompanyPage = () => {
         setLoading(false)
       }
     }
-    fetchCompany()
+    fetchCompanyStatistics()
   }, [user, year])
 
-  const renderChange = (value: number | null) => {
-    if (!value) {
-      return <></>
+  const handleDateChange = (newDate: Date | null) => {
+    setSelectedDate(newDate)
+    if (newDate) {
+      const newYear = newDate.getFullYear().toString()
+      if (newYear !== year) {
+        setYear(newYear)
+      }
     }
-    const isPositive = value >= 0
-
-    if (isPositive) {
-      return (
-        <span className={`${stylesCompany['activity-change']} ${stylesCompany['positive']}`}>
-          +{value.toFixed(1)}%
-        </span>
-      )
-    }
-  
-    return (
-      <span className={`${stylesCompany['activity-change']} ${stylesCompany['negative']}`}>
-        -{Math.abs(Number(value.toFixed(1)))}%
-      </span>
-    )
-  }
-
-  const renderActiveCyclists = () => {
-    if (!statistics) {
-      return <span>0</span>
-    }
-
-    const totalCyclists = statistics.current.activeCyclists + statistics.current.inactiveCyclists
-    const activePercentage = (statistics.current.activeCyclists / totalCyclists) * 100
-    
-    return (
-      <span className={stylesCompany['activity-value']}>
-        {statistics.current.activeCyclists}
-        <span className={stylesCompany['unit']}>({activePercentage.toFixed(1)}%)</span>
-      </span>
-    )
   }
 
   if (loading) return <div>Loading...</div>
@@ -93,42 +83,49 @@ const CompanyPage = () => {
     <div className={stylesCompany['company-container']}>
       <div className={stylesCompany['company-content']}>
         <header>{statistics.company.name}</header>
-        <select onChange={(e) => setYear(e.target.value)}>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-        </select>
-        <div className={stylesCompany['company-statistics']}>
-          <div className={stylesCompany['activity-left']}>
-            <div className={stylesCompany['activity-title']}>Total Distance Cycled</div>
-            <div className={stylesCompany['activity-value']}>
-              {statistics.current.totalDistance}
-              <span className={stylesCompany['unit']}>km</span>
+        <YearMonthPicker value={selectedDate} onChange={handleDateChange} />
+
+        {selectedDate && (
+          <div className={stylesCompany['company-statistics']}>
+
+            <div className={stylesCompany['activity-left']}>
+              <ActivityMetric
+                title="Total Distance Cycled"
+                currentValue={currentMonthDistance}
+                previousValue={previousMonthDistance}
+                unit="km"
+              />
             </div>
-            <div className={stylesCompany['activity-change']}>{renderChange(statistics.changes.distanceChange)}</div>
-          </div>
-          <div className={stylesCompany['activity-middle']}>
-            <div className={stylesCompany['activity-title']}>Active cyclists</div>
-            <div className={stylesCompany['activity-value']}>{renderActiveCyclists()}</div>
-            <div className={stylesCompany['activity-change']}>{renderChange(statistics.changes.activeCyclistsChange)}</div>
-          </div>
-          <div className={stylesCompany['activity-right']}>
-            <div className={stylesCompany['activity-title']}>Total CO2 saved</div>
-            <div className={stylesCompany['activity-value']}>
-              900
-              <span className={stylesCompany['unit']}>kg</span>
+
+            <div className={stylesCompany['activity-middle']}>
+              <ActivityMetric
+                title="Active Cyclists"
+                currentValue={currentMonthCyclists}
+                previousValue={previousMonthCyclists}
+                unit=""
+              />
             </div>
-            <div className={stylesCompany['activity-change']}>+15%</div>
+
+            <div className={stylesCompany['activity-right']}>
+              <ActivityMetric
+                title="Total CO2 Saved"
+                currentValue={currentCO2}
+                previousValue={previousCO2}
+                unit=""
+              />
+            </div>
+
+            <div className={stylesCompany['pie-chart']}>
+              <ActivityPieChart />
+            </div>
+            <div className={stylesCompany['line-chart']}>
+              <EmissionsLineChart />
+            </div>
+            <div className={stylesCompany['bar-chart']}>
+              <EngagementBarChart />
+            </div>
           </div>
-          <div className={stylesCompany['pie-chart']}>
-            <ActivityPieChart />
-          </div>
-          <div className={stylesCompany['line-chart']}>
-            <EmissionsLineChart />
-          </div>
-          <div className={stylesCompany['bar-chart']}>
-            <EngagementBarChart />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   )

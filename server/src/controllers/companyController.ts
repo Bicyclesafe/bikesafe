@@ -39,15 +39,14 @@ export const getCompanyStatistics = async (req: Request<{ year: string }, null, 
   const plainCompany = company.get({ plain: true }) as CompanyType
   const employeeIds = plainCompany.users.map((user) => user.id)
 
-  const { current, changes } = await getStatisticsForYear(employeeIds, year)
+  const yearlyStatistics = await getStatisticsForYear(employeeIds, year)
 
   const statistics = {
     company: {
       id: company.id,
       name: company.name,
     },
-    current,
-    changes,
+    ...yearlyStatistics
   }
 
   return res.status(200).json(statistics)
