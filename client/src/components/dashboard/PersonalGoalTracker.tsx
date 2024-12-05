@@ -7,6 +7,7 @@ import { ResponsivePie } from '@nivo/pie'
 import stylesPersonalGoal from './PersonalGoalTracker.module.css'
 import { linearGradientDef } from "@nivo/core"
 import { FC } from "react"
+import ConfettiExplosion from 'react-confetti-explosion'
 
 const PersonalGoalTracker:FC<{ yearlyDistance: number }> = ({ yearlyDistance = [] }) => {
   const [currentGoals, setCurrentGoals] = useState<PersonalGoal[]>([])
@@ -14,6 +15,7 @@ const PersonalGoalTracker:FC<{ yearlyDistance: number }> = ({ yearlyDistance = [
   const [loading, setLoading] = useState<boolean>(true)
   const [personalGoal, setPersonalGoal] = useState<string>("")
   const { user } = useAuth()
+  const [isExploding, setIsExploding] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchGoals = async () => {
@@ -41,6 +43,9 @@ const PersonalGoalTracker:FC<{ yearlyDistance: number }> = ({ yearlyDistance = [
             currentGoals[0].endTime
           )
           setCurrentProgress(tripsResponse || 0)
+          if ((currentProgress ?? 0) >= (currentGoals?.[0]?.goalDistance ?? 0) && !isExploding) {
+            setIsExploding(true)
+          }
         } catch (error) {
           console.error('Error fetching progress:', error)
         } finally {
@@ -51,7 +56,7 @@ const PersonalGoalTracker:FC<{ yearlyDistance: number }> = ({ yearlyDistance = [
       }
     }
     fetchProgress()
-  }, [currentGoals, user, yearlyDistance])
+  }, [currentGoals, user, yearlyDistance, currentProgress, isExploding])
 
 
   const handlePersonalGoalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,6 +170,7 @@ const PersonalGoalTracker:FC<{ yearlyDistance: number }> = ({ yearlyDistance = [
           ]}
         />
       </div>
+        {isExploding && <ConfettiExplosion />}
     </div>
   )
 }
