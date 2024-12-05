@@ -29,7 +29,7 @@ const ActivityMetric = ({
   <>
     <div className={stylesCompany['activity-title']}>{title}</div>
     <div className={stylesCompany['activity-value']}>
-      {currentValue || 0}
+      {Number(currentValue.toFixed(1)) || 0}
       <span className={stylesCompany['unit']}>{unit}</span>
     </div>
     <div className={stylesCompany['activity-change']}>
