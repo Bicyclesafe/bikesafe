@@ -83,6 +83,27 @@
       "requirement": 100,
       "groupId": 4,
       "level": 3
+    },
+    {
+      "name": "Rolling Routine",
+      "description": "Complete trips for 3 consecutive days",
+      "requirement": 3,
+      "groupId": 5,
+      "level": 1
+    },
+    {
+      "name": "Week On Wheels",
+      "description": "Complete trips for 7 consecutive days",
+      "requirement": 7,
+      "groupId": 5,
+      "level": 2
+    },
+    {
+      "name": "30 Day Tour",
+      "description": "Complete trips for 30 consecutive days",
+      "requirement": 30,
+      "groupId": 5,
+      "level": 3
     }
 
   ]

@@ -166,9 +166,17 @@ export interface AchievementData {
   sumOfTrips: number
   emissionsSaved?: number
   tripCount: number
+  consecutiveCount: number
 }
 
 export interface AchievementGroupProps {
   achievements: AchievementType[]
   achievementData: AchievementData
+}
+
+export interface AllTripsProps {
+  id: number
+  userId: number
+  startTime: string
+  endTime: string
 }
