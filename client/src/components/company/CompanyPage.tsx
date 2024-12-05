@@ -18,6 +18,12 @@ interface CompanyStatistics {
     month: number
     distance: number
   }[]
+  tripsByCategory: {
+    month: number
+    short: number
+    medium: number
+    long: number
+  }[]
   activeCyclistsByMonth: {
     month: number
     activeCyclists: number
@@ -76,6 +82,15 @@ const CompanyPage = () => {
     }
   }
 
+  const getPieChartDataForMonth = (month: number, tripsByCategory: Record<number, { short: number; medium: number; long: number }>) => {
+    const monthData = tripsByCategory[month] || { short: 0, medium: 0, long: 0 }
+    return [
+      { id: 'short', value: monthData.short },
+      { id: 'medium', value: monthData.medium },
+      { id: 'long', value: monthData.long },
+    ]
+  }
+
   if (loading) return <div>Loading...</div>
   if (!statistics?.company) return <div>You are not associated with a company.</div>
 
@@ -116,7 +131,9 @@ const CompanyPage = () => {
             </div>
 
             <div className={stylesCompany['pie-chart']}>
-              <ActivityPieChart />
+              <ActivityPieChart
+                data={getPieChartDataForMonth(selectedDate.getMonth(), statistics.tripsByCategory)}
+              />
             </div>
             <div className={stylesCompany['line-chart']}>
               <EmissionsLineChart />
