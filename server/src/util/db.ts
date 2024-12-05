@@ -9,6 +9,7 @@ import { User } from '../models/user'
 import { Goal } from '../models/goal'
 import { Commute } from '../models/commute'
 import { Achievement } from '../models/achievement'
+import { UserAchievement } from '../models/userAchievement'
 
 const databaseUrl = process.env.NODE_ENV === 'test'
   ? TEST_DATABASE_URL
@@ -19,7 +20,7 @@ if (!databaseUrl) {
 }
 
 export const sequelize = new Sequelize(databaseUrl, {
-  models: [Coordinate, BikeTheft, LockStation, Trip, User, Goal, Commute, Achievement],
+  models: [Coordinate, BikeTheft, LockStation, Trip, User, Goal, Commute, Achievement, UserAchievement],
   logging: false
   // logging: process.env.NODE_ENV !== 'test',
 })

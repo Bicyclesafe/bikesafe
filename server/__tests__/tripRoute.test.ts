@@ -338,6 +338,33 @@ describe("POST /api/trips/work-trip", () => {
   })
 })
 
+describe("GET /api/trips/count", () => {
+  test("Retuns 3 when called", async () => {
+    const response = await api
+    .get("/api/trips/count")
+    .set("Authorization", `Bearer ${validToken}`)
+    .expect(200)
+    expect(response.body).toBe(3)
+  })
+
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
+    await api
+    .get("/api/trips/count")
+      .set("Authorization", `Bearer invalidToken`)
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+    .get("/api/trips/count")
+      .expect(401)
+  })
+})
+
 afterAll(async () => {
   await sequelize.close()
 })
