@@ -22,3 +22,14 @@ export interface AchievementType {
 export interface AchievementJson {
   achievements: AchievementType[]
 }
+
+interface User {
+  id: number;
+  name: string;
+}
+
+export interface Company {
+  id: number;
+  name: string;
+  users: User[];
+}

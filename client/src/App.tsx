@@ -10,6 +10,8 @@ import stylesApp from "./App.module.css"
 import StatisticsPage from "./components/statistics/StatisticsPage"
 import Commute from "./components/commute/Commute"
 import Achievements from "./components/achievements/AchievementsPage"
+import EmployerWrapper from "./components/context/EmployerWrapper"
+import CompanyPage from "./components/company/CompanyPage"
 
 const Layout = () => {
   return (
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
       { path: "commute", element: <Commute /> },
       { path: "statistics", element: <StatisticsPage />},
       { path: "achievements", element: <Achievements />},
+    ],
+  },
+  {
+    path: "/",
+    element: <EmployerWrapper><Layout /></EmployerWrapper>,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "company", element: <CompanyPage /> },
     ],
   },
   { path: "/login", element: <Login /> },

@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import { AchievementGroupProps } from "../../types"
 import Achievement from "./Achievement"
-import { emissionsCarPerKM, fuelCostCarPerKM } from '../statistics/constants'
+import { emissionsCarPerKM, fuelCostCarPerKM } from '../../../../shared/constants'
 
 const AchievementGroup: FC<AchievementGroupProps> = ({ achievements, achievementData }) => {
   const [value, setValue] = useState<number>(0)
