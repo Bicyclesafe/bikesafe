@@ -1,12 +1,12 @@
-import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
+import { BarCustomLayer, BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
 import { useCallback, useEffect, useState, FC } from "react"
-import { ChartData, LineLayerInfo, Trip } from "../../types"
+import { ChartData, LineLayerInfo, Trip, Filters } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
 import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "./constants"
 import LineLayer from "./LineLayer"
 import { createBarData, createPerDateData, createTotalData } from "./barChartHelper"
 
-const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year }) => {
+const DistanceBarChart: FC<{ rawData: Trip[], year: string, filters: Filters }> = ({ rawData, year, filters }) => {
   const [barData, setBarData] = useState<BarDatum[]>([])
   const [emissionCarPerDate, setEmissionCarPerDate] = useState<BarDatum[]>([])
   const [emissionCarTotal, setEmissionCarTotal] = useState<BarDatum[]>([])
@@ -106,11 +106,23 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
 
   useEffect(() => {
     if (barData.length === 0 || emissionCarTotal.length === 0) return
-
-    const highestBar = Math.max(...barData.map(bar => Number(bar.value)))
-    const highestLinePoint = Number(emissionCarTotal[emissionCarTotal.length - 1].value)
+  
+    const activeDataTypes = [
+      emissionCarPerDate, emissionCarTotal, emissionBusPerDate,
+      emissionBusTotal, fuelCostCarPerDate, fuelCostCarTotal
+    ].filter((_, i) =>
+      filters[Object.keys(filters)[i]]?.isChecked
+    )
+  
+    const flattenedData = activeDataTypes.reduce<BarDatum[]>((acc, dataset) => acc.concat(dataset), [])
+  
+    const highestBar = Math.max(...barData.map((bar) => Number(bar.value)))
+    const highestLinePoint = Math.max(...flattenedData.map((data) => Number(data.value)))
+  
     setHighestValue(Math.max(highestBar, highestLinePoint))
-  }, [barData, emissionCarTotal])
+  }, [barData, emissionCarTotal, emissionBusTotal, fuelCostCarTotal, filters, emissionCarPerDate, emissionBusPerDate, fuelCostCarPerDate])
+  
+  
 
   const lineLayer = ({innerHeight, bars, data, color}: LineLayerInfo) => {
     return (
@@ -122,6 +134,23 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
         viewMode={viewMode}
         highestValue={highestValue} />
     )
+  }
+
+  const filterLayers = (): BarCustomLayer<BarDatum>[] => {
+    const layers: BarCustomLayer<BarDatum>[] = []
+    const dataTypes = [emissionCarPerDate, emissionCarTotal, emissionBusPerDate, emissionBusTotal, fuelCostCarPerDate, fuelCostCarTotal] 
+    const lineColors = ["#03befc", "#00f", "#f00", "#800", "#ae00ff", "#62008f"]
+
+    for (const key in filters) {
+      if (filters[key]?.isChecked) {
+        const i = Object.keys(filters).indexOf(key)
+        layers.push(({ bars, innerHeight }) =>
+          lineLayer({ innerHeight, bars, data: dataTypes[i], color: lineColors[i] })
+        )
+      }
+    }
+  
+    return layers
   }
     
   if (!rawData || rawData.length === 0) {
@@ -146,7 +175,7 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "Emissions (kg)",
+          legend: "Emissions (kg) / Fuel cost (€)",
           legendPosition: 'middle',
           legendOffset: 45,
         }}
@@ -200,13 +229,7 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string }> = ({ rawData, year
           "grid",
           "axes",
           "bars",
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionCarPerDate, color: "#55f"}),
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionCarTotal, color: "#00f"}),
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionBusPerDate, color: "#f00"}),
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: emissionBusTotal, color: "#800"}),
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: fuelCostCarPerDate, color: "#ae00ff"}),
-          ({innerHeight, bars}) => lineLayer({innerHeight, bars, data: fuelCostCarTotal, color: "#62008f"}),
-        ]}
+          ...filterLayers()]}
       />
       
       {month &&

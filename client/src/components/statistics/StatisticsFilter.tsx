@@ -1,15 +1,15 @@
 import { FC } from "react"
-import { PinFilterOption } from "./PinFilterOption"
+import { StatisticsFilterOption } from "./StatisticsFilterOptions"
 import { FilterProps } from "../../types"
 
-export const PinFilter: FC<FilterProps> = ({
+export const StatisticsFilter: FC<FilterProps> = ({
   filters,
   handleFilterChange
 }) => {
   return (
     <div>
       {Object.entries(filters).map(([filterName, { isChecked, label }]) => (
-        <PinFilterOption
+        <StatisticsFilterOption
           key={filterName}
           name={filterName}
           isChecked={isChecked}
@@ -20,3 +20,5 @@ export const PinFilter: FC<FilterProps> = ({
     </div>
   )
 }
+
+export default StatisticsFilter

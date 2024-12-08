@@ -53,12 +53,12 @@ export interface Filters {
   [key: string]: Filter
 }
 
-export interface PinFilterProps {
+export interface FilterProps {
   filters: Filters,
   handleFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export interface PinFilterOptionProps {
+export interface FilterOptionProps {
   name: string
   isChecked: boolean
   label: string
@@ -114,11 +114,11 @@ export interface LineLayerProps {
   highestValue: number
 }
 
-export interface LineLayerInfo {
-  innerHeight: number
-  bars: readonly ComputedBarDatum<BarDatum>[]
+export interface LineLayerInfo{
   data: BarDatum[]
   color: string
+  innerHeight: number
+  bars: readonly ComputedBarDatum<BarDatum>[]
 }
 
 export interface ChartData {
