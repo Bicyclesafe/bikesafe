@@ -162,6 +162,7 @@ export interface CompanyStatistics {
   distancesByMonth: {
     month: number
     distance: number
+    co2SavedKg: number
   }[]
   activeCyclistsByMonth: {
     month: number

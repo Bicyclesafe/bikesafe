@@ -7,8 +7,8 @@ const useStatisticsData = (statistics: CompanyStatistics | null, selectedDate: D
     previousMonthDistance: 0,
     currentMonthCyclists: 0,
     previousMonthCyclists: 0,
-    currentCO2: 900,
-    previousCO2: 800,
+    currentCO2: 0,
+    previousCO2: 0,
   })
   
   useEffect(() => {
@@ -24,8 +24,8 @@ const useStatisticsData = (statistics: CompanyStatistics | null, selectedDate: D
     const currentMonthCyclists = statistics?.activeCyclistsByMonth[currentMonthIndex]?.activeCyclists || 0
     const previousMonthCyclists = statistics?.activeCyclistsByMonth[currentMonthIndex - 1]?.activeCyclists || 0
     
-    const currentCO2 = 900
-    const previousCO2 = 800
+    const currentCO2 = statistics?.distancesByMonth[currentMonthIndex]?.co2SavedKg || 0
+    const previousCO2 = statistics?.distancesByMonth[currentMonthIndex - 1]?.co2SavedKg || 0
     
     setData({
       currentMonthDistance,

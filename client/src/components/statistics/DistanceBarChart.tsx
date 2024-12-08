@@ -2,7 +2,7 @@ import { BarDatum, ComputedDatum, ResponsiveBar } from "@nivo/bar"
 import { useCallback, useEffect, useState, FC } from "react"
 import { ChartData, LineLayerInfo, Trip } from "../../types"
 import { getDate, getDaysInMonth, getMonth } from "date-fns"
-import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "./constants"
+import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "../../../../shared/constants"
 import LineLayer from "./LineLayer"
 import { createBarData, createPerDateData, createTotalData } from "./barChartHelper"
 

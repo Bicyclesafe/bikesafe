@@ -2,6 +2,7 @@ import { Op } from 'sequelize'
 import { Trip } from '../models/trip'
 import { User } from '../models/user'
 import { endOfMonth, formatISO, startOfMonth } from 'date-fns'
+import { emissionsCarPerKM } from '../../../shared/constants'
 
 interface MonthData {
   month: number;
@@ -103,10 +104,15 @@ export const getStatisticsForYear = async (employeeIds: number[], year: string) 
     getTripsByCategory(employeeIds, year)
   ])
 
+  const distancesWithCo2 = distancesByMonth.map((data) => ({
+    ...data,
+    co2SavedKg: data.distance * emissionsCarPerKM
+  }))
+
   const yearlyTotalDistance = distancesByMonth.reduce((acc, curr) => acc + curr.distance, 0)
 
   return {
-    distancesByMonth,
+    distancesByMonth: distancesWithCo2,
     yearlyTotalDistance,
     tripsByCategory,
     activeCyclistsByMonth,

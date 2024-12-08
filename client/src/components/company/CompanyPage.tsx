@@ -17,6 +17,7 @@ interface CompanyStatistics {
   distancesByMonth: {
     month: number
     distance: number
+    co2SavedKg: number
   }[]
   tripsByCategory: {
     month: number
