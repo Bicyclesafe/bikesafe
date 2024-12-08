@@ -97,9 +97,10 @@ const CompanyPage = () => {
   return (
     <div className={stylesCompany['company-container']}>
       <div className={stylesCompany['company-content']}>
-        <header>{statistics.company.name}</header>
-        <YearMonthPicker value={selectedDate} onChange={handleDateChange} />
-
+        <div className={stylesCompany['company-date']}>
+          <header>{statistics.company.name}</header>
+          <YearMonthPicker value={selectedDate} onChange={handleDateChange} />
+        </div>
         {selectedDate && (
           <div className={stylesCompany['company-statistics']}>
 
@@ -126,7 +127,7 @@ const CompanyPage = () => {
                 title="Total CO2 Saved"
                 currentValue={currentCO2}
                 previousValue={previousCO2}
-                unit=""
+                unit="kg"
               />
             </div>
 

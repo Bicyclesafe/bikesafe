@@ -2,6 +2,7 @@
   margin: 0 auto;
   max-width: 1200px;
   padding: 20px;
+  margin-top: 10px;
 }
 
 .company-content {
@@ -9,6 +10,12 @@
   flex-direction: column;
   gap: 20px;
   align-items: start;
+}
+
+.company-date {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .company-statistics {
