@@ -115,8 +115,19 @@ export const getTripsForAllUsers = async (token: string, startTime: Date, endTim
   } catch(err) {
     console.error("", err)
   }
+}
 
+export const getTripCountForUser = async (token: string) => {
+  try {
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
 
+    const response = await axios.get(`${apiUrl}/api/trips/count`, authHeader)
+    return response.data
+  } catch(err) {
+    console.error("", err)
+  }
 }
 
 export default {
@@ -126,4 +137,5 @@ export default {
   getSumOfTripsBetweenDates,
   addWorkTrip,
   addTrip,
+  getTripCountForUser
 }

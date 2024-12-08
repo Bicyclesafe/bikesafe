@@ -78,7 +78,7 @@ const Dashboard = () => {
           <div id={stylesDashboard['manual']} className={stylesDashboard['item']}>
             <ManualTrips distance={distance} setDistance={setDistance}/>
           </div>
-          <NavLink to="/commute">
+          <NavLink to="/achievements">
           <div className={stylesDashboard['item']}>
             <PersonalGoal/>
             

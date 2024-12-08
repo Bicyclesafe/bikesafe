@@ -2,8 +2,12 @@
 import { Trip } from '../models/trip' // Adjust the path as needed
 import { User } from '../models/user'
 // import { User } from '../models/user'; // Ensure this is correctly imported if needed
+import * as fs from "fs"
+import * as path from "path"
+import { AchievementJson } from '../types'
+import { Achievement } from '../models/achievement'
 
-async function seedTrips() {
+export async function seedTrips() {
   const userId = 1 // Setting userId to 1 for all trips
   const user: User | null = await User.findOne({ where: { id: userId }})
   if (!user) {
@@ -55,4 +59,31 @@ async function seedTrips() {
   console.log('Seeding completed!')
 }
 
-export default seedTrips
+export const createAchievements = async () => {
+  const existingAchievements = await Achievement.findOne()
+
+  if (existingAchievements) {
+    console.log('Achievements have already been created. Skipping creating process.')
+    return
+  }
+
+  const achievementPath = path.join(__dirname, "../../data/achievements.json")
+  const achievementData = JSON.parse(fs.readFileSync(achievementPath, "utf8")) as AchievementJson
+  const achievements = achievementData.achievements
+
+  for (let i = 0; i < achievements.length; i++) {
+    await Achievement.create({
+      name: achievements[i].name,
+      description: achievements[i].description,
+      level: achievements[i].level,
+      requirement: achievements[i].requirement,
+      groupId: achievements[i].groupId
+    })
+
+    console.log(`Created achievement ${achievements[i].name}`)
+  }
+
+  console.log('Creating achievements completed!')
+}
+
+export default { seedTrips, createAchievements }

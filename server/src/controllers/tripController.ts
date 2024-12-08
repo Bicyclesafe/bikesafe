@@ -51,7 +51,10 @@ export const getTripsForUser = async (req: Request<null, null, {uid: string, yea
   }
 }
 
-export const getTotalDistanceForUser = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
+export const getTotalDistanceForUser = async (req: Request<null, null, {uid: string}>, 
+  res: Response, 
+  next: NextFunction
+) => {
   const uid = req.body.uid
   
   try {
@@ -147,6 +150,19 @@ export const getTripsForAllUsers = async (req: Request<null, null, null>, res: R
   }
 }
 
+export const getTripCountForUser = async (req: Request<null, null, {uid: string}>, res: Response, next: NextFunction) => {
+  try {
+    const uid = req.body.uid
+    const user: User | null = await User.findOne({ where: { uid }})
+    const trips = await Trip.count({ where: { userId: user?.id }})    
+
+    res.status(200).json(trips)
+  } catch(err) {
+    next(err)
+  }
+}
+
+
 export default {
   getTripsForUser,
   getTotalDistanceForUser,
@@ -154,5 +170,6 @@ export default {
   addTrip,
   addWorkTrip,
   getSumOfTripsBetweenDates,
-  getTripsForAllUsers
+  getTripsForAllUsers,
+  getTripCountForUser
 }

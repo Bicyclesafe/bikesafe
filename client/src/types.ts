@@ -153,3 +153,30 @@ export interface Statistic {
   unit: string
   type: "distance" | "duration" | "impact"
 }
+
+export interface AchievementType {
+  name: string
+  description: string
+  requirement: number
+  groupId: number
+  level: number
+}
+
+export interface AchievementData {
+  sumOfTrips: number
+  emissionsSaved?: number
+  tripCount: number
+  consecutiveCount: number
+}
+
+export interface AchievementGroupProps {
+  achievements: AchievementType[]
+  achievementData: AchievementData
+}
+
+export interface AllTripsProps {
+  id: number
+  userId: number
+  startTime: string
+  endTime: string
+}
