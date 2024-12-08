@@ -13,9 +13,10 @@ const ActivityPieChart: FC<ActivityPierChartProps> = (data) => {
     <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
       <ResponsivePie
         data={data.data}
-        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+        margin={{ top: 40, right: 70, bottom: 70, left: 70 }}
+        colors={{ scheme: 'set2' }}
         innerRadius={0.5}
-        padAngle={0.7}
+        padAngle={1.5}
         cornerRadius={3}
         motionConfig={"stiff"}
         activeOuterRadiusOffset={8}
@@ -29,7 +30,6 @@ const ActivityPieChart: FC<ActivityPierChartProps> = (data) => {
             ]
           ]
         }}
-        
         arcLinkLabelsSkipAngle={10}
         arcLinkLabelsTextColor="#333333"
         arcLinkLabelsThickness={2}
@@ -40,9 +40,16 @@ const ActivityPieChart: FC<ActivityPierChartProps> = (data) => {
           modifiers: [
             [
               'darker',
-              2
+              3
             ]
           ]
+        }}
+        theme={{
+          labels: {
+            text: {
+              fontSize: 14,
+            },
+          },
         }}
         legends={[
           {

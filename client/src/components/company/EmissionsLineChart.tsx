@@ -15,8 +15,10 @@ const EmissionsLineChart: FC<EmissionsLineChartProps> = (data) => (
   <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
     <ResponsiveLine
       data={data.data}
-      margin={{ top: 50, right: 70, bottom: 70, left: 70 }}
+      margin={{ top: 30, right: 70, bottom: 60, left: 70 }}
       enableGridX={false}
+      colors={{ scheme: 'set2' }}
+      lineWidth={3}
       xScale={{ type: 'point' }}
       yScale={{
         type: 'linear',

@@ -103,16 +103,27 @@ const CompanyPage = () => {
               />
             </div>
 
-            <div className={stylesCompany['pie-chart']}>
-              <ActivityPieChart
-                data={getPieChartDataForMonth(selectedDate.getMonth(), statistics.tripsByCategory)}
-              />
+            <div className={stylesCompany['chart-container']}>
+              <div className={stylesCompany['chart-title']}>Monthly Trip Distribution by Distance</div>
+              <div className={stylesCompany['chart']}>
+                <ActivityPieChart
+                  data={getPieChartDataForMonth(selectedDate.getMonth(), statistics.tripsByCategory)}
+                />
+              </div>
             </div>
-            <div className={stylesCompany['line-chart']}>
-              <EmissionsLineChart data={getEmissionLineChartData(year, statistics.distancesByMonth)} />
+
+            <div className={stylesCompany['chart-container']}>
+              <div className={stylesCompany['chart-title']}>CO2 Saved</div>
+              <div className={stylesCompany['chart']}>
+                <EmissionsLineChart data={getEmissionLineChartData(year, statistics.distancesByMonth)} />
+              </div>
             </div>
-            <div className={stylesCompany['line-chart']}>
-              <ActivityLineChart data={getActivityLineChartData(year, statistics.activeCyclistsByMonth)} />
+
+            <div className={stylesCompany['chart-container']}>
+              <div className={stylesCompany['chart-title']}>Cyclist Activity</div>
+              <div className={stylesCompany['chart']}>
+                <ActivityLineChart data={getActivityLineChartData(year, statistics.activeCyclistsByMonth)} />
+              </div>
             </div>
           </div>
         )}

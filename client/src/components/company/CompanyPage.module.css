@@ -8,52 +8,40 @@
 .company-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   align-items: start;
+  gap: 20px;
 }
 
 .company-date {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
 .company-statistics {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: auto auto;
-  width: 100%;
+  grid-template-columns: 1fr;
   gap: 10px;
+  width: 100%;
 }
 
-.pie-chart {
+.chart-container {
   grid-column: span 6;
-  position: relative;
+  display: flex;
+  flex-direction: column;
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
   border-radius: 10px;
-  min-height: 400px;
-  gap: 5px;
+  gap: 20px;
+  text-align: center;
 }
 
-.line-chart {
-  grid-column: span 6;
+.chart {
   position: relative;
-  background-color: white;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  border-radius: 10px;
-  min-height: 400px;
-}
-
-.bar-chart {
-  grid-column: span 6;
-  position: relative;
-  background-color: white;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  border-radius: 10px;
+  min-height: 350px;
+  height: fit-content;
 }
 
 .activity-left, .activity-middle, .activity-right {
@@ -83,7 +71,6 @@
 }
 
 .activity-title {
-  font-family: 'Nunito', sans-serif;
   color: rgb(110, 110, 110);
   font-size: 1.1rem;
 }
@@ -113,4 +100,15 @@
   font-weight: bold;
   color: rgb(119, 119, 119);
   margin-left: 3px;
+}
+
+.chart-title {
+  color: rgb(110, 110, 110);
+  font-size: 1.3rem;
+}
+
+@media only screen and (min-width: 800px)  {
+  .company-statistics {
+    grid-template-columns: repeat(12, 1fr);
+  }
 }
