@@ -183,3 +183,31 @@ export interface StatisticSectionProps {
   renderChange: (currentValue: number, previousValue: number) => JSX.Element;
   unit: string;
 }
+
+export interface CompanyStatistics {
+  company: {
+    id: number
+    name: string
+  }
+  distancesByMonth: {
+    month: number
+    distance: number
+    co2SavedKg: number
+  }[]
+  tripsByCategory: Record<number, TripCategoryCounts>
+  activeCyclistsByMonth: {
+    month: number
+    activeCyclists: number
+  }[]
+  yearlyTotalDistance: number
+}
+
+export interface TripCategoryCounts {
+  short: number;
+  medium: number;
+  long: number;
+}
+
+export interface TripsByMonth {
+  [month: number]: TripCategoryCounts;
+}

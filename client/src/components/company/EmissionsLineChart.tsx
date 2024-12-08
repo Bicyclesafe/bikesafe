@@ -1,30 +1,20 @@
 import { ResponsiveLine } from '@nivo/line'
 import { format } from 'date-fns'
+import { FC } from 'react'
 
-const data = [
-  {
-    id: "emissions",
-    data: [
-      { x: "2023-01-01", y: 5 },
-      { x: "2023-02-01", y: 12 },
-      { x: "2023-03-01", y: 18 },
-      { x: "2023-04-01", y: 26 },
-      { x: "2023-05-01", y: 35 },
-      { x: "2023-06-01", y: 45 },
-      { x: "2023-07-01", y: 58 },
-      { x: "2023-08-01", y: 70 },
-      { x: "2023-09-01", y: 85 },
-      { x: "2023-10-01", y: 102 },
-      { x: "2023-11-01", y: 120 },
-      { x: "2023-12-01", y: 140 },
-    ]
-  }
-]
+interface EmissionsLineChartData {
+  id: string
+  data: { x: string, y: number }[]
+}
 
-const EmissionsLineChart = () => (
+interface EmissionsLineChartProps {
+  data: EmissionsLineChartData[]
+}
+
+const EmissionsLineChart: FC<EmissionsLineChartProps> = (data) => (
   <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
     <ResponsiveLine
-      data={data}
+      data={data.data}
       margin={{ top: 50, right: 70, bottom: 70, left: 70 }}
       enableGridX={false}
       xScale={{ type: 'point' }}
