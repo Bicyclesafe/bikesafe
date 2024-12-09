@@ -11,6 +11,7 @@ import DistanceOverview from "./DistanceOverview"
 import { NavLink } from "react-router-dom"
 import ManualTrips from "./ManualTrips"
 import CommuteDistance from "./CommuteDistance"
+import getMotivationalQuote from "./MotivationalQuotes"
 
 
 const Dashboard = () => {
@@ -75,7 +76,9 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className={stylesDashboard['row']}>Row 2</div>
+            <div className={stylesDashboard['row']}>
+              {getMotivationalQuote()} 
+            </div>
             <div className={stylesDashboard['row']}>Row 3</div>
           </div>
         </div>
