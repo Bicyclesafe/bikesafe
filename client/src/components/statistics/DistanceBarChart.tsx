@@ -5,6 +5,7 @@ import { getDate, getDaysInMonth, getMonth } from "date-fns"
 import { emissionsBusPerKM, emissionsCarPerKM, fuelCostCarPerKM } from "../../../../shared/constants"
 import LineLayer from "./LineLayer"
 import { createBarData, createPerDateData, createTotalData } from "./barChartHelper"
+import styles from "./DistanceBarChart.module.css"
 
 const DistanceBarChart: FC<{ rawData: Trip[], year: string, filters: Filters }> = ({ rawData, year, filters }) => {
   const [barData, setBarData] = useState<BarDatum[]>([])
@@ -160,12 +161,19 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string, filters: Filters }> 
   return (
 
     <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
+      {month &&
+      <div className={styles['return-container']}>
+        <button onClick={() => { setMonth(null); setViewMode("year") }}>
+          &larr; Return
+        </button>
+      </div>
+      }
       <ResponsiveBar
         data={barData}
         keys={['value']}
         indexBy={getNivoBarSettings(viewMode).index}
         enableLabel={false}
-        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 85, bottom: 50, left: 85 }}
         padding={0.3}
         colors={{ scheme: 'dark2' }}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
@@ -231,12 +239,6 @@ const DistanceBarChart: FC<{ rawData: Trip[], year: string, filters: Filters }> 
           "bars",
           ...filterLayers()]}
       />
-      
-      {month &&
-        <button onClick={() => { setMonth(null); setViewMode("year") }}>
-          Return to yearly view
-        </button>
-      }
     </div>
   )
 }
