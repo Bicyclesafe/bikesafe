@@ -1,0 +1,31 @@
+.row-alert {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  animation: pulse 3s infinite;
+  text-decoration: none;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: red;
+    transform: scale(1.1);
+  }
+  50% {
+    background-color: rgb(218, 181, 181);
+    transform: scale(1);
+  }
+  100% {
+    background-color: red;
+    transform: scale(1.1);
+  }
+}
+
+.row-normal {
+  font-size: 2rem;
+  
+}

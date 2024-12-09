@@ -10,6 +10,8 @@ import { useState } from "react"
 import DistanceOverview from "./DistanceOverview"
 import { NavLink } from "react-router-dom"
 import ManualTrips from "./ManualTrips"
+import CommuteDistance from "./CommuteDistance"
+
 
 const Dashboard = () => {
   const [distance, setDistance] = useState<number>(0)
@@ -45,13 +47,21 @@ const Dashboard = () => {
             </div>
             <div className={stylesDashboard['row']}>
               <div className={stylesDashboard['row-item']}>
-                <div className={stylesDashboard['row-title']}>Clickity click</div>
                 <div className={stylesDashboard['row-content']}>
-                  <button onClick={cycleToWork}>Cycle to work</button>
+                  <button className={stylesDashboard['row-button']} onClick={cycleToWork}>Cycle to work</button>
                 </div>
               </div>
             </div>
-            <div className={stylesDashboard['row']}>Row 3</div>
+            <div className={stylesDashboard['row']}>
+            <NavLink style={{textDecoration: "none"}} to="/commute">
+              <div className={stylesDashboard['row-item']}>
+                <div className={stylesDashboard['row-title-wrap']}>Commute distance</div>
+                <div className={stylesDashboard['row-content']}>
+                  <CommuteDistance/>
+                </div>
+              </div>
+              </NavLink>
+            </div>
           </div>
           <div className={stylesDashboard['center-area']}>
             <PersonalGoalTracker yearlyDistance={distance}/>

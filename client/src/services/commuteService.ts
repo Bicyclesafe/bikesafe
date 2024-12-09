@@ -20,7 +20,8 @@ export const getCommuteDistance = async (token: string) => {
 		}}
 
 		const response = await axios.get(`${apiUrl}/api/commute`, authHeader)
-		console.log(response.data)
+		console.log(typeof(response.data), "response")
+    return response.data
 	} catch(err) {
 		console.error("Error in saving the commute distance", err)
   }
