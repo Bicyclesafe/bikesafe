@@ -1,0 +1,17 @@
+.return-container {
+    position: absolute;
+    z-index: 1;
+    left: 40px;
+}
+
+.return-container button {
+    width: 100%;
+    margin-top: 0.25rem;
+    margin-left: 0.5rem;
+    padding: 0.25rem;
+    background: none;
+    font-weight: 600;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer; 
+}
