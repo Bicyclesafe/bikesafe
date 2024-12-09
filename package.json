@@ -3,8 +3,7 @@
     "@types/leaflet.markercluster": "^1.5.4"
   },
   "dependencies": {
-    "leaflet.markercluster": "^1.5.3",
-    "react-confetti-explosion": "^2.1.2"
+    "leaflet.markercluster": "^1.5.3"
   },
   "scripts": {
     "compose": "docker compose up",
