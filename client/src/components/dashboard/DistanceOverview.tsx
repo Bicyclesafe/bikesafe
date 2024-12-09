@@ -5,6 +5,8 @@ import { useAuth } from "../../hooks/useAuth"
 import { Trip } from "../../types"
 import { linearGradientDef } from "@nivo/core"
 import { startOfWeek, endOfWeek } from "date-fns"
+import styles from "./DistanceOverview.module.css"
+import statsIcon from "../../assets/evaluation.png"
 
 const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
   const [data, setData] = useState<BarDatum[]>([])
@@ -50,18 +52,30 @@ const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
   }
 
   if (!Array.isArray(data) || data.length === 0) {
-    return <div>No weekly data available</div>
-  }
+    return (
+      <div className={styles['container']}>
+        <div className={styles['text-container']}>
+          <header className={styles['header']}>
+            Statistics
+          </header>
+          <div>
+            No weekly data available
+          </div>
+        </div>
+        <img src={statsIcon} className={styles['statsIcon']}/>
+      </div>
+  )}
 
 
   return (
-    <div style={{ height: '100%' }}>
+    <div className={styles['statsContainer']}>
+      <header className={styles['statsHeader']}>Statistics</header>
       <ResponsiveBar
         data={data}
         keys={['distance']}
         indexBy="day"
         enableLabel={false}
-        margin={{ top: 50, right: 60, bottom: 50, left: 70 }}
+        margin={{ top: 70, right: 60, bottom: 50, left: 70 }}
         padding={0.3}
         colors={{ scheme: 'dark2' }}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
