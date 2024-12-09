@@ -74,3 +74,9 @@
 .trip-container-title {
     color: white;
 }
+
+.filter-and-trips-container {
+    grid-area: filter-trips;
+    display: flex;
+    flex-direction: column;
+}

@@ -53,12 +53,12 @@ export interface Filters {
   [key: string]: Filter
 }
 
-export interface PinFilterProps {
+export interface FilterProps {
   filters: Filters,
   handleFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export interface PinFilterOptionProps {
+export interface FilterOptionProps {
   name: string
   isChecked: boolean
   label: string
@@ -114,11 +114,11 @@ export interface LineLayerProps {
   highestValue: number
 }
 
-export interface LineLayerInfo {
-  innerHeight: number
-  bars: readonly ComputedBarDatum<BarDatum>[]
+export interface LineLayerInfo{
   data: BarDatum[]
   color: string
+  innerHeight: number
+  bars: readonly ComputedBarDatum<BarDatum>[]
 }
 
 export interface ChartData {
@@ -152,4 +152,89 @@ export interface Statistic {
   value: number | Duration
   unit: string
   type: "distance" | "duration" | "impact"
+}
+
+export interface AchievementType {
+  name: string
+  description: string
+  requirement: number
+  groupId: number
+  level: number
+}
+
+export interface AchievementData {
+  sumOfTrips: number
+  emissionsSaved?: number
+  tripCount: number
+  consecutiveCount: number
+}
+
+export interface AchievementGroupProps {
+  achievements: AchievementType[]
+  achievementData: AchievementData
+}
+
+export interface AllTripsProps {
+  id: number
+  userId: number
+  startTime: string
+  endTime: string
+}
+
+export interface CompanyStatistics {
+  company: {
+    id: number
+    name: string
+  }
+  distancesByMonth: {
+    month: number
+    distance: number
+    co2SavedKg: number
+  }[]
+  activeCyclistsByMonth: {
+    month: number
+    activeCyclists: number
+  }[]
+  yearlyTotalDistance: number
+}
+
+export interface MonthlyStatisticsProps {
+  statistics: CompanyStatistics;
+  selectedDate: Date;
+}
+
+export interface StatisticSectionProps {
+  label: string;
+  currentValue: number;
+  previousValue: number;
+  renderChange: (currentValue: number, previousValue: number) => JSX.Element;
+  unit: string;
+}
+
+export interface CompanyStatistics {
+  company: {
+    id: number
+    name: string
+  }
+  distancesByMonth: {
+    month: number
+    distance: number
+    co2SavedKg: number
+  }[]
+  tripsByCategory: Record<number, TripCategoryCounts>
+  activeCyclistsByMonth: {
+    month: number
+    activeCyclists: number
+  }[]
+  yearlyTotalDistance: number
+}
+
+export interface TripCategoryCounts {
+  short: number;
+  medium: number;
+  long: number;
+}
+
+export interface TripsByMonth {
+  [month: number]: TripCategoryCounts;
 }

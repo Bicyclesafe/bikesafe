@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --verbose -i",
     "tsc": "tsc",
-    "dev": "ts-node-dev src/index.ts",
+    "dev": "ts-node-dev --files src/index.ts",
     "lint": "eslint .",
     "start:test": "cross-env NODE_ENV=test ts-node-dev src/index.ts",
     "migrate:up": "ts-node-dev ./src/scripts/migrate.ts up",

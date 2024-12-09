@@ -11,6 +11,8 @@ import testingRouter from './routes/testingRoute'
 import userRouter from './routes/userRoute'
 import goalRouter from './routes/goalRoute'
 import commuteRouter from './routes/commuteRoute'
+import achievementRouter from "./routes/achievementRoute"
+import companyRouter from './routes/companyRoute'
 
 export const app = express()
 
@@ -25,6 +27,8 @@ app.use('/api/trips', tripRouter)
 app.use('/api/users', userRouter)
 app.use('/api/goals', goalRouter)
 app.use('/api/commute', commuteRouter)
+app.use('/api/achievements', achievementRouter)
+app.use('/api/companies', companyRouter)
 
 app.use('/testing', testingRouter)
 

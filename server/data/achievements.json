@@ -1,0 +1,110 @@
+{
+  "achievements": [
+    {
+      "name": "Miles to go",
+      "description": "Cycle 50 km",
+      "requirement": 50,
+      "groupId": 1,
+      "level": 1
+    },
+    {
+      "name": "Pedal Pro",
+      "description": "Cycle 200 km",
+      "requirement": 200,
+      "groupId": 1,
+      "level": 2
+    },
+    {
+      "name": "Distance Master",
+      "description": "Cycle 500 km",
+      "requirement": 500,
+      "groupId": 1,
+      "level": 3
+    },
+    {
+      "name": "Eco Beginner",
+      "description": "Save 100 kg of CO2 emissions",
+      "requirement": 100,
+      "groupId": 2,
+      "level": 1
+    },
+    {
+      "name": "Eco Champion",
+      "description": "Save 300 kg of CO2 emissions",
+      "requirement": 300,
+      "groupId": 2,
+      "level": 2
+    },
+    {
+      "name": "Eco Warrior",
+      "description": "Save 1000 kg of CO2 emissions",
+      "requirement": 1000,
+      "groupId": 2,
+      "level": 3
+    },
+    {
+      "name": "Frugal Cyclist",
+      "description": "Save 25€ in fuel costs",
+      "requirement": 25,
+      "groupId": 3,
+      "level": 1
+    },
+    {
+      "name": "Smart Commuter",
+      "description": "Save 100€ in fuel costs",
+      "requirement": 100,
+      "groupId": 3,
+      "level": 2
+    },
+    {
+      "name": "Financially Savvy",
+      "description": "Save 300€ in fuel costs",
+      "requirement": 300,
+      "groupId": 3,
+      "level": 3
+    },
+    {
+      "name": "Pedal Pusher",
+      "description": "Complete 10 rides",
+      "requirement": 10,
+      "groupId": 4,
+      "level": 1
+    },
+    {
+      "name": "Gear Grinder",
+      "description": "Complete 50 rides",
+      "requirement": 50,
+      "groupId": 4,
+      "level": 2
+    },
+    {
+      "name": "Cycle Maniac",
+      "description": "Complete 100 rides",
+      "requirement": 100,
+      "groupId": 4,
+      "level": 3
+    },
+    {
+      "name": "Rolling Routine",
+      "description": "Complete trips for 3 consecutive days",
+      "requirement": 3,
+      "groupId": 5,
+      "level": 1
+    },
+    {
+      "name": "Week On Wheels",
+      "description": "Complete trips for 7 consecutive days",
+      "requirement": 7,
+      "groupId": 5,
+      "level": 2
+    },
+    {
+      "name": "30 Day Tour",
+      "description": "Complete trips for 30 consecutive days",
+      "requirement": 30,
+      "groupId": 5,
+      "level": 3
+    }
+
+  ]
+}

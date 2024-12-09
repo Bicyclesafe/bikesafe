@@ -16,8 +16,9 @@
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.1.10",
     "@mui/material": "^6.1.8",
-    "@mui/x-date-pickers": "^7.22.3",
+    "@mui/x-date-pickers": "^7.23.0",
     "@nivo/bar": "^0.88.0",
     "@nivo/core": "^0.88.0",
     "@nivo/line": "^0.88.0",
@@ -31,6 +32,7 @@
     "leaflet-routing-machine": "^3.2.12",
     "leaflet.markercluster": "^1.5.3",
     "react": "^18.3.1",
+    "react-confetti-explosion": "^2.1.2",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "react-leaflet-cluster": "^2.1.0",

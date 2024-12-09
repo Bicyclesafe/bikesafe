@@ -2,12 +2,13 @@ import { app } from "./app"
 import { connectToDatabase } from "./util/db"
 import { PORT } from "./util/config"
 import { initializeLockStations } from "./services/lockStationService"
-import seedTrips from "./util/seed"
+import { seedTrips, createAchievements } from "./util/seed"
 
 const startServer = async (): Promise<void> => {
   try {
     await connectToDatabase()
     await seedTrips()
+    await createAchievements()
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`)
     })

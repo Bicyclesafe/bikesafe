@@ -1,8 +1,8 @@
 import { FC } from "react"
 import { PinFilterOption } from "./PinFilterOption"
-import { PinFilterProps } from "../../types"
+import { FilterProps } from "../../types"
 
-export const PinFilter: FC<PinFilterProps> = ({
+export const PinFilter: FC<FilterProps> = ({
   filters,
   handleFilterChange
 }) => {
