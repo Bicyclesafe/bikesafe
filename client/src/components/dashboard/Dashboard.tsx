@@ -56,7 +56,7 @@ const Dashboard = () => {
         setRawData(trips)
         break
       } catch (error: unknown) {
-        if (isApiError(error) && error.response?.status === 404 && retries > 1) {
+        if (isApiError(error) && error.response?.status === 500 && retries > 1) {
           await new Promise((resolve) => setTimeout(resolve, 1000))
         } else {
           console.error('Error fetching trip data:', error)

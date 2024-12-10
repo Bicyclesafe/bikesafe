@@ -22,7 +22,7 @@ describe("SeasonalDistance component", () => {
 
     await waitFor(() => {
       expect(setDistanceMock).toHaveBeenCalledWith(150)
-      expect(screen.getByText(/150.0km/)).toBeInTheDocument()
+      expect(screen.getByText(/150.0 km/)).toBeInTheDocument()
     })
   })
 
@@ -35,7 +35,7 @@ describe("SeasonalDistance component", () => {
 
     await waitFor(() => {
       expect(setDistanceMock).toHaveBeenCalledWith(0)
-      expect(screen.getByText(/0km/)).toBeInTheDocument()
+      expect(screen.getByText(/0 km/)).toBeInTheDocument()
     })
   })
 })
