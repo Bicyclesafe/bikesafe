@@ -8,10 +8,10 @@
 }
 
 .header {
-  background: linear-gradient(180deg, rgba(38,218,163,1) 0%, rgba(34,196,147,1) 100%); 
+  background-color: rgb(55, 70, 71);
   color: #fff;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
   padding-left: 3.75rem;
   padding-right: 3.75rem;
   border-bottom: 1px solid grey;
@@ -31,7 +31,7 @@
 }
   
 .nav-links li a {
-  color: black;
+  color: white;
   text-decoration: none;
   display: inline-block;
   transition: background-color 0.3s;
@@ -44,7 +44,7 @@
 }
 
 .nav-logo a {
-  color: black;
+  color: white;
   font-size: 1.5rem;
   text-decoration: none;
 }
@@ -59,7 +59,7 @@
   font-size: 2rem;
   background: none;
   border: none;
-  color: black;
+  color: white;
   cursor: pointer;
 }
 

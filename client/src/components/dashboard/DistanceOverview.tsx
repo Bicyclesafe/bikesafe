@@ -68,8 +68,8 @@ const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
 
 
   return (
-    <div className={styles['statsContainer']}>
-      <header className={styles['statsHeader']}>Statistics</header>
+    <div className={styles['statsContainer']} style={{ position: 'absolute', width: '100%', height: '100%' }}>
+      <header className={styles['statsHeader']}>Weekly Distance Overview</header>
       <ResponsiveBar
         data={data}
         keys={['distance']}

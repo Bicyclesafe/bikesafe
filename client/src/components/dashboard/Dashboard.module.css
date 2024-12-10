@@ -7,7 +7,7 @@
 
 .dashboard-content {
     display: grid;
-    grid-template-columns: repeat(32, 1fr);
+    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: auto;
     gap: 1rem;
     border-radius: 1rem;
@@ -17,6 +17,7 @@
 
 .dashboard-title-quote {
     grid-column: 1 / -1;
+    grid-row: 1;
     display: flex;
     gap: 2rem;
     align-items: center;
@@ -33,7 +34,7 @@
 	border-radius: 0.3rem;
     color: white;
     font-style: italic;
-    padding: 0.7rem;
+    padding: 0.7rem 1rem;
     font-size: 1.4rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 }
@@ -53,8 +54,8 @@
 }
 
 .goal-tracker-container  {
-    grid-row: 2 / 4;
-    grid-column: span 11;
+    grid-row: 2 / 6;
+    grid-column: 1 / 2;
     padding: 1rem;
     background-color: white;
     border-radius: 0.5rem;
@@ -67,8 +68,6 @@
 }
 
 .seasonal-distance, .daily-cyclists, .number-of-trips {
-    grid-row: 2 / 3;
-    grid-column: span 7;
     color: white;
     border-radius: 0.5rem;
     font-weight: bold;
@@ -79,16 +78,23 @@
 }
 
 .seasonal-distance {
+    grid-row: 2 / 3;
+    grid-column: 2 / 4;
     background-color: #d9761f;
 }
 
+.number-of-trips {
+    grid-row: 2 / 3;
+    grid-column: 4 / 6;
+    background-color: #2bb067;
+}
+
 .daily-cyclists {
+    grid-row: 2 / 3;
+    grid-column: 6 / 8;
     background-color: #c13eb4;
 }
 
-.number-of-trips {
-    background-color: #2bb067;
-}
 
 .statistic-title {
     font-style: italic;
@@ -97,10 +103,11 @@
 }
 
 .commute {
-    grid-row: 4;
-    grid-column: span 11;
+    grid-row: 6;
+    grid-column: 1;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     gap: 0.75rem;
 }
@@ -124,6 +131,7 @@
     cursor: pointer;
     width: 100%;
     flex: 2;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 }
 
 .cycle-button:hover {
@@ -132,16 +140,28 @@
 
 .distance-overview {
     position: relative;
-    grid-row: 3 / 11;
-    grid-column: span 10;
+    grid-row: 3 / 9;
+    grid-column: 2 / 5;
     background-color: white;
     border-radius: 0.5rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 }
 
+.achievements {
+    grid-row: 3 / 9;
+    grid-column: 5 / 8;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
 #manual {
-    grid-row: 5 / 12;
-    grid-column: span 11;
+    grid-row: 7 / 12;
+    grid-column: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -158,8 +178,8 @@
 }
 
 .latest-trips {
-    grid-row: 11 / 12;
-    grid-column: span 21;
+    grid-row: 9 / 12;
+    grid-column: 2 / 8;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     border-radius: 0.5rem;
     background-color: white;

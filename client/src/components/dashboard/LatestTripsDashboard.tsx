@@ -70,14 +70,19 @@ const LatestTripsDashboard : FC<{ rawData: Trip[] }> = ({ rawData })=> {
   })
 
   if (!Array.isArray(rawData) || rawData.length === 0) {
-    return <div>No weekly data available</div>
+    return (
+      <div className={stylesLatestTrips['latest-trips-container']}>
+        <div className={stylesLatestTrips['latest-trips-title']}>
+            Latest trips
+        </div>
+        <div>No trips found.</div>
+      </div>
+    )
   }
 
   return(
     <div className={stylesLatestTrips['latest-trips-container']}>
-        <div className={stylesLatestTrips['latest-trips-title']}>
-          Latest trips
-        </div>
+        <header>Latest trips</header>
         <div className={stylesLatestTrips['latest-trips']}>
           {showLatestTrips}
         </div>
