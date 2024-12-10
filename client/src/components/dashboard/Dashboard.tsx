@@ -1,6 +1,5 @@
 import SeasonalDistance from "./SeasonalDistance"
 import stylesDashboard from "./Dashboard.module.css"
-import PersonalGoal from "./PersonalGoal"
 import TotalCommute from "./TotalCommute" 
 import PersonalGoalTracker from "./PersonalGoalTracker"
 import { BaseTrip, Trip } from "../../types"

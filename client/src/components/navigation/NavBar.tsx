@@ -36,7 +36,7 @@ const NavBar = () => {
                     </button>
 											<ul className={styles['nav-links']}>
                         <li><a href="/dashboard">Home</a></li>
-                        <li><a href="/">About</a></li>
+                        <li><a href="/">Theftmap</a></li>
                         {user
                             ? <li>
 																<button className={styles['logout-button']} id="logout-button" onClick={logOut}>
