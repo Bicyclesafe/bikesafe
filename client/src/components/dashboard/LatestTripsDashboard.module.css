@@ -1,0 +1,41 @@
+.latest-trips-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.trip {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px;
+  gap: 1rem;
+  padding: 0.25rem;
+}
+
+.date {
+  display: flex;
+  gap: 4rem;
+  color: #1b9e77;
+  font-weight: bold;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.duration, .distance, .co2 {
+  font-size: 1.25rem;
+}
+
+.unit {
+  font-size: 1.0rem;
+  margin-left: 5px;
+}
+
+.latest-trips-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}

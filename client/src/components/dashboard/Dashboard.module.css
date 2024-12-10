@@ -2,28 +2,173 @@
     margin: 0 auto;
     max-width: 1200px;
     padding: 20px;
+    box-sizing: border-box;
 }
-  
+
 .dashboard-content {
     display: grid;
-    grid-template-columns: 1fr;
-    transition: gap 0.3s ease;
-    gap: 20px;
+    grid-template-columns: repeat(32, 1fr);
+    grid-template-rows: auto;
+    gap: 1rem;
+    border-radius: 1rem;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-.highlight-box {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    background-color: rgb(255, 255, 255);
+.dashboard-title-quote {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-title {
+    font-size: 1.6rem;
+}
+
+.quote {
+	position: relative;
+	background: #5ba4a0;
+	border-radius: 0.3rem;
+    color: white;
+    font-style: italic;
+    padding: 0.7rem;
+    font-size: 1.4rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-    border: 1px solid lightgrey;
-    border-radius: 10px;
-    padding: 20px;
-    gap: 20px;
-    height: 300px;
 }
 
-.center-area {
+.quote:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-right-color: #5ba4a0;
+	border-left: 0;
+	margin-top: -10px;
+	margin-left: -10px;
+}
+
+.goal-tracker-container  {
+    grid-row: 2 / 4;
+    grid-column: span 11;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.goal-tracker {
+    position: relative;
+    height: 250px;
+}
+
+.seasonal-distance, .daily-cyclists, .number-of-trips {
+    grid-row: 2 / 3;
+    grid-column: span 7;
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+    padding: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.seasonal-distance {
+    background-color: #d9761f;
+}
+
+.daily-cyclists {
+    background-color: #c13eb4;
+}
+
+.number-of-trips {
+    background-color: #2bb067;
+}
+
+.statistic-title {
+    font-style: italic;
+    font-weight: normal;
+    font-size: 1.2rem;
+}
+
+.commute {
+    grid-row: 4;
+    grid-column: span 11;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.75rem;
+}
+
+.cycle-to-work {
+    flex: 2;
+}
+
+.commute-distance {
+    flex: 1;
+}
+
+.cycle-button {
+    font-size: 1.25rem;
+    font-weight: bold;
+    background-color: #007bff;
+    padding: 0.75rem;
+    color: white;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    flex: 2;
+}
+
+.cycle-button:hover {
+    background-color: #0056b3;
+}
+
+.distance-overview {
+    position: relative;
+    grid-row: 3 / 11;
+    grid-column: span 10;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+#manual {
+    grid-row: 5 / 12;
+    grid-column: span 11;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+#manual:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+    transform: none;
+}
+
+.latest-trips {
+    grid-row: 11 / 12;
+    grid-column: span 21;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    background-color: white;
+    padding: 1rem;
+}
+
+
+
+/* .center-area {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,10 +182,13 @@
 }
   
 .row {
-    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px;
+    width: 100%;
+    padding: 20px;
     border-radius: 10px;
     background-color: #ebf1f7;
 }
@@ -95,7 +243,7 @@
 .item-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
+    gap: 1rem;
 }
   
 .item {
@@ -113,8 +261,21 @@
     transform: scale(1.05);
 }
 
-header {
-    font-size: 1.7rem;
+.title-row {
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.dashboard-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.quote {
+    font-size: 1.2rem;
+    font-style: italic;
 }
 
 #manual {
@@ -128,3 +289,14 @@ header {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     transform: none;
 }
+
+.navlink {
+    text-decoration: none;
+}
+
+#achievement {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+} */

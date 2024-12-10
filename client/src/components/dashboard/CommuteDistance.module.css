@@ -2,9 +2,9 @@
   background-color: red;
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 2rem;
-  border-radius: 5px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   animation: pulse 3s infinite;
   text-decoration: none;
@@ -26,6 +26,10 @@
 }
 
 .row-normal {
-  font-size: 2rem;
-  
+  font-size: 1.25rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  text-align: center;
+  font-weight: 600;
 }

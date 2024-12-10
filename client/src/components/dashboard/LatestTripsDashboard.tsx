@@ -1,5 +1,5 @@
 import { Duration, format, intervalToDuration } from "date-fns"
-import stylesLatestTrips from "../statistics/LatestTrips.module.css"
+import stylesLatestTrips from "./LatestTripsDashboard.module.css"
 import { FC, useMemo } from "react"
 import { Trip } from "../../types"
 
@@ -35,14 +35,12 @@ export const StyledDuration: FC<{ duration: Duration }> = ({ duration }) => {
   )
 }
 
-const LatestTrips : FC<{ rawData: Trip[], showFilters?: boolean}> = ({ rawData, showFilters })=> {
-  const trip_number = showFilters ? 4 : 5
-
+const LatestTripsDashboard : FC<{ rawData: Trip[] }> = ({ rawData })=> {
   const latestTrips = useMemo(() => {
     return rawData
       .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
-      .slice(0, trip_number)
-  }, [rawData, trip_number])
+      .slice(0, 5)
+  }, [rawData])
   
   const showLatestTrips = latestTrips.map((trip) => {
     const startTime = new Date(trip.startTime)
@@ -50,8 +48,10 @@ const LatestTrips : FC<{ rawData: Trip[], showFilters?: boolean}> = ({ rawData, 
 
     return (
       <div className={stylesLatestTrips['trip']} key={trip.id} data-testid="trip">
-        <div className={stylesLatestTrips['date']}>{format(startTime, 'dd MMM yyyy')}</div>
-        <div className={stylesLatestTrips['start-time']}>{format(startTime, 'HH:mm')}</div>
+        <div className={stylesLatestTrips['date']}>
+          <span>{format(startTime, 'dd MMM yyyy')}</span>
+          <span>{format(startTime, 'HH:mm')}</span>
+        </div>
         <div className={stylesLatestTrips['details']}>
           <div>
             <StyledDuration duration={duration} />
@@ -69,6 +69,10 @@ const LatestTrips : FC<{ rawData: Trip[], showFilters?: boolean}> = ({ rawData, 
     )
   })
 
+  if (!Array.isArray(rawData) || rawData.length === 0) {
+    return <div>No weekly data available</div>
+  }
+
   return(
     <div className={stylesLatestTrips['latest-trips-container']}>
         <div className={stylesLatestTrips['latest-trips-title']}>
@@ -81,4 +85,4 @@ const LatestTrips : FC<{ rawData: Trip[], showFilters?: boolean}> = ({ rawData, 
   )
 }
 
-export default LatestTrips
+export default LatestTripsDashboard

@@ -123,7 +123,7 @@ const PersonalGoalTracker:FC<{ yearlyDistance: number }> = ({ yearlyDistance = [
   
   return (
     <div>
-      <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
+      <div style={{ position: 'absolute', width: '100%', height: '100%' }}>
         <ResponsivePie
           data={data}
           innerRadius={0.75}

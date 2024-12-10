@@ -53,9 +53,8 @@ const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
     return <div>No weekly data available</div>
   }
 
-
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ position: 'absolute', width: '100%', height: '100%' }}>
       <ResponsiveBar
         data={data}
         keys={['distance']}
