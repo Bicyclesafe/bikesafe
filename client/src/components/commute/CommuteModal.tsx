@@ -3,10 +3,12 @@ import { addCommuteDistance } from "../../services/commuteService"
 import styles from "./Commute.module.css"
 import Notification from "../notification/Notification"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const CommuteModal: React.FC<{routeDistance: number}> = ({routeDistance}) => {
 	const { user } = useAuth()
   const [notificationVisible, setNotificationVisible] = useState(false)
+	const navigate = useNavigate()
 
 	const saveDistance = async (routeDistance: number) => {
 		if (user) {
@@ -15,8 +17,8 @@ const CommuteModal: React.FC<{routeDistance: number}> = ({routeDistance}) => {
       setNotificationVisible(true)
       setTimeout(() => {
         setNotificationVisible(false)
-      }, 5000)
-      
+        navigate("/dashboard")
+      }, 2000)
 		}
 	}
 
