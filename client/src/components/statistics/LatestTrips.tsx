@@ -36,7 +36,7 @@ export const StyledDuration: FC<{ duration: Duration }> = ({ duration }) => {
 }
 
 const LatestTrips : FC<{ rawData: Trip[], showFilters: boolean}> = ({ rawData, showFilters })=> {
-  const trip_number = showFilters ? 4 : 5
+  const trip_number = showFilters ? 2 : 3
 
   const latestTrips = useMemo(() => {
     return rawData
