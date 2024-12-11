@@ -22,6 +22,11 @@ jest.mock("../services/goalService", () => ({
   addGoal: jest.fn()
 }))
 
+jest.mock("../services/commuteService", () => ({
+  addCommuteDistance: jest.fn(),
+  getCommuteDistance: jest.fn()
+}))
+
 jest.mock("../components/dashboard/PersonalGoalTracker", () => () => <div></div>)
 
 jest.mock("../hooks/useAuth", () => ({
@@ -49,7 +54,7 @@ describe("Dashboard component", () => {
 
     await waitFor(() => {
       expect(mockGetSumOfTripsBetweenDates).toHaveBeenCalled()
-      expect(screen.getByText(/1.0km/)).toBeInTheDocument()
+      expect(screen.getByText(/1.0 km/)).toBeInTheDocument()
     })
   })
 
