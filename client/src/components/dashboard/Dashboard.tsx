@@ -5,7 +5,7 @@ import PersonalGoalTracker from "./PersonalGoalTracker"
 import { BaseTrip, Trip } from "../../types"
 import tripService, { addWorkTrip } from "../../services/tripService"
 import { useAuth } from "../../hooks/useAuth"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import DistanceOverview from "./DistanceOverview"
 import { NavLink } from "react-router-dom"
 import ManualTrips from "./ManualTrips"
@@ -33,43 +33,25 @@ const Dashboard = () => {
     try {
       const distance = await addWorkTrip(token as string, trip)
       setDistance(prevDistance => (prevDistance) + distance)
-      
-      fetchDataWithRetry()
     } catch (error) {
       console.error('Error adding work trip:', error)
     }
   }
 
-  const isApiError = (error: unknown): error is { response: { status: number } } => {
-    return typeof error === 'object' && error !== null && 'response' in error
-  }
-
-  const fetchDataWithRetry = useCallback(async () => {
-    if (!user) return
-
-    const token = await user.getIdToken(true)
-
-    let retries = 3
-    while (retries > 0) {
-      try {
-        const trips = await tripService.getAllTrips(token)
-        setRawData(trips)
-        break
-      } catch (error: unknown) {
-        if (isApiError(error) && error.response?.status === 500 && retries > 1) {
-          await new Promise((resolve) => setTimeout(resolve, 1000))
-        } else {
-          console.error('Error fetching trip data:', error)
-          break
-        }
-      }
-      retries--
-    }
-  }, [user])
-
   useEffect(() => {
-    fetchDataWithRetry()
-  }, [fetchDataWithRetry, user, distance])
+    const fetchData = async () => {
+      if (!user) return
+
+      try {
+        const token = await user.getIdToken(true)
+        const trips = await tripService.getAllTrips(token as string)
+        setRawData(trips)
+      } catch (error) {
+        console.error('Error fetching trip data:', error)
+      }
+    }
+    fetchData()
+  }, [user, distance])
 
   if (!rawData) return <div>Loading...</div>
 
