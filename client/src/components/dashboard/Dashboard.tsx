@@ -1,6 +1,5 @@
 import SeasonalDistance from "./SeasonalDistance"
 import stylesDashboard from "./Dashboard.module.css"
-import PersonalGoal from "./PersonalGoal"
 import TotalCommute from "./TotalCommute" 
 import PersonalGoalTracker from "./PersonalGoalTracker"
 import { BaseTrip } from "../../types"
@@ -10,6 +9,7 @@ import { useState } from "react"
 import DistanceOverview from "./DistanceOverview"
 import { NavLink } from "react-router-dom"
 import ManualTrips from "./ManualTrips"
+import AchievementsDashboard from "./AchievementsDashboard"
 
 const Dashboard = () => {
   const [distance, setDistance] = useState<number>(0)
@@ -70,7 +70,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className={stylesDashboard['item-container']}>
-          <NavLink to="/statistics">
+          <NavLink className={stylesDashboard['navlink']} to="/statistics">
           <div className={stylesDashboard['item']}>
             <DistanceOverview distance={distance} />
           </div>
@@ -78,9 +78,9 @@ const Dashboard = () => {
           <div id={stylesDashboard['manual']} className={stylesDashboard['item']}>
             <ManualTrips distance={distance} setDistance={setDistance}/>
           </div>
-          <NavLink to="/achievements">
-          <div className={stylesDashboard['item']}>
-            <PersonalGoal/>
+          <NavLink className={stylesDashboard['navlink']} to="/achievements">
+          <div id={stylesDashboard['achievement']} className={stylesDashboard['item']}>
+            <AchievementsDashboard/>
             
           </div>
           </NavLink>

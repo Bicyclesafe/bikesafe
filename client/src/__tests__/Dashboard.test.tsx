@@ -4,6 +4,10 @@ import { getSumOfTripsBetweenDates, getAllTrips } from "../services/tripService"
 import { getCurrentGoalsForUser } from "../services/goalService"
 import { BrowserRouter } from "react-router-dom"
 
+jest.mock("../components/dashboard/AchievementsDashboard", () => () => <div></div>)
+jest.mock("../components/dashboard/DistanceOverview", () => () => <div></div>)
+
+
 jest.mock("../services/tripService", () => ({
   getSumOfTripsBetweenDates: jest.fn(),
   getTripsBetweenDates: jest.fn(),
