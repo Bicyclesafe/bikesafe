@@ -69,7 +69,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDataWithRetry()
-  }, [fetchDataWithRetry, user])
+  }, [fetchDataWithRetry, user, distance])
 
   if (!rawData) return <div>Loading...</div>
 
