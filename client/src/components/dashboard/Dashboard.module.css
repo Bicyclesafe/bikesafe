@@ -9,7 +9,7 @@
     display: grid;
     grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: auto;
-    gap: 0.8rem;
+    gap: 0.6rem;
     border-radius: 1rem;
     box-sizing: border-box;
     width: 100%;
@@ -122,7 +122,7 @@
 
 .cycle-button {
     font-size: 1.25rem;
-    font-weight: bold;
+    font-weight: 500;
     background-color: #007bff;
     padding: 0.75rem;
     color: white;
@@ -131,11 +131,17 @@
     cursor: pointer;
     width: 100%;
     flex: 2;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;    transition: transform 0.1s ease;
 }
 
 .cycle-button:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.cycle-button:active {
+    background-color: #003f83;
+    transform: scale(0.98);
 }
 
 .distance-overview {
@@ -145,13 +151,14 @@
     background-color: white;
     border-radius: 0.5rem;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-    transition: box-shadow 0.3s ease, transform 0.1s ease;
+    transition: transform 0.1s ease;
     text-decoration: none;
 }
 
 .distance-overview:hover, .achievements:hover {
-    box-shadow: 0 0 10px #35a87c;
+    background-color: #f0f0f0;
     transform: scale(1.025);
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
 .achievements {
@@ -179,11 +186,6 @@
     border-radius: 0.5rem;
     padding: 2rem;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-}
-
-#manual:hover {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-    transform: none;
 }
 
 .latest-trips {

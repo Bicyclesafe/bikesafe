@@ -72,10 +72,14 @@ const LatestTripsDashboard : FC<{ rawData: Trip[] }> = ({ rawData })=> {
   if (!Array.isArray(rawData) || rawData.length === 0) {
     return (
       <div className={stylesLatestTrips['latest-trips-container']}>
-        <div className={stylesLatestTrips['latest-trips-title']}>
+        <div className={stylesLatestTrips['text-container']}>
+          <header className={stylesLatestTrips['header']}>
             Latest trips
+          </header>
+          <div>
+            No trips found
+          </div>
         </div>
-        <div>No trips found.</div>
       </div>
     )
   }
