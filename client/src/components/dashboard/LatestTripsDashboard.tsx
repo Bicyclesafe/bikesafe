@@ -83,9 +83,7 @@ const LatestTripsDashboard : FC<{ rawData: Trip[] }> = ({ rawData })=> {
   return(
     <div className={stylesLatestTrips['latest-trips-container']}>
         <header>Latest trips</header>
-        <div className={stylesLatestTrips['latest-trips']}>
-          {showLatestTrips}
-        </div>
+        {showLatestTrips}
       </div>
   )
 }
