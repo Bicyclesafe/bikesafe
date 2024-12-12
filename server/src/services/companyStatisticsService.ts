@@ -2,7 +2,7 @@ import { Op } from 'sequelize'
 import { Trip } from '../models/trip'
 import { User } from '../models/user'
 import { endOfMonth, formatISO, startOfMonth } from 'date-fns'
-import { emissionsCarPerKM } from '../../../shared/constants'
+import { emissionsCarPerKM } from './constants'
 
 interface MonthData {
   month: number;
