@@ -1,0 +1,65 @@
+.row-alert {
+  background-color: red;
+  color: white;
+  padding: 0.75rem;
+  padding-right: 2.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  animation: pulse 3s infinite;
+  text-decoration: none;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;  position: relative;
+  transition: transform 0.1s ease;
+}
+
+.row-alert:hover {
+  animation: none;
+  background-color: rgb(209, 0, 0);
+  transform: scale(1.05);
+}
+
+.row-alert:active {
+  background-color: #8a0000;
+  transform: scale(0.98);
+}
+
+@keyframes pulse {
+  0% {
+    background-color: red;
+    transform: scale(1.1);
+  }
+  50% {
+    background-color: rgb(218, 181, 181);
+    transform: scale(1);
+  }
+  100% {
+    background-color: red;
+    transform: scale(1.1);
+  }
+}
+
+.row-normal {
+  font-size: 1.25rem;
+  font-weight: 500;
+  background-color: #7196c0;
+  border: none;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  padding-right: 2.5rem;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  position: relative;
+  transition: transform 0.1s ease;
+}
+
+.row-normal:hover {
+  background-color: #5e7da0;
+  transform: scale(1.05);
+}
+
+.row-normal:active {
+  background-color: #4e6885;
+  transform: scale(0.98);
+}

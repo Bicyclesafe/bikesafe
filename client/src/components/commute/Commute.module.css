@@ -2,17 +2,17 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: calc(100% - 88px);
+    height: calc(100% - 77px);
     z-index: 1;
     position: absolute;
-    margin-top: 88px;
+    margin-top: 77px;
 }
 
 .overlay-container {
     display: flex;
     flex-direction: column;
     width: 17rem;
-    margin-top: 3rem;
+    margin-top: 5rem;
     margin-left: 0.625rem;
     position: absolute;
     left: 0;

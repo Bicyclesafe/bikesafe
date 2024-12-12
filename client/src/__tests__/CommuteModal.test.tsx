@@ -5,6 +5,11 @@ jest.mock("../hooks/useAuth", () => ({
   useAuth: () => ({ user: { uid: "testUserId", getIdToken: jest.fn() } }) // Define mocked user
 }))
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn()
+}))
+
 jest.mock("../services/commuteService", () => ({
   addCommuteDistance: jest.fn(),
 }))

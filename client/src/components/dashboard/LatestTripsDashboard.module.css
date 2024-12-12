@@ -1,0 +1,47 @@
+.latest-trips-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.trip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.2rem;
+  gap: 1rem;
+  padding: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+.date {
+  display: flex;
+  gap: 4rem;
+  color: #1b9e77;
+  font-weight: bold;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.duration, .distance, .co2 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.unit {
+  font-size: 1rem;
+  margin-left: 5px;
+  font-weight: 600;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  color: black;
+}

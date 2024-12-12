@@ -7,6 +7,8 @@ import { linearGradientDef } from "@nivo/core"
 import { startOfWeek, endOfWeek } from "date-fns"
 import styles from "./DistanceOverview.module.css"
 import statsIcon from "../../assets/evaluation.png"
+import { IconButton } from "@mui/material"
+import { KeyboardArrowRight } from "@mui/icons-material"
 
 const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
   const [data, setData] = useState<BarDatum[]>([])
@@ -54,6 +56,16 @@ const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
   if (!Array.isArray(data) || data.length === 0) {
     return (
       <div className={styles['container']}>
+        <IconButton
+          style={{
+            position: "absolute",
+            top: "0.8rem",
+            right: "0.5rem",
+            zIndex: 10,
+          }}
+        >
+          <KeyboardArrowRight />
+        </IconButton>
         <div className={styles['text-container']}>
           <header className={styles['header']}>
             Statistics
@@ -64,46 +76,59 @@ const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
         </div>
         <img src={statsIcon} className={styles['statsIcon']}/>
       </div>
-  )}
+    )
+  }
 
 
   return (
-    <div className={styles['statsContainer']}>
-      <header className={styles['statsHeader']}>Statistics</header>
-      <ResponsiveBar
-        data={data}
-        keys={['distance']}
-        indexBy="day"
-        enableLabel={false}
-        margin={{ top: 70, right: 60, bottom: 50, left: 70 }}
-        padding={0.3}
-        colors={{ scheme: 'dark2' }}
-        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        labelSkipWidth={12}
-        labelSkipHeight={12}
-        labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-        animate={true}
-        motionConfig="stiff"
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          format: value => value.charAt(0),
+    <div className={styles['absoluteWrapper']}>
+      <IconButton
+        style={{
+          position: "absolute",
+          top: "0.8rem",
+          right: "0.5rem",
+          zIndex: 10,
         }}
-        defs={[
-          linearGradientDef('gradientCompleted', [
-            { offset: 0, color: '#66e375' },
-            { offset: 100, color: '#4ea8ed' },
-          ]),
-          linearGradientDef('gradientRemaining', [
-            { offset: 0, color: '#ffc821', opacity: 0.6 },
-            { offset: 100, color: '#ff4545', opacity: 0.6 },
-          ]),
-        ]}
-        fill={[
-          { match: { id: 'distance' }, id: 'gradientCompleted' },
-        ]}
-      />
+      >
+        <KeyboardArrowRight />
+      </IconButton>
+      <div className={styles['relativeContainer']}>
+        <header className={styles['statsHeader']}>Weekly Distances</header>
+        <ResponsiveBar
+          data={data}
+          keys={['distance']}
+          indexBy="day"
+          enableLabel={false}
+          margin={{ top: 70, right: 60, bottom: 50, left: 70 }}
+          padding={0.3}
+          colors={{ scheme: 'dark2' }}
+          borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+          labelSkipWidth={12}
+          labelSkipHeight={12}
+          labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+          animate={true}
+          motionConfig="stiff"
+          axisBottom={{
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            format: value => value.charAt(0),
+          }}
+          defs={[
+            linearGradientDef('gradientCompleted', [
+              { offset: 0, color: '#66e375' },
+              { offset: 100, color: '#4ea8ed' },
+            ]),
+            linearGradientDef('gradientRemaining', [
+              { offset: 0, color: '#ffc821', opacity: 0.6 },
+              { offset: 100, color: '#ff4545', opacity: 0.6 },
+            ]),
+          ]}
+          fill={[
+            { match: { id: 'distance' }, id: 'gradientCompleted' },
+          ]}
+        />
+      </div>
     </div>
   )
 }

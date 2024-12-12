@@ -25,7 +25,7 @@ const SeasonalDistance = ({ distance, setDistance }: SeasonalDistanceProps) => {
 
   return (
     <div className={stylesSeasonalDistance['total-distance']} id="total-distance">
-      {distance?.toFixed(1) || 0}km
+      {distance?.toFixed(1) || 0} km
     </div>
   )
 }
