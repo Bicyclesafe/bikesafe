@@ -131,7 +131,7 @@ describe('DistanceBarChart Component', () => {
     fireEvent.click(bars[0])
 
     expect(screen.getByText('Day')).toBeInTheDocument()
-    expect(screen.getByText('Return to yearly view')).toBeInTheDocument()
+    expect(screen.getByText('← Return')).toBeInTheDocument()
   })
 
   it('month view displays the correct number of bars', async () => {

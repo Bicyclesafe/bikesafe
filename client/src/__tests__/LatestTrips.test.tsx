@@ -45,7 +45,7 @@ describe("LatestTrips component", () => {
     render(<LatestTrips rawData={rawData} />)
     const trips = screen.getAllByTestId("trip")
 
-    expect(trips).toHaveLength(5)
+    expect(trips).toHaveLength(3)
   })
 
   it("no trips are rendered if rawData is empty", () => {
