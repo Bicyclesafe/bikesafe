@@ -3,8 +3,7 @@ import { auth } from "../util/firebaseConfig"
 import { User } from "../models/user"
 import { Company } from "../models/company"
 
-export const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.log(err.message)
+export const errorHandler = (_err: Error, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).send({ errors: [{ message: "Something went wrong" }] })
 }
 

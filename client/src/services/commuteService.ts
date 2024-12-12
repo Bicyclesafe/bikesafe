@@ -6,8 +6,7 @@ export const addCommuteDistance = async (token: string, distance: number) => {
 		const authHeader = {"headers": {
 				"Authorization": "Bearer " + token
 		}}
-		const response = await axios.post(`${apiUrl}/api/commute`, {distance}, authHeader)
-		console.log(response.data)
+		await axios.post(`${apiUrl}/api/commute`, {distance}, authHeader)
 		} catch(err) {
 		console.error("Error in saving the commute distance", err)
   }
@@ -20,8 +19,7 @@ export const getCommuteDistance = async (token: string) => {
 		}}
 
 		const response = await axios.get(`${apiUrl}/api/commute`, authHeader)
-		console.log(typeof(response.data), "response")
-    return response.data
+    	return response.data
 	} catch(err) {
 		console.error("Error in saving the commute distance", err)
   }

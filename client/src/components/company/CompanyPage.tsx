@@ -39,7 +39,6 @@ const CompanyPage = () => {
         try {
           const token = await user.getIdToken(true)
           const statisticsResponse = await companyService.getCompanyStatistics(year, token as string)
-          console.log("statisticsResponse: ", statisticsResponse)
           setStatistics(statisticsResponse)
         } catch (error) {
           console.error('Error fetching company (Component: CompanyPage)', error)

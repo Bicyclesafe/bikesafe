@@ -49,8 +49,6 @@ const router = createBrowserRouter([
 ])
 
 const App = () => {
-  console.log("Rendering RouterProvider")
-
   return (
     <AuthProvider>
       <RouterProvider router={router} />
