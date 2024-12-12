@@ -7,8 +7,8 @@ import { linearGradientDef } from "@nivo/core"
 import { startOfWeek, endOfWeek } from "date-fns"
 import styles from "./DistanceOverview.module.css"
 import statsIcon from "../../assets/evaluation.png"
-import { IconButton } from "@mui/material"
-import { KeyboardArrowRight } from "@mui/icons-material"
+// import { IconButton } from "@mui/material"
+// import { KeyboardArrowRight } from "@mui/icons-material"
 
 const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
   const [data, setData] = useState<BarDatum[]>([])
@@ -56,7 +56,7 @@ const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
   if (!Array.isArray(data) || data.length === 0) {
     return (
       <div className={styles['container']}>
-        <IconButton
+        {/* <IconButton
           style={{
             position: "absolute",
             top: "0.8rem",
@@ -65,7 +65,7 @@ const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
           }}
         >
           <KeyboardArrowRight />
-        </IconButton>
+        </IconButton> */}
         <div className={styles['text-container']}>
           <header className={styles['header']}>
             Statistics
@@ -82,7 +82,7 @@ const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
 
   return (
     <div className={styles['absoluteWrapper']}>
-      <IconButton
+      {/* <IconButton
         style={{
           position: "absolute",
           top: "0.8rem",
@@ -91,7 +91,7 @@ const DistanceOverview: FC<{ distance: number }> = ({ distance = 0 }) => {
         }}
       >
         <KeyboardArrowRight />
-      </IconButton>
+      </IconButton> */}
       <div className={styles['relativeContainer']}>
         <header className={styles['statsHeader']}>Weekly Distances</header>
         <ResponsiveBar
