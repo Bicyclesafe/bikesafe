@@ -25,7 +25,6 @@
     background-color: #2a6fde;
 }
 
-
 #theft-button {
     margin: 0.5rem 0;
     background-color: var(--color-red);
@@ -35,25 +34,12 @@
     background-color: rgb(197, 27, 27);
 }
 
-.layout-container {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-}
-  
-.main-content {
-    width: 70%;
-    margin: 0 auto;
-    padding: 2rem;
-    background-color: white;
-    height: calc(100vh - 74px);
-    border-left: 0.2px solid grey;
-    border-right: 0.2px solid grey;
+.main-container {
+    min-height: 100vh;
+    background-color: #dddde2;
 }
 
-@media (max-width: 1200px) {
-    .main-content {
-      width: 100%;
-}
+.main-content {
+    margin: 0;
 }
   

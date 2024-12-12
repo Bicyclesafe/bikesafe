@@ -20,5 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", "../shared/constants.ts"],
+  "exclude": ["node_modules", "src/**/*.test.tsx", "src/**/*.test.ts"]
 }

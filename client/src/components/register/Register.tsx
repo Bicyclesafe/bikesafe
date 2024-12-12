@@ -47,7 +47,6 @@ const Register = () => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password)
-      console.log('Account created successfully!')
     } catch(error: unknown) {
       if (error instanceof FirebaseError) {
         if (error.code === 'auth/email-already-in-use') {

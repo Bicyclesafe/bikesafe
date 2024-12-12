@@ -10,20 +10,23 @@ import lockStationService from '../../services/lockStationService'
 import MarkerClusterGroup from "react-leaflet-cluster"
 import LockStationMarker from '../pins/LockStationMarker'
 import CursorPosition from '../cursor/CursorPosition'
+import { useAuth } from '../../hooks/useAuth'
 
 const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setTheftPosition, bikeThefts, setBikeThefts }) => {
   const [lockStations, setLockStations] = useState<LockStation[][]>([])
+  const { user } = useAuth()
 
   useEffect(() => {
     const fetchData = async () => {
-      const theftResponse = await theftService.getAllThefts()
+      const token = await user?.getIdToken(true)
+      const theftResponse = await theftService.getAllThefts(token as string)
       setBikeThefts(theftResponse)
-      const lockStationResponse = await lockStationService.getAllLockStations()
+      const lockStationResponse = await lockStationService.getAllLockStations(token as string)
       const lockStationsGrouped = groupLockstations(lockStationResponse)
       setLockStations(lockStationsGrouped)
     }
     fetchData()
-  }, [setBikeThefts])
+  }, [setBikeThefts, user])
 
   useEffect(() => {
     const mapElement = document.getElementById('map')
@@ -32,12 +35,13 @@ const MapComponent: FC<MapProps> = ({ reportMode, filters, theftPosition, setThe
     }
   }, [reportMode])
 
-  const deleteTheftMarker = (coordinateId: number) => {
+  const deleteTheftMarker = async (coordinateId: number) => {
+    const token = await user?.getIdToken(true)
     const bikeTheftToDelete = bikeThefts.find(
       theft => theft.coordinate.id === coordinateId
     )
     if (bikeTheftToDelete) {
-      theftService.deleteTheft(bikeTheftToDelete.id)
+      theftService.deleteTheft(token as string, bikeTheftToDelete.id)
       setBikeThefts(bikeThefts.filter(theft => theft.id !== bikeTheftToDelete.id))
     }
   }

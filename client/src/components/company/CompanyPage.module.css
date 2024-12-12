@@ -1,0 +1,114 @@
+.company-container {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.company-content {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+}
+
+.company-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.company-statistics {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.chart-container {
+  grid-column: span 6;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  gap: 20px;
+  text-align: center;
+}
+
+.chart {
+  position: relative;
+  min-height: 350px;
+  height: fit-content;
+}
+
+.activity-left, .activity-middle, .activity-right {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  min-height: 200px;
+  gap: 5px;
+}
+
+.activity-left {
+  border-top: 10px solid #E09F1F;
+}
+
+.activity-middle {
+  border-top: 10px solid #d08df1;
+}
+
+.activity-right {
+  border-top: 10px solid #1FE09F;
+}
+
+.activity-title {
+  color: rgb(110, 110, 110);
+  font-size: 1.1rem;
+}
+
+.activity-value {
+  font-family: 'Nunito', sans-serif;
+  font-size: 2.5rem;
+}
+
+.activity-change {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+  color: inherit;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.unit {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(119, 119, 119);
+  margin-left: 3px;
+}
+
+.chart-title {
+  color: rgb(110, 110, 110);
+  font-size: 1.3rem;
+}
+
+@media only screen and (min-width: 800px)  {
+  .company-statistics {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}

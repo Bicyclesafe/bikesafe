@@ -1,39 +1,209 @@
 .dashboard-container {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.dashboard-content {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.6rem;
+    border-radius: 1rem;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.dashboard-content {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.6rem;
+    border-radius: 1rem;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.dashboard-title-quote {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-title {
+    font-size: 1.6rem;
+}
+
+.quote {
+	position: relative;
+	background: #5ba4a0;
+	border-radius: 0.3rem;
+    color: white;
+    font-style: italic;
+    padding: 0.7rem 1rem;
+    font-size: 1.4rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.quote:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-right-color: #5ba4a0;
+	border-left: 0;
+	margin-top: -10px;
+	margin-left: -10px;
+}
+
+.goal-tracker-container  {
+    grid-row: 2 / 6;
+    grid-column: 1 / 2;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.goal-tracker {
+    position: relative;
+    height: 250px;
+}
+
+.seasonal-distance, .daily-cyclists, .number-of-trips {
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.seasonal-distance {
+    grid-row: 2 / 3;
+    grid-column: 2 / 4;
+    background-color: #d9761f;
+}
+
+.number-of-trips {
+    grid-row: 2 / 3;
+    grid-column: 4 / 6;
+    background-color: #2bb067;
+}
+
+.daily-cyclists {
+    grid-row: 2 / 3;
+    grid-column: 6 / 8;
+    background-color: #c13eb4;
+}
+
+
+.statistic-title {
+    font-style: italic;
+    font-weight: normal;
+    font-size: 1.2rem;
+}
+
+.commute {
+    grid-row: 6;
+    grid-column: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 0.75rem;
+}
+
+.cycle-to-work {
+    flex: 2;
+}
+
+.commute-distance {
+    flex: 1;
+}
+
+.cycle-button {
+    font-size: 1.25rem;
+    font-weight: 500;
+    background-color: #007bff;
+    padding: 0.75rem;
+    color: white;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    flex: 2;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;    transition: transform 0.1s ease;
+}
+
+.cycle-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.cycle-button:active {
+    background-color: #003f83;
+    transform: scale(0.98);
+}
+
+.distance-overview {
+    position: relative;
+    grid-row: 3 / 9;
+    grid-column: 2 / 5;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    transition: transform 0.1s ease;
+    text-decoration: none;
+}
+
+.distance-overview:hover, .achievements:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.025);
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+.achievements {
+    grid-row: 3 / 9;
+    grid-column: 5 / 8;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
     display: flex;
     justify-content: center;
-    padding: 0 1.5rem;
-  }
+    align-items: center;
+    position: relative;
+    transition: box-shadow 0.3s ease, transform 0.1s ease;
+    text-decoration: none;
+}
 
-.content-container {
-    width: 80%;
-    margin: 0 auto;
-  }
-
-.component-container {
+#manual {
+    grid-row: 7 / 12;
+    grid-column: 1;
     display: flex;
     flex-direction: column;
-    padding: 30px;
-}
-
-.row-container {
-    display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
-}
-
-.item-left, .item-right {
-    flex: 1;
-    min-width: 300px;
-    max-width: 350px;
-    border-radius: 10px;
-    aspect-ratio: 1;
-    margin: 20px;
-    box-shadow: 0 3px 9px 0 rgba(0,0,0,0.4);
-    padding: 30px;
-    text-align: center;
     background-color: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-header {
-  font-size: 1.7rem;
+.latest-trips {
+    grid-row: 9 / 12;
+    grid-column: 2 / 8;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    border-radius: 0.5rem;
+    background-color: white;
+    padding: 1rem;
+    min-height: 261px;
 }

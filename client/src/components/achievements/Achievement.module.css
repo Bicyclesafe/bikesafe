@@ -1,0 +1,51 @@
+.grid-container {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: auto auto auto;
+	max-width: 75rem;
+	margin: 0 auto;
+	margin-top: 4rem;
+	padding-bottom: 4rem;
+}
+
+.achievement {
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.achievement-title {
+	font-weight: 600;
+	font-size: 1.5rem;
+}
+
+progress {
+	appearance: none;
+	width: 60%;
+	height: 1.4rem;
+	margin-top: 1rem;
+}
+
+progress::-webkit-progress-value {
+	background-color: green;
+	border-radius: 10px;
+}
+
+progress::-webkit-progress-bar {
+	background-color: white;
+	border-radius: 10px;
+}
+
+.achievement p {
+	color: #666;
+	font-weight: 600;
+	font-size: 1rem;
+}
+
+#progress-data {
+	font-size: 14px;
+	margin-top: 0.5rem;
+}

@@ -3,6 +3,7 @@ import supertest from "supertest"
 import { migrator, sequelize } from "../src/util/db"
 import { User } from "../src/models/user"
 import { Trip } from "../src/models/trip"
+import { Commute } from "../src/models/commute"
 import admin from "firebase-admin"
 
 jest.mock("firebase-admin", () => {
@@ -36,6 +37,12 @@ const initialTrips = [
   },
   {
     userId: 1,
+    startTime: new Date("2024-01-03 9:10:10+02"),
+    endTime: new Date("2024-01-03 10:10:10+02"),
+    tripDistance: 500
+  },
+  {
+    userId: 1,
     startTime: new Date("2023-01-03 15:10:10+02"),
     endTime: new Date("2023-01-03 16:10:10+02"),
     tripDistance: 250
@@ -46,6 +53,13 @@ const initialTrips = [
     endTime: new Date("2023-01-03 16:10:10+02"),
     tripDistance: 320
   },
+]
+
+const initialCommutes = [
+  {
+    userId: 1,
+    distance: 50
+  }
 ]
 
 let mockVerifyIdToken: jest.Mock
@@ -62,6 +76,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   await User.bulkCreate(initialUsers)
   await Trip.bulkCreate(initialTrips)
+  await Commute.bulkCreate(initialCommutes)
   mockVerifyIdToken = admin.auth().verifyIdToken as jest.Mock
   mockVerifyIdToken.mockResolvedValue(mockDecodedToken)
 })
@@ -69,6 +84,7 @@ beforeEach(async () => {
 afterEach(async () => {
   await User.truncate({ cascade: true, restartIdentity: true })
   await Trip.truncate({ cascade: true, restartIdentity: true })
+  await Commute.truncate({ cascade: true, restartIdentity: true })
 })
 
 describe("GET /api/trips", () => {
@@ -82,7 +98,7 @@ describe("GET /api/trips", () => {
 
   test("Correct amount of trips are returned",async () => {
     const response = await api.get("/api/trips").set("Authorization", `Bearer ${validToken}`).expect(200)
-    expect(response.body).toHaveLength(2)
+    expect(response.body).toHaveLength(3)
   })
 
   test("Correct format of trips are returned",async () => {
@@ -138,7 +154,7 @@ describe("GET /api/trips/total-distance", () => {
     .get("/api/trips/total-distance")
     .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
-    expect(response.body).toBe(350)
+    expect(response.body).toBe(850)
   })
 
   test("Return Unauthorized if access token is invalid",async () => {
@@ -159,10 +175,10 @@ describe("GET /api/trips/total-distance", () => {
   })
 })
 
-describe("GET /api/trips/date-range", () => {
+describe("GET /api/trips/sum-date-range", () => {
   test("yearly distance is returned as JSON",async () => {
     await api
-    .get("/api/trips/date-range?startTime=2024-11-13+10:15:00&endTime=2024-11-13+10:15:00")
+    .get("/api/trips/sum-date-range?startTime=2024-11-13+10:15:00&endTime=2024-11-13+10:15:00")
     .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
     .expect("Content-Type", /application\/json/) 
@@ -170,7 +186,7 @@ describe("GET /api/trips/date-range", () => {
 
   test("Correct yearly distance is returned",async () => {
     const response = await api
-    .get("/api/trips/date-range?startTime=2023-01-01+00:00:00&endTime=2023-12-31+23:59:59")
+    .get("/api/trips/sum-date-range?startTime=2023-01-01+00:00:00&endTime=2023-12-31+23:59:59")
     .set("Authorization", `Bearer ${validToken}`)
     .expect(200)
     expect(response.body).toBe(250)
@@ -178,7 +194,7 @@ describe("GET /api/trips/date-range", () => {
 
   test("Zero is returned if no dates found between given dates", async () => {
     const response = await api
-      .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+      .get("/api/trips/sum-date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
       .set("Authorization", `Bearer ${validToken}`)
       .expect(200)
     expect(response.body).toBe(null)
@@ -190,19 +206,164 @@ describe("GET /api/trips/date-range", () => {
     })
 
     await api
-    .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+    .get("/api/trips/sum-date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
     .set("Authorization", `Bearer invalidToken`)
     .expect(401)
   })
 
   test("Return Unauthorized when access token not given", async () => {
     await api
-      .get("/api/trips/date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
+      .get("/api/trips/sum-date-range?startTime=2022-01-01+00:00:00&endTime=2022-12-31+23:59:59")
       .expect(401)
   })
 })
 
+describe("GET /api/trips/all-users", () => {
+  test("returns 0 if there is not commutes today",async () => {
+    const response = await api
+      .get("/api/trips/all-users?startTime=2024-11-26+00:00:00&endTime=2024-11-26+23:59:59")
+      .set("Authorization", `Bearer ${validToken}`)
+      .expect(200)
+    expect(response.body).toBe(0)
+  })
 
+  test("returns the number of commutes given a day", async () => {
+    const response = await api
+      .get("/api/trips/all-users?startTime=2024-01-03+00:00:00&endTime=2024-01-03+23:59:59")
+      .set("Authorization", `Bearer ${validToken}`)
+      .expect(200)
+    expect(response.body).toBe(1)
+
+    const response_2 = await api
+      .get("/api/trips/all-users?startTime=2023-01-03+00:00:00&endTime=2023-01-03+23:59:59")
+      .set("Authorization", `Bearer ${validToken}`)
+      .expect(200)
+    expect(response_2.body).toBe(2)
+  })
+
+  test("doesn't count multiple for a single user", async () => {
+    const response = await api
+      .get("/api/trips/all-users?startTime=2024-01-03+00:00:00&endTime=2024-01-03+23:59:59")
+      .set("Authorization", `Bearer ${validToken}`)
+      .expect(200)
+    expect(response.body).toBe(1)
+  })
+})
+
+describe("POST /api/trips", () => {
+  test("returns 201 when a new trip is created", async () => {
+    const response = await api
+      .post("/api/trips")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00", tripDistance: 100 })
+      .expect(201)
+    expect(response.body).toBe(100)
+  })
+
+  test("returns 500 when trip is missing required fields", async () => {
+    await api
+      .post("/api/trips")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", tripDistance: 100 })
+      .expect(500)
+  })
+
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
+    await api
+    .post("/api/trips")
+      .set("Authorization", `Bearer invalidToken`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00", tripDistance: 100 })
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+    .post("/api/trips")
+    .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00", tripDistance: 100 })
+      .expect(401)
+  })
+})
+
+describe("POST /api/trips/work-trip", () => {
+  test("returns 201 when a new trip is created", async () => {
+    const response = await api
+      .post("/api/trips/work-trip")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00" })
+      .expect(201)
+    expect(response.body).toBe(50)
+  })
+
+  test("returns 500 when commute doesn't exist", async () => {
+    const mockDecodedToken = {
+      uid: "456"
+    }
+    mockVerifyIdToken.mockResolvedValue(mockDecodedToken)
+    await api
+      .post("/api/trips/work-trip")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00" })
+      .expect(500)
+  })
+
+  test("returns 500 when trip is missing required fields", async () => {
+    await api
+      .post("/api/trips/work-trip")
+      .set("Authorization", `Bearer ${validToken}`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00" })
+      .expect(500)
+  })
+
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
+    await api
+    .post("/api/trips/work-trip")
+      .set("Authorization", `Bearer invalidToken`)
+      .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00" })
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+    .post("/api/trips/work-trip")
+    .send({ userId: 1, startTime: "2024-11-26 10:15:00", endTime: "2024-11-26 10:15:00"})
+      .expect(401)
+  })
+})
+
+describe("GET /api/trips/count", () => {
+  test("Retuns 3 when called", async () => {
+    const response = await api
+    .get("/api/trips/count")
+    .set("Authorization", `Bearer ${validToken}`)
+    .expect(200)
+    expect(response.body).toBe(3)
+  })
+
+  test("Return Unauthorized if access token is invalid",async () => {
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error("Invalid token")
+    })
+
+    await api
+    .get("/api/trips/count")
+      .set("Authorization", `Bearer invalidToken`)
+    .expect(401)
+  })
+
+  test("Return Unauthorized when access token not given", async () => {
+    await api
+    .get("/api/trips/count")
+      .expect(401)
+  })
+})
 
 afterAll(async () => {
   await sequelize.close()

@@ -24,15 +24,7 @@ interface LockStationResponse {
 }
 
 export const initializeLockStations = async () => {
-  //const count = await LockStationModel.count()
   await fetchLockStations()
-
-  // if (count === 0) {
-  //   await fetchLockStations()
-  //   console.log('Lock station data fetched.')
-  // } else {
-  //   console.log('Lock station data already exists, skipping fetch.')
-  // }
 }
 
 export const fetchLockStations = async () => {

@@ -10,3 +10,26 @@ export interface LockStation {
 export interface LockStationLines {
   coordinates: Coordinate[]
 }
+
+export interface AchievementType {
+  name: string
+  description: string
+  requirement: number
+  groupId: number
+  level: number
+}
+
+export interface AchievementJson {
+  achievements: AchievementType[]
+}
+
+interface User {
+  id: number;
+  name: string;
+}
+
+export interface Company {
+  id: number;
+  name: string;
+  users: User[];
+}

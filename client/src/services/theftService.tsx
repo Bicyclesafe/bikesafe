@@ -2,9 +2,12 @@ import axios from "axios"
 import { apiUrl } from "../util/config"
 import { LatLng } from "leaflet"
 
-export const getAllThefts = async () => {
+export const getAllThefts = async (token: string) => {
   try {
-    const response = await axios.get(`${apiUrl}/api/bike_thefts`)
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+    const response = await axios.get(`${apiUrl}/api/bike_thefts`, authHeader)
     return response.data
   } catch(err) {
     console.error("Error in fetching thefts", err) 
@@ -12,19 +15,25 @@ export const getAllThefts = async () => {
   }
 }
 
-export const sendTheftReport = async (coordinates: LatLng) => {
+export const sendTheftReport = async (token: string, coordinates: LatLng) => {
   try {
-    const res = await axios.post(`${apiUrl}/api/bike_thefts`, coordinates)
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+    const res = await axios.post(`${apiUrl}/api/bike_thefts`, coordinates, authHeader)
     return res.data
   } catch(err) {
-    console.error("Error adding lock station:", err) 
-    throw new Error("There was an error in adding the lock station")
+    console.error("Error adding bike theft:", err) 
+    throw new Error("There was an error in adding the bike theft")
   }
 }
 
-export const deleteTheft = async (id: number) => {
+export const deleteTheft = async (token: string, id: number) => {
   try {
-    const res = await axios.delete(`${apiUrl}/api/bike_thefts/${id}`)
+    const authHeader = {"headers": {
+      "Authorization": "Bearer " + token
+    }}
+    const res = await axios.delete(`${apiUrl}/api/bike_thefts/${id}`, authHeader)
     return res.data
   } catch(err) {
     console.error("Error deleting theftmarker:", err)
