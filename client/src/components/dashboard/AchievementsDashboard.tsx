@@ -2,14 +2,14 @@ import styles from "./AchievemtnsDashboard.module.css"
 import bronze from "../../assets/Bronze.svg"
 import silver from "../../assets/Silver.svg"
 import gold from "../../assets/Gold.svg"
-// import { IconButton } from "@mui/material"
-// import { KeyboardArrowRight } from "@mui/icons-material"
+import { IconButton } from "@mui/material"
+import { KeyboardArrowRight } from "@mui/icons-material"
 
 
 const AchievementsDashboard = () => {
   return (
     <div>
-      {/* <IconButton
+      <IconButton
         style={{
           position: "absolute",
           top: "0.8rem",
@@ -18,7 +18,7 @@ const AchievementsDashboard = () => {
         }}
       >
         <KeyboardArrowRight />
-      </IconButton> */}
+      </IconButton>
         <header className={styles['header']}>Achievements</header>
         <div className={styles['icon-container']}>
           <img src={silver} className={styles['silver-bronze']}/>

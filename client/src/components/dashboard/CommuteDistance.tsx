@@ -2,8 +2,8 @@ import { useState, useEffect } from "react"
 import { useAuth } from "../../hooks/useAuth"
 import { getCommuteDistance } from "../../services/commuteService"
 import stylesRow from "./CommuteDistance.module.css"
-// import { IconButton } from "@mui/material"
-// import { KeyboardArrowRight } from "@mui/icons-material"
+import { IconButton } from "@mui/material"
+import { KeyboardArrowRight } from "@mui/icons-material"
 // import { IconButton } from "@mui/material"
 // import { KeyboardArrowRight } from "@mui/icons-material"
 
@@ -32,7 +32,7 @@ const CommuteDistance = () => {
   return (
     <div className={distance === 0 ? stylesRow["row-alert"] : stylesRow["row-normal"]}>
       {distance === 0 ? 'Set commute' : `${distance} km` }
-      {/* <IconButton
+      <IconButton
       sx={{
         position: "absolute",
         top: "50%",
@@ -43,7 +43,7 @@ const CommuteDistance = () => {
       size="small"
     >
       <KeyboardArrowRight />
-    </IconButton> */}
+    </IconButton>
   </div>
   )
 } 

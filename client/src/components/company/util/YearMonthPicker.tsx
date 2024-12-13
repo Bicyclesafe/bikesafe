@@ -1,6 +1,8 @@
-import React from 'react'
-import DatePicker from 'react-datepicker'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
+import { ArrowBack, ArrowForward } from '@mui/icons-material'
 import { addMonths, subMonths } from 'date-fns'
+import { IconButton } from '@mui/material'
 
 interface YearMonthPickerProps {
   value: Date | null;
@@ -20,43 +22,24 @@ const YearMonthPicker: React.FC<YearMonthPickerProps> = ({ value, onChange }) =>
     }
   }
 
-  const renderCustomHeader = ({
-    date,
-    decreaseMonth,
-    increaseMonth,
-  }: {
-    date: Date;
-    decreaseMonth: () => void;
-    increaseMonth: () => void;
-  }) => (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 10px' }}>
-      <button onClick={decreaseMonth} aria-label="Previous Month">
-        ◀
-      </button>
-      <span>{`${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`}</span>
-      <button onClick={increaseMonth} aria-label="Next Month">
-        ▶
-      </button>
-    </div>
-  )
-
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      <button onClick={handlePreviousMonth} aria-label="Previous Month">
-        ◀
-      </button>
+      <IconButton onClick={handlePreviousMonth} aria-label="Previous Month">
+        <ArrowBack />
+      </IconButton>
 
-      <DatePicker
-        selected={value}
-        onChange={(date) => onChange(date as Date | null)}
-        dateFormat="MM/yyyy"
-        showMonthYearPicker
-        renderCustomHeader={renderCustomHeader}
-      />
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DatePicker 
+          label={'Month and Year'}
+          views={['month', 'year']}
+          value={value}
+          onChange={onChange}
+        />
+      </LocalizationProvider>
 
-      <button onClick={handleNextMonth} aria-label="Next Month">
-        ▶
-      </button>
+      <IconButton onClick={handleNextMonth} aria-label="Next Month">
+        <ArrowForward />
+      </IconButton>
     </div>
   )
 }
